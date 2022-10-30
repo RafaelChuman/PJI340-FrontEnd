@@ -8,7 +8,7 @@ import {
   useCollaborators,
 } from "@/services/hooks/useCollaborators";
 import { CollaboratorTable } from "@/components/collaborators/CollaboratorTable";
-import { returnPaginatedData } from "@/services/utils";
+import { checkBoxClickEvent, returnPaginatedData } from "@/services/utils";
 import { useState } from "react";
 import { ErrorMessage } from "@hookform/error-message";
 import { useMutation } from "react-query";
@@ -18,7 +18,7 @@ import InputMask from "react-input-mask";
 
 export default function CollaboratorsComponent() {
   const today = new Date();
-  const numberOfItensPerPage = 10;
+  const numberOfItensPerPage = 5;
 
   const { register, handleSubmit, formState, control } =
     useForm<Collaborators>();
@@ -26,8 +26,12 @@ export default function CollaboratorsComponent() {
   const [ErrorCollaborator, setErrorCollaborator] = useState("");
 
   const [collaboratorCurrentPage, setCollaboratorCurrentPage] = useState(1);
+  const [collaboratorNumberPage, setCollaboratorNumberPage] = useState(1);
 
   const collaboratorsWithoutPagination = useCollaborators();
+
+  const formDeletion = useForm();
+  const [checkBoxValues, setCheckBoxValues] = useState<String[]>();
 
   let collaborators;
 
@@ -108,20 +112,48 @@ export default function CollaboratorsComponent() {
 
     const response = await createCollaborator.mutateAsync(values);
 
+    
+
     if (response.status == 200) {
       const mesage = response.status;
+
       if (mesage != undefined) {
         setErrorCollaborator(mesage.toString());
       }
+      
     }
   };
 
+  async function handleDelete() {
+   
+    checkBoxValues?.map(
+      async (collaboratorToDelete) => {
+        const response = await api.delete(`collaborators/?id=${collaboratorToDelete}`);
+
+        return response;
+      },
+    );
+
+    queryClient.invalidateQueries("collaborators");
+
+    if(collaborators.length == checkBoxValues?.length)
+    {
+      if(collaboratorCurrentPage > 1){
+        setCollaboratorCurrentPage(collaboratorCurrentPage-1)
+      } 
+    }
+    setCheckBoxValues([]);
+    
+  }
+
+  async function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
+
+    checkBoxClickEvent(event, checkBoxValues, setCheckBoxValues);
+  }
+
   return (
     <div>
-      <Header></Header>
       <Container>
-        {/* <SideBar /> */}
-
         <div>
           <form onSubmit={handleSubmit(handleCreateCollaborator)}>
             <p>{ErrorCollaborator}</p>
@@ -186,19 +218,27 @@ export default function CollaboratorsComponent() {
             <p>Falha ao Obter Dados</p>
           </div>
         ) : (
+
           <div className="TreatmentTableContainer">
-            {collaborators && (
+             <form
+            title={"Form Excluir Colaborador"}
+            placeholder={"Form Excluir Colaborador"}
+            onSubmit={formDeletion.handleSubmit(handleDelete)}
+          >
+            {collaboratorsWithoutPagination.data && (
               <>
-                <CollaboratorTable collaboratorsData={collaborators} />
+                <CollaboratorTable collaboratorsData={collaborators} handleOnChange={handleOnChange}/>
 
                 <Pagination
-                  totalCountOfRegisters={collaborators.length}
+                  totalCountOfRegisters={collaboratorsWithoutPagination.data.length}
                   currentPage={collaboratorCurrentPage}
                   registersPerPage={numberOfItensPerPage}
                   onPageClick={setCollaboratorCurrentPage}
                 ></Pagination>
               </>
             )}
+            <button type="submit">Excluir</button>
+          </form>
           </div>
         )}
       </Container>

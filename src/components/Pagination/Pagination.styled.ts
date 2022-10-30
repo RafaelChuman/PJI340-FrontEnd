@@ -19,4 +19,8 @@ export const Container = styled.div`
     font-size: 12px;
     width: 24px;
   }
+
+  .PaginationButtonSelected {
+    background-color: ${theme.colors.pink[200]};
+  }
 `;

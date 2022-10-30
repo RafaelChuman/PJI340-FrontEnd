@@ -11,7 +11,7 @@ export function PaginationItem({
 }: PaginationItemProps) {
   
   if (isCurrent) {
-    return (<button className="PaginationButton">{number}</button>);
+    return (<button className="PaginationButton PaginationButtonSelected">{number}</button>);
   } else {
     return (
     

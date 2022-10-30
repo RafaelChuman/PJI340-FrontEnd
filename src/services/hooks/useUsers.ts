@@ -1,5 +1,6 @@
 import { useQuery } from "react-query";
 import { api } from "../api";
+import { convertToDateBR } from "../utils";
 
 export interface User {
     id: string;
@@ -50,11 +51,7 @@ export async function getUsers(): Promise<User[]> {
       numberAddress: user.numberAddress,
       cellphone: user.cellphone,
       whatsApp: user.whatsApp,
-      created_at: new Date(user.created_at).toLocaleDateString("pt-BR", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-      }),
+      created_at: convertToDateBR(user.created_at),
       isAdmin: user.isAdmin,
     };
   });

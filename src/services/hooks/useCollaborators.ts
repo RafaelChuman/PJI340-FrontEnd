@@ -1,6 +1,6 @@
-import { useMutation, useQuery } from "react-query";
+import { useQuery } from "react-query";
 import { api } from "../api";
-import { queryClient } from "../queryClient";
+import { convertToDateBR, convertToWhatsAppMask } from "../utils";
 
 export interface Collaborators {
   id?: string;
@@ -9,7 +9,7 @@ export interface Collaborators {
   numberAddress: string;
   cellphone: string;
   whatsApp: string;
-  createdAt?: Date;
+  createdAt?: string;
 }
 
 
@@ -22,9 +22,9 @@ export async function getCollaborators(): Promise<Collaborators[]> {
       id: collaborator.id,
       cep: collaborator.cep,
       numberAddress: collaborator.numberAddress,
-      cellphone: collaborator.cellphone,
-      whatsApp: collaborator.whatsApp,
-      createdAt: collaborator.createdAt,
+      cellphone: convertToWhatsAppMask(collaborator.cellphone),
+      whatsApp: convertToWhatsAppMask(collaborator.whatsApp),
+      createdAt: convertToDateBR(collaborator.createdAt),
       name: collaborator.name,
     };
   });
@@ -32,7 +32,7 @@ export async function getCollaborators(): Promise<Collaborators[]> {
 }
 
 export function useCollaborators() {
-  return useQuery("Collaborators", getCollaborators, {
+  return useQuery("collaborators", getCollaborators, {
     staleTime: 1000 * 30, //30 Seconds
   });
 }

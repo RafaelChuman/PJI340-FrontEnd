@@ -1,6 +1,6 @@
 import { Pagination } from "@/components/Pagination";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { returnPaginatedData } from "@/services/utils";
+import { checkBoxClickEvent, returnPaginatedData } from "@/services/utils";
 import { useState } from "react";
 import { ErrorMessage } from "@hookform/error-message";
 import { useMutation } from "react-query";
@@ -16,7 +16,7 @@ export default function ZonesComponent() {
   const numberOfItensPerPage = 5;
 
   const { register, handleSubmit, formState } = useForm<Zones>();
-  const [checkBoxValues, setCheckBoxValues] = useState<string[]>();
+  const [checkBoxValues, setCheckBoxValues] = useState<String[]>();
 
   const formDeletion = useForm();
 
@@ -80,47 +80,23 @@ export default function ZonesComponent() {
       async (zoneToDelete) => {
         const response = await api.delete(`zones/?id=${zoneToDelete}`);
 
-        queryClient.invalidateQueries("zones");
-
         return response;
       },
-      // {
-      //   on: () => {
-      //     queryClient.invalidateQueries("zones");
-      //   },
-      // }
     );
+
+    if(zones.length == checkBoxValues?.length)
+    {
+      if(zoneCurrentPage > 1) setZoneCurrentPage(zoneCurrentPage-1)
+    }
+    
+    setCheckBoxValues([]);
+
+    queryClient.invalidateQueries("zones");
   }
 
   async function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const isCheked = event.target.checked;
-    const checkBoxValue = event.target.id;
 
-    if (isCheked) {
-      let valueAlredyExists = undefined;
-
-      if (checkBoxValues) {
-        valueAlredyExists = checkBoxValues.find(
-          (item: String) => item == checkBoxValue
-        );
-
-        if (valueAlredyExists == undefined) {
-          setCheckBoxValues([...checkBoxValues, checkBoxValue]);
-        }
-      } else {
-        setCheckBoxValues([checkBoxValue]);
-      }
-    } else {
-      if (checkBoxValues) {
-        const valueAlredyExists = checkBoxValues.findIndex(
-          (item: String) => item == checkBoxValue
-        );
-
-        if (valueAlredyExists > -1) {
-          checkBoxValues.splice(valueAlredyExists, 1);
-        }
-      }
-    }
+    checkBoxClickEvent(event, checkBoxValues, setCheckBoxValues);
   }
 
   return (
