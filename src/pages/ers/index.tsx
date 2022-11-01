@@ -1,0 +1,195 @@
+import { Pagination } from "@/components/Pagination";
+import { SubmitHandler, useForm } from "react-hook-form";
+import {
+  checkBoxClickEvent,
+  FormatDataToCombobox,
+  returnPaginatedData,
+} from "@/services/utils";
+import { useState } from "react";
+import { ErrorMessage } from "@hookform/error-message";
+import { useMutation } from "react-query";
+import { api } from "@/services/api";
+import { queryClient } from "@/services/queryClient";
+import { useERs, ERs } from "@/services/hooks/useERs";
+import { Container } from "./ers.styled";
+import { json } from "react-router-dom";
+import { ERTable } from "@/components/ers/ERTable";
+import { useZones } from "@/services/hooks/useZones";
+import { ComboBox } from "@/components/ComboBox";
+
+export default function ERsComponent() {
+  const today = new Date();
+  const numberOfItensPerPage = 5;
+
+  const { register, handleSubmit, formState } = useForm<ERs>();
+  const [checkBoxValues, setCheckBoxValues] = useState<String[]>();
+
+  const formDeletion = useForm();
+
+  const [ErrorER, setErrorER] = useState("");
+
+  const [erCurrentPage, setERCurrentPage] = useState(1);
+
+  const ersWithoutPagination = useERs();
+
+  const zonesWithoutFormat = useZones();
+
+  let ers;
+  let zones;
+
+  const createER = useMutation(
+    async (er: ERs) => {
+      const response = await api.post("ers", {
+        number: er.number,
+        zone: er.zone,
+      });
+
+      return response;
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("ers");
+      },
+    }
+  );
+
+  if (ersWithoutPagination.data) {
+    ers = returnPaginatedData<ERs>(
+      ersWithoutPagination.data,
+      erCurrentPage,
+      numberOfItensPerPage
+    );
+  }
+
+  if (zonesWithoutFormat.data) {
+    zones = FormatDataToCombobox(zonesWithoutFormat.data);
+  }
+
+  const number = register("number", {
+    required: "O Número da ER é obrigatório",
+    min: {
+      value: 1,
+      message: "O Número da ER deve ser maior que 0.",
+    },
+    maxLength: {
+      value: 1000,
+      message: "O Número da ER deve ser menor que 1000.",
+    },
+  });
+
+  const zone = register("zone", {
+    required: "O Zona é obrigatório",
+  });
+
+  const handleCreateER: SubmitHandler<ERs> = async (values: ERs) => {
+    const response = await createER.mutateAsync(values);
+
+    if (response.status == 200) {
+      const mesage = response.status;
+      if (mesage != undefined) {
+        setErrorER(mesage.toString());
+      }
+    }
+  };
+
+  async function handleDelete() {
+    checkBoxValues?.map(async (erToDelete) => {
+      const response = await api.delete(`ers/?id=${erToDelete}`);
+
+      return response;
+    });
+
+    if (ers.length == checkBoxValues?.length) {
+      if (erCurrentPage > 1) setERCurrentPage(erCurrentPage - 1);
+    }
+
+    setCheckBoxValues([]);
+
+    queryClient.invalidateQueries("ers");
+  }
+
+  async function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
+    checkBoxClickEvent(event, checkBoxValues, setCheckBoxValues);
+  }
+
+  return (
+    <Container>
+      <div>
+        <form
+          onSubmit={handleSubmit(handleCreateER)}
+          className="zonaContent"
+          title={"Form Criar Zona"}
+          placeholder={"Form Criar Zona"}
+        >
+          <p>{ErrorER}</p>
+          <div>
+            <input
+              width="100%"
+              alt="Número"
+              type="number"
+              title="Número"
+              placeholder="Número da ER"
+              {...number}
+            />
+            <ErrorMessage errors={formState.errors} name="number" />
+          </div>
+
+          <div>
+            <input
+              width="100%"
+              alt="Número"
+              type="number"
+              title="Número"
+              placeholder="Número da ER"
+              {...number}
+            />
+            <ErrorMessage errors={formState.errors} name="number" />
+          </div>
+
+          <div>
+            <ComboBox
+              comboboxData={zones}
+              handleClick={handleOnChange}
+              title={"Zones"}
+              {...zones}
+            ></ComboBox>
+            <ErrorMessage errors={formState.errors} name="number" />
+          </div>
+
+          <div>
+            <button type={"submit"} disabled={formState.isSubmitting}>
+              {formState.isSubmitting ? "..." : "Salvar"}
+            </button>
+          </div>
+        </form>
+      </div>
+
+      {ersWithoutPagination.isLoading ? (
+        "..."
+      ) : ersWithoutPagination.error ? (
+        <p>Falha ao Obter Dados</p>
+      ) : (
+        ersWithoutPagination.data && (
+          <form
+            title={"Form Excluir ER"}
+            placeholder={"Form Excluir ER"}
+            onSubmit={formDeletion.handleSubmit(handleDelete)}
+          >
+            <div className="ERTableContent">
+              <ERTable erData={ers} handleOnChange={handleOnChange} />
+            </div>
+            <div>
+              <Pagination
+                totalCountOfRegisters={ersWithoutPagination.data.length}
+                currentPage={erCurrentPage}
+                registersPerPage={numberOfItensPerPage}
+                onPageClick={setERCurrentPage}
+              ></Pagination>
+            </div>
+            <button type="submit">Excluir</button>
+          </form>
+        )
+      )}
+    </Container>
+  );
+}

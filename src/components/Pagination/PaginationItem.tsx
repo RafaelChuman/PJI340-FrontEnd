@@ -11,11 +11,11 @@ export function PaginationItem({
 }: PaginationItemProps) {
   
   if (isCurrent) {
-    return (<button className="PaginationButton PaginationButtonSelected">{number}</button>);
+    return (<button type={"button"}  className="PaginationButton PaginationButtonSelected">{number}</button>);
   } else {
     return (
     
-      <button className="PaginationButton" onClick={() => onPageClick(number)}>
+      <button type={"button"} className="PaginationButton" onClick={() => onPageClick(number)}>
         {number}
       </button>
     );

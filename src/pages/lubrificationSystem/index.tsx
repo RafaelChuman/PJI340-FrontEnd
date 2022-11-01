@@ -1,6 +1,10 @@
 import { Pagination } from "@/components/Pagination";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { checkBoxClickEvent, returnPaginatedData } from "@/services/utils";
+import {
+  checkBoxClickEvent,
+  FormatDataToCombobox,
+  returnPaginatedData,
+} from "@/services/utils";
 import { useState } from "react";
 import { ErrorMessage } from "@hookform/error-message";
 import { useMutation } from "react-query";
@@ -11,7 +15,13 @@ import {
   LubrificationSystems,
 } from "@/services/hooks/useLubrificationSystems";
 import { Container } from "./lubrificationSystem.styled";
-import { Activities } from "@/services/hooks/useActivity";
+import { Activities, useActivities } from "@/services/hooks/useActivity";
+import { LubrificationSystemTable } from "@/components/lubrificationSystem/LubrificationSystemTable";
+import {
+  Collaborators,
+  useCollaborators,
+} from "@/services/hooks/useCollaborators";
+import { ComboBox } from "@/components/ComboBox";
 
 export default function LubrificationSystemsComponent() {
   const today = new Date();
@@ -23,13 +33,20 @@ export default function LubrificationSystemsComponent() {
   const formDeletion = useForm();
 
   const [ErrorLubrificationSystem, setErrorLubrificationSystem] = useState("");
+  const [collaboratorSelected, setCollaboratorSelected] =
+    useState<Collaborators>();
+  const [activitySelected, setActivitySelected] = useState<Activities>();
 
   const [lubrificationSystemCurrentPage, setLubrificationSystemCurrentPage] =
     useState(1);
 
   const lubrificationSystemsWithoutPagination = useLubrificationSystems();
+  const collaboratorsWithoutPagination = useCollaborators();
+  const activitiesWithoutPagination = useActivities();
 
   let lubrificationSystems;
+  let collaborators;
+  let activities;
 
   const createLubrificationSystem = useMutation(
     async (lubrificationSystem: LubrificationSystems) => {
@@ -54,6 +71,14 @@ export default function LubrificationSystemsComponent() {
     );
   }
 
+  if (collaboratorsWithoutPagination.data) {
+    collaborators = FormatDataToCombobox(collaboratorsWithoutPagination.data);
+  }
+
+  if (activitiesWithoutPagination.data) {
+    activities = FormatDataToCombobox(activitiesWithoutPagination.data);
+  }
+
   const add = register("add", {
     required: "Quantidade de Lubrificante Adicionada é obrigatório",
     min: {
@@ -76,20 +101,22 @@ export default function LubrificationSystemsComponent() {
   });
 
   const collaborator = register("collaborator", {
-    required: "Atividade é obrigatória",
+    required: "Colaborador é obrigatório",
   });
 
   const handleCreateLubrificationSystem: SubmitHandler<
     LubrificationSystems
   > = async (values: LubrificationSystems) => {
-    const response = await createLubrificationSystem.mutateAsync(values);
+    console.log("collaboratorSelected");
+    console.log(collaboratorSelected);
+    // const response = await createLubrificationSystem.mutateAsync(values);
 
-    if (response.status == 200) {
-      const mesage = response.status;
-      if (mesage != undefined) {
-        setErrorLubrificationSystem(mesage.toString());
-      }
-    }
+    // if (response.status == 200) {
+    //   const mesage = response.status;
+    //   if (mesage != undefined) {
+    //     setErrorLubrificationSystem(mesage.toString());
+    //   }
+    // }
   };
 
   async function handleDelete() {
@@ -148,17 +175,24 @@ export default function LubrificationSystemsComponent() {
             <ErrorMessage errors={formState.errors} name="obs" />
           </div>
           <div>
-            <select placeholder="Atividade" {...activity}>
-              <option value="volvo">Volvo</option>
-            </select>
-            <ErrorMessage errors={formState.errors} name="activity" />
+            <ComboBox
+              title="Colaborador"
+              comboboxData={collaborators}
+              handleClick={setCollaboratorSelected}
+              {...collaborator}
+            ></ComboBox>
+            <ErrorMessage errors={formState.errors} name="collaborator" />
           </div>
           <div>
-            <select placeholder="Atividade" {...activity}>
-              <option value="volvo">Volvo</option>
-            </select>
+            <ComboBox
+              title="Atividade"
+              comboboxData={activities}
+              handleClick={setActivitySelected}
+              {...activity}
+            ></ComboBox>
             <ErrorMessage errors={formState.errors} name="activity" />
           </div>
+
           <div>
             <button type={"submit"} disabled={formState.isSubmitting}>
               {formState.isSubmitting ? "..." : "Salvar"}

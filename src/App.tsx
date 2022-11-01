@@ -15,7 +15,7 @@ function App() {
     <Container>
       <Header></Header>
       <div>
-        <SideBar />
+        {/* <SideBar /> */}
       </div>
       <div>
         <AppRoutes />

@@ -6,6 +6,8 @@ import Dashboard from "@/pages/dashboard";
 import CollaboratorsComponent from "@/pages/collaborators";
 import ZonesComponent from "@/pages/zones";
 import ActivitiesComponent from "@/pages/activities";
+import LubrificationSystemsComponent from "@/pages/lubrificationSystem";
+import ERsComponent from "@/pages/ers";
 
 function AppRoutes (){
   
@@ -16,6 +18,8 @@ function AppRoutes (){
         <Route element={<CollaboratorsComponent/>} path="/collaborators"></Route>
         <Route element={<ZonesComponent/>} path="/zones"></Route>
         <Route element={<ActivitiesComponent/>} path="/activities"></Route>
+        <Route element={<LubrificationSystemsComponent/>} path="/lubrificationsystems"></Route>
+        <Route element={<ERsComponent/>} path="/ers"></Route>
     </Routes>
   );
 };
