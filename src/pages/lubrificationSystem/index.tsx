@@ -1,10 +1,6 @@
 import { Pagination } from "@/components/Pagination";
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  checkBoxClickEvent,
-  FormatDataToCombobox,
-  returnPaginatedData,
-} from "@/services/utils";
+import { returnPaginatedData } from "@/services/utils";
 import { useState } from "react";
 import { ErrorMessage } from "@hookform/error-message";
 import { useMutation } from "react-query";
@@ -22,6 +18,7 @@ import {
   useCollaborators,
 } from "@/services/hooks/useCollaborators";
 import { ComboBox } from "@/components/ComboBox";
+import { checkBoxClickEvent } from "@/components/CheckBox";
 
 export default function LubrificationSystemsComponent() {
   const today = new Date();
@@ -45,8 +42,6 @@ export default function LubrificationSystemsComponent() {
   const activitiesWithoutPagination = useActivities();
 
   let lubrificationSystems;
-  let collaborators;
-  let activities;
 
   const createLubrificationSystem = useMutation(
     async (lubrificationSystem: LubrificationSystems) => {
@@ -69,14 +64,6 @@ export default function LubrificationSystemsComponent() {
       lubrificationSystemCurrentPage,
       numberOfItensPerPage
     );
-  }
-
-  if (collaboratorsWithoutPagination.data) {
-    collaborators = FormatDataToCombobox(collaboratorsWithoutPagination.data);
-  }
-
-  if (activitiesWithoutPagination.data) {
-    activities = FormatDataToCombobox(activitiesWithoutPagination.data);
   }
 
   const add = register("add", {
@@ -138,6 +125,7 @@ export default function LubrificationSystemsComponent() {
     queryClient.invalidateQueries("lubrificationSystems");
   }
 
+
   async function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
     checkBoxClickEvent(event, checkBoxValues, setCheckBoxValues);
   }
@@ -175,21 +163,27 @@ export default function LubrificationSystemsComponent() {
             <ErrorMessage errors={formState.errors} name="obs" />
           </div>
           <div>
-            <ComboBox
-              title="Colaborador"
-              comboboxData={collaborators}
-              handleClick={setCollaboratorSelected}
-              {...collaborator}
-            ></ComboBox>
+            {collaboratorsWithoutPagination.data && (
+              <ComboBox
+                title="Colaborador"
+                comboboxData={collaboratorsWithoutPagination.data}
+                handleClick={() => {}}
+                {...collaborator}
+              ></ComboBox>
+            )}
+
             <ErrorMessage errors={formState.errors} name="collaborator" />
           </div>
           <div>
-            <ComboBox
-              title="Atividade"
-              comboboxData={activities}
-              handleClick={setActivitySelected}
-              {...activity}
-            ></ComboBox>
+            {activitiesWithoutPagination.data && (
+              <ComboBox
+                title="Atividade"
+                comboboxData={activitiesWithoutPagination.data}
+                handleClick={() => {}}
+                {...activity}
+              ></ComboBox>
+            )}
+
             <ErrorMessage errors={formState.errors} name="activity" />
           </div>
 

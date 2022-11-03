@@ -34,31 +34,13 @@ export function FormatDataToCharts(allData: dataToChart[]): dataOfChart {
   };
 }
 
-export function FormatDataToCombobox(allData: dataToComboBox[]): Options[] {
-  if (allData) {
-    const formatedData = allData.map((data) => {
-      return {
-        id: data.id ? data.id : "",
-        value: data.name,
-      };
-    });
 
-    return formatedData;
-  }
-  return [
-    {
-      id: "",
-      value: "",
-    },
-  ];
-}
 
 export function convertToDateBR(date: string | undefined) {
   let value = "";
 
   if (date) {
     if (date.length > 0) {
-
       value = new Date(date).toLocaleDateString("pt-BR", {
         day: "2-digit",
         month: "long",
@@ -112,39 +94,4 @@ export function returnPaginatedData<Type>(
   const endPage = startPage + perPage;
 
   return schema.slice(startPage, endPage);
-}
-
-export async function checkBoxClickEvent(
-  event: React.ChangeEvent<HTMLInputElement>,
-  checkBoxValues: String[] | undefined,
-  setCheckBoxValues: React.Dispatch<React.SetStateAction<String[] | undefined>>
-) {
-  const isCheked = event.target.checked;
-  const checkBoxValue = event.target.id;
-
-  if (isCheked) {
-    let valueAlredyExists = undefined;
-
-    if (checkBoxValues) {
-      valueAlredyExists = checkBoxValues.find(
-        (item: String) => item == checkBoxValue
-      );
-
-      if (valueAlredyExists == undefined) {
-        setCheckBoxValues([...checkBoxValues, checkBoxValue]);
-      }
-    } else {
-      setCheckBoxValues([checkBoxValue]);
-    }
-  } else {
-    if (checkBoxValues) {
-      const valueAlredyExists = checkBoxValues.findIndex(
-        (item: String) => item == checkBoxValue
-      );
-
-      if (valueAlredyExists > -1) {
-        checkBoxValues.splice(valueAlredyExists, 1);
-      }
-    }
-  }
 }

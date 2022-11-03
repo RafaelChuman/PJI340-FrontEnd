@@ -1,10 +1,6 @@
 import { Pagination } from "@/components/Pagination";
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  checkBoxClickEvent,
-  FormatDataToCombobox,
-  returnPaginatedData,
-} from "@/services/utils";
+import { returnPaginatedData } from "@/services/utils";
 import { useState } from "react";
 import { ErrorMessage } from "@hookform/error-message";
 import { useMutation } from "react-query";
@@ -12,9 +8,8 @@ import { api } from "@/services/api";
 import { queryClient } from "@/services/queryClient";
 import { useERs, ERs } from "@/services/hooks/useERs";
 import { Container } from "./ers.styled";
-import { json } from "react-router-dom";
 import { ERTable } from "@/components/ers/ERTable";
-import { useZones } from "@/services/hooks/useZones";
+import { useZones, Zones } from "@/services/hooks/useZones";
 import { ComboBox } from "@/components/ComboBox";
 
 export default function ERsComponent() {
@@ -23,6 +18,7 @@ export default function ERsComponent() {
 
   const { register, handleSubmit, formState } = useForm<ERs>();
   const [checkBoxValues, setCheckBoxValues] = useState<String[]>();
+  const [comboxBoxValues, setComboBoxValues] = useState<String[]>();
 
   const formDeletion = useForm();
 
@@ -61,10 +57,6 @@ export default function ERsComponent() {
     );
   }
 
-  if (zonesWithoutFormat.data) {
-    zones = FormatDataToCombobox(zonesWithoutFormat.data);
-  }
-
   const number = register("number", {
     required: "O Número da ER é obrigatório",
     min: {
@@ -75,6 +67,7 @@ export default function ERsComponent() {
       value: 1000,
       message: "O Número da ER deve ser menor que 1000.",
     },
+    valueAsNumber:true,
   });
 
   const zone = register("zone", {
@@ -82,6 +75,7 @@ export default function ERsComponent() {
   });
 
   const handleCreateER: SubmitHandler<ERs> = async (values: ERs) => {
+    console.log(values);
     const response = await createER.mutateAsync(values);
 
     if (response.status == 200) {
@@ -108,10 +102,6 @@ export default function ERsComponent() {
     queryClient.invalidateQueries("ers");
   }
 
-  async function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
-    checkBoxClickEvent(event, checkBoxValues, setCheckBoxValues);
-  }
-
   return (
     <Container>
       <div>
@@ -135,25 +125,18 @@ export default function ERsComponent() {
           </div>
 
           <div>
-            <input
-              width="100%"
-              alt="Número"
-              type="number"
-              title="Número"
-              placeholder="Número da ER"
-              {...number}
-            />
-            <ErrorMessage errors={formState.errors} name="number" />
-          </div>
-
-          <div>
-            <ComboBox
-              comboboxData={zones}
-              handleClick={handleOnChange}
-              title={"Zones"}
-              {...zones}
-            ></ComboBox>
-            <ErrorMessage errors={formState.errors} name="number" />
+            {
+              zonesWithoutFormat.data ? (
+                <ComboBox
+                  comboboxData={zonesWithoutFormat.data}
+                  handleClick={()=>console.log("Combobox Clicked")}
+                  title={"Zones"}
+                  {...zone}
+                ></ComboBox>
+              ):<></>
+            }
+            
+            <ErrorMessage errors={formState.errors} name="zone" />
           </div>
 
           <div>
@@ -176,7 +159,11 @@ export default function ERsComponent() {
             onSubmit={formDeletion.handleSubmit(handleDelete)}
           >
             <div className="ERTableContent">
-              <ERTable erData={ers} handleOnChange={handleOnChange} />
+              <ERTable
+                erData={ers}
+                checkBoxValues={checkBoxValues}
+                setCheckBoxValues={setCheckBoxValues}
+              />
             </div>
             <div>
               <Pagination

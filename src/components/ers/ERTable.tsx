@@ -1,15 +1,18 @@
 import { ERs } from "@/services/hooks/useERs";
-import { ChangeEvent } from "react";
+import { ChangeEvent, SetStateAction } from "react";
 
 import { ERTableLine } from "./ERTableLine";
 
 interface ERTableProps {
   erData: ERs[] | undefined;
-  handleOnChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  checkBoxValues: String[] | undefined;
+  setCheckBoxValues: (value: SetStateAction<String[] | undefined>) => void;
 }
 
-export function ERTable({ erData, handleOnChange }: ERTableProps) {
+export function ERTable({ erData, checkBoxValues, setCheckBoxValues}: ERTableProps) {
+  
   return (
+    
     <table>
       <thead>
         <tr>
@@ -17,15 +20,17 @@ export function ERTable({ erData, handleOnChange }: ERTableProps) {
           <th>Número ER</th>
           <th>Zona</th>
           <th>Data de Cadastro</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         {erData ? (
+          
           erData.map((ctg) => {
-            return <ERTableLine key={ctg.id} er={ctg} handleOnChange={handleOnChange}/>;
-          })
+            return <ERTableLine key={ctg.id} er={ctg} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues}/>;
+          }       )
         ) : (
-          <ERTableLine er={undefined} handleOnChange={handleOnChange}/>
+          <ERTableLine er={undefined} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues}/>
         )}
       </tbody>
     </table>

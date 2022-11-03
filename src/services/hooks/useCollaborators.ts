@@ -3,7 +3,7 @@ import { api } from "../api";
 import { convertToDateBR, convertToWhatsAppMask } from "../utils";
 
 export interface Collaborators {
-  id?: string;
+  id: string;
   name: string;
   cep: string;
   numberAddress: string;

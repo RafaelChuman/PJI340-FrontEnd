@@ -1,14 +1,20 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, SetStateAction } from "react";
 import { IconBase } from "react-icons/lib";
 import { RiPencilLine } from "react-icons/ri";
 import { ERs } from "../../services/hooks/useERs";
+import { Checkbox } from "../CheckBox";
 
 interface TableLineProps {
   er: ERs | undefined;
-  handleOnChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  checkBoxValues: String[] | undefined;
+  setCheckBoxValues: (value: SetStateAction<String[] | undefined>) => void;
 }
 
-export function ERTableLine({ er, handleOnChange }: TableLineProps) {
+export function ERTableLine({
+  er,
+  checkBoxValues,
+  setCheckBoxValues,
+}: TableLineProps) {
   if (!er) {
     return <></>;
   }
@@ -16,17 +22,16 @@ export function ERTableLine({ er, handleOnChange }: TableLineProps) {
   return (
     <tr>
       <td>
-        <input
-          type={"checkbox"}
-          title={"Deletar"}
+        <Checkbox
+          dataOfCheckbox={er}
+          checkBoxValues={checkBoxValues}
+          setCheckBoxValues={setCheckBoxValues}
+          title="Deletar"
           placeholder={"Deletar"}
-          id={er.id}
-          value={er.id}
           name="ERTable"
-          onChange={handleOnChange}
-        ></input>
+        ></Checkbox>
       </td>
-      <td>{er.number}</td>
+      <td>{er.number.toString()}</td>
       <td>{er.zone.name}</td>
       <td>{er.createdAt}</td>
       <td>

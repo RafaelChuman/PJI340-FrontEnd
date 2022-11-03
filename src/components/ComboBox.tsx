@@ -1,60 +1,84 @@
-import React, { ChangeEvent, ChangeEventHandler, forwardRef, ForwardRefRenderFunction, SelectHTMLAttributes } from "react";
-import { FieldError } from "react-hook-form";
-
-import styles from "./combobox.module.css";
-import { RiArrowDownLine, RiCheckLine } from "react-icons/ri";
+import React, { ChangeEvent, forwardRef, SetStateAction } from "react";
 
 export interface Options {
   id: string;
-  value: string;
+  name: string;
 }
 
-interface ComboBoxProps {
-  title: string;
-  comboboxData: Options[] | undefined;
-  handleClick: (newValue: any) => void;
+interface ComboBoxProps<T extends Options> extends React.HTMLProps<HTMLSelectElement>{
+  comboboxData: T[];
+  handleClick: (value: SetStateAction<[] | undefined>) => void;
 }
 
+function FormatDataToCombobox<T extends Options>(allData: T[]): Options[] {
+  if (allData) {
+    const formatedData = allData.map((data) => {
+      return {
+        id: data.id ? data.id : "",
+        name: data.name,
+      };
+    });
 
-function handleChange(event: ChangeEvent<HTMLSelectElement>, { handleClick, comboboxData }:ComboBoxProps) {
-  console.log(event.target.value);
-
-  const value = comboboxData?.find((data) => data.id === event.target.value);
-  
-  console.log(value);
-
-  handleClick(value);
+    return formatedData;
+  }
+  return [
+    {
+      id: "",
+      name: "",
+    },
+  ];
 }
 
-const comboBox: ForwardRefRenderFunction<HTMLSelectElement, ComboBoxProps> = (
-  { title, handleClick, comboboxData, ...rest }:ComboBoxProps,
-  ref
-) => {
-  return (
-    <select ref={ref} title={title} {...rest} onChange={(e)=>handleChange(e, {title, handleClick, comboboxData})}>
-      {comboboxData?.map((combData) => {
-        return (
-          <option
-            key={combData.id}
-            onMouseEnter={()=>console.log("Click")}
-            value={combData.id}
-          >
-            {combData.value}
-          </option>
-        );
-      })}
-    </select>
-  );
-};
+// function handleChange<T extends Options>(
+//   event: ChangeEvent<HTMLSelectElement>,
+//   { handleClick, comboboxData }: ComboBoxProps<T>
+// ) {
+//   console.log(event.target.value);
 
-export const ComboBox = forwardRef(comboBox);
+//   const value = comboboxData?.find((data) => data.id === event.target.value);
+
+//   console.log(value);
+//   if(value)
+//     handleClick([value])
+// }
+
+function comboBoxInner<T extends Options>(
+  { handleClick, comboboxData, ...rest }: ComboBoxProps<T>,
+  ref: React.LegacyRef<HTMLSelectElement> | undefined
+) {
+  if (comboboxData) {
+    const comboboxDataFormated = FormatDataToCombobox(comboboxData);
+
+    return (
+      <select
+        ref={ref}
+        {...rest}
+        //onChange={(e) => handleChange(e, { handleClick, comboboxData })}
+      >
+        {comboboxDataFormated?.map((combData) => {
+          return (
+            <option
+              key={combData.id}
+              onMouseEnter={() => console.log("Click")}
+              value={combData.id}
+            >
+              {combData.name}
+            </option>
+          );
+        })}
+      </select>
+    );
+  }
+  return <></>;
+}
+
+export const ComboBox = forwardRef(comboBoxInner);
 
 // () => {
 //   console.log("Click");
 //   console.log(combData);
 //   handleClick(combData);
 // }
-
 
 // return (
 //   <Menu>

@@ -8,7 +8,7 @@ import {
   useCollaborators,
 } from "@/services/hooks/useCollaborators";
 import { CollaboratorTable } from "@/components/collaborators/CollaboratorTable";
-import { checkBoxClickEvent, returnPaginatedData } from "@/services/utils";
+import { returnPaginatedData } from "@/services/utils";
 import { useState } from "react";
 import { ErrorMessage } from "@hookform/error-message";
 import { useMutation } from "react-query";
@@ -146,10 +146,7 @@ export default function CollaboratorsComponent() {
     
   }
 
-  async function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
-
-    checkBoxClickEvent(event, checkBoxValues, setCheckBoxValues);
-  }
+  
 
   return (
     <div>

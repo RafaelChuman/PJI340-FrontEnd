@@ -18,7 +18,7 @@ export async function getERs(): Promise<ERs[]> {
     return {
       id: er.id,
       number: er.number,
-      zones: er.zone,
+      zone: er.zone,
       lubricationSystems: er.lubricationSystems,
       createdAt: new Date(er.createdAt).toLocaleDateString("pt-BR", {
         day: "2-digit",
