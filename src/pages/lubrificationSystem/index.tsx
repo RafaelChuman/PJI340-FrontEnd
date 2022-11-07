@@ -11,7 +11,7 @@ import {
   LubrificationSystems,
 } from "@/services/hooks/useLubrificationSystems";
 import { Container } from "./lubrificationSystem.styled";
-import { Activities, useActivities } from "@/services/hooks/useActivity";
+import { useActivities } from "@/services/hooks/useActivity";
 import { LubrificationSystemTable } from "@/components/lubrificationSystem/LubrificationSystemTable";
 import {
   Collaborators,
@@ -19,34 +19,36 @@ import {
 } from "@/services/hooks/useCollaborators";
 import { ComboBox } from "@/components/ComboBox";
 import { checkBoxClickEvent } from "@/components/CheckBox";
+import { ERs } from "@/services/hooks/useERs";
 
-export default function LubrificationSystemsComponent() {
-  const today = new Date();
+export default function LubrificationSystemsComponent(er: ERs) {
   const numberOfItensPerPage = 5;
 
   const { register, handleSubmit, formState } = useForm<LubrificationSystems>();
   const [checkBoxValues, setCheckBoxValues] = useState<String[]>();
 
   const formDeletion = useForm();
-
   const [ErrorLubrificationSystem, setErrorLubrificationSystem] = useState("");
-  const [collaboratorSelected, setCollaboratorSelected] =
-    useState<Collaborators>();
-  const [activitySelected, setActivitySelected] = useState<Activities>();
-
   const [lubrificationSystemCurrentPage, setLubrificationSystemCurrentPage] =
     useState(1);
 
   const lubrificationSystemsWithoutPagination = useLubrificationSystems();
-  const collaboratorsWithoutPagination = useCollaborators();
-  const activitiesWithoutPagination = useActivities();
+
+  const collaborators = useCollaborators();
+  const activities = useActivities();
 
   let lubrificationSystems;
 
   const createLubrificationSystem = useMutation(
     async (lubrificationSystem: LubrificationSystems) => {
       const response = await api.post("lubrificationSystems", {
-        add: lubrificationSystem.add,
+        lubrificationSystems: {
+          add: lubrificationSystem.add,
+          er: er,
+          collaborator: lubrificationSystem.collaborator,
+          activity: lubrificationSystem.activity,
+          obs: lubrificationSystem.obs,
+        },
       });
 
       return response;
@@ -85,25 +87,29 @@ export default function LubrificationSystemsComponent() {
 
   const activity = register("activity", {
     required: "Atividade é obrigatória",
+    setValueAs(value) {
+      return activities.data?.find((act) => act.id == value);
+    },
   });
 
   const collaborator = register("collaborator", {
     required: "Colaborador é obrigatório",
+    setValueAs(value) {
+      return collaborators.data?.find((col) => col.id == value);
+    },
   });
 
   const handleCreateLubrificationSystem: SubmitHandler<
     LubrificationSystems
   > = async (values: LubrificationSystems) => {
-    console.log("collaboratorSelected");
-    console.log(collaboratorSelected);
-    // const response = await createLubrificationSystem.mutateAsync(values);
+    const response = await createLubrificationSystem.mutateAsync(values);
 
-    // if (response.status == 200) {
-    //   const mesage = response.status;
-    //   if (mesage != undefined) {
-    //     setErrorLubrificationSystem(mesage.toString());
-    //   }
-    // }
+    if (response.status == 200) {
+      const mesage = response.status;
+      if (mesage != undefined) {
+        setErrorLubrificationSystem(mesage.toString());
+      }
+    }
   };
 
   async function handleDelete() {
@@ -125,10 +131,7 @@ export default function LubrificationSystemsComponent() {
     queryClient.invalidateQueries("lubrificationSystems");
   }
 
-
-  async function handleOnChange(event: React.ChangeEvent<HTMLInputElement>) {
-    checkBoxClickEvent(event, checkBoxValues, setCheckBoxValues);
-  }
+  
 
   return (
     <Container>
@@ -163,10 +166,10 @@ export default function LubrificationSystemsComponent() {
             <ErrorMessage errors={formState.errors} name="obs" />
           </div>
           <div>
-            {collaboratorsWithoutPagination.data && (
+            {collaborators.data && (
               <ComboBox
                 title="Colaborador"
-                comboboxData={collaboratorsWithoutPagination.data}
+                comboboxData={collaborators.data}
                 handleClick={() => {}}
                 {...collaborator}
               ></ComboBox>
@@ -175,10 +178,10 @@ export default function LubrificationSystemsComponent() {
             <ErrorMessage errors={formState.errors} name="collaborator" />
           </div>
           <div>
-            {activitiesWithoutPagination.data && (
+            {activities.data && (
               <ComboBox
                 title="Atividade"
-                comboboxData={activitiesWithoutPagination.data}
+                comboboxData={activities.data}
                 handleClick={() => {}}
                 {...activity}
               ></ComboBox>
@@ -209,7 +212,8 @@ export default function LubrificationSystemsComponent() {
             <div className="LubrificationSystemTableContent">
               <LubrificationSystemTable
                 lubrificationSystemData={lubrificationSystems}
-                handleOnChange={handleOnChange}
+                checkBoxValues= {checkBoxValues}
+                setCheckBoxValues= {setCheckBoxValues}
               />
             </div>
             <div>

@@ -2,6 +2,7 @@ import { useQuery } from "react-query";
 import { api } from "@/services/api";
 import { Activities } from "./useActivity";
 import { Collaborators } from "./useCollaborators";
+import { ERs } from "./useERs";
 
 export interface LubrificationSystems {
   id: string;
@@ -10,6 +11,7 @@ export interface LubrificationSystems {
   obs?: string;
   activity: Activities;
   collaborator: Collaborators;
+  er: ERs;
 }
 
 export async function getLubrificationSystems(): Promise<LubrificationSystems[]> {
@@ -23,6 +25,7 @@ export async function getLubrificationSystems(): Promise<LubrificationSystems[]>
         month: "long",
         year: "numeric",
       }),
+      add: lubrificationSystem.add.toString(),
       obs: lubrificationSystem.obs,
       activity: lubrificationSystem.activity,
       collaborator: lubrificationSystem.collaborator,

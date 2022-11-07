@@ -57,6 +57,7 @@ dataOfCheckbox,
       type={"checkbox"}
       id={dataOfCheckbox.id}
       value={dataOfCheckbox.id}
+      onChange={ (event) => checkBoxClickEvent(event, checkBoxValues, setCheckBoxValues)}
       {...props}
     ></input>
   );

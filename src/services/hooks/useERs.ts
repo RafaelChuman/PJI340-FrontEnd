@@ -8,7 +8,6 @@ export interface ERs {
   number: number;
   createdAt: string;
   zone: Zones;
-  lubricationSystems?: LubrificationSystems[];
 }
 
 export async function getERs(): Promise<ERs[]> {
@@ -19,7 +18,6 @@ export async function getERs(): Promise<ERs[]> {
       id: er.id,
       number: er.number,
       zone: er.zone,
-      lubricationSystems: er.lubricationSystems,
       createdAt: new Date(er.createdAt).toLocaleDateString("pt-BR", {
         day: "2-digit",
         month: "long",

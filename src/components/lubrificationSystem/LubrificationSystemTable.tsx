@@ -1,14 +1,15 @@
 import { LubrificationSystems } from "@/services/hooks/useLubrificationSystems";
-import { ChangeEvent } from "react";
+import { ChangeEvent, SetStateAction } from "react";
 
 import { LubrificationSystemTableLine } from "./LubrificationSystemTableLine";
 
 interface UserTableProps {
   lubrificationSystemData: LubrificationSystems[] | undefined;
-  handleOnChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  checkBoxValues: String[] | undefined;
+  setCheckBoxValues: (value: SetStateAction<String[] | undefined>) => void;
 }
 
-export function LubrificationSystemTable({ lubrificationSystemData, handleOnChange }: UserTableProps) {
+export function LubrificationSystemTable({ lubrificationSystemData, checkBoxValues,  setCheckBoxValues}: UserTableProps) {
   return (
     <table>
       <thead>
@@ -24,10 +25,10 @@ export function LubrificationSystemTable({ lubrificationSystemData, handleOnChan
       <tbody>
         {lubrificationSystemData ? (
           lubrificationSystemData.map((ctg) => {
-            return <LubrificationSystemTableLine key={ctg.id} lubrificationSystem={ctg} handleOnChange={handleOnChange}/>;
+            return <LubrificationSystemTableLine key={ctg.id} lubrificationSystem={ctg} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues}/>;
           })
         ) : (
-          <LubrificationSystemTableLine lubrificationSystem={undefined} handleOnChange={handleOnChange}/>
+          <LubrificationSystemTableLine lubrificationSystem={undefined} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues}/>
         )}
       </tbody>
     </table>

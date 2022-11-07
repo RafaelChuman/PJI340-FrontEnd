@@ -11,6 +11,7 @@ import { Container } from "./ers.styled";
 import { ERTable } from "@/components/ers/ERTable";
 import { useZones, Zones } from "@/services/hooks/useZones";
 import { ComboBox } from "@/components/ComboBox";
+import EditERsComponent from "./editERs";
 
 export default function ERsComponent() {
   const today = new Date();
@@ -19,6 +20,7 @@ export default function ERsComponent() {
   const { register, handleSubmit, formState } = useForm<ERs>();
   const [checkBoxValues, setCheckBoxValues] = useState<String[]>();
   const [comboxBoxValues, setComboBoxValues] = useState<String[]>();
+  const [er, setER] = useState<ERs>();
 
   const formDeletion = useForm();
 
@@ -67,7 +69,7 @@ export default function ERsComponent() {
       value: 1000,
       message: "O Número da ER deve ser menor que 1000.",
     },
-    valueAsNumber:true,
+    valueAsNumber: true,
   });
 
   const zone = register("zone", {
@@ -102,81 +104,86 @@ export default function ERsComponent() {
     queryClient.invalidateQueries("ers");
   }
 
-  return (
-    <Container>
-      <div>
-        <form
-          onSubmit={handleSubmit(handleCreateER)}
-          className="zonaContent"
-          title={"Form Criar Zona"}
-          placeholder={"Form Criar Zona"}
-        >
-          <p>{ErrorER}</p>
-          <div>
-            <input
-              width="100%"
-              alt="Número"
-              type="number"
-              title="Número"
-              placeholder="Número da ER"
-              {...number}
-            />
-            <ErrorMessage errors={formState.errors} name="number" />
-          </div>
+  if (er) {
+    return <EditERsComponent {...er} />;
+  } else {
+    return (
+      <Container>
+        <div>
+          <form
+            onSubmit={handleSubmit(handleCreateER)}
+            className="zonaContent"
+            title={"Form Criar Zona"}
+            placeholder={"Form Criar Zona"}
+          >
+            <p>{ErrorER}</p>
+            <div>
+              <input
+                width="100%"
+                alt="Número"
+                type="number"
+                title="Número"
+                placeholder="Número da ER"
+                {...number}
+              />
+              <ErrorMessage errors={formState.errors} name="number" />
+            </div>
 
-          <div>
-            {
-              zonesWithoutFormat.data ? (
+            <div>
+              {zonesWithoutFormat.data ? (
                 <ComboBox
                   comboboxData={zonesWithoutFormat.data}
-                  handleClick={()=>console.log("Combobox Clicked")}
+                  handleClick={() => console.log("Combobox Clicked")}
                   title={"Zones"}
                   {...zone}
                 ></ComboBox>
-              ):<></>
-            }
-            
-            <ErrorMessage errors={formState.errors} name="zone" />
-          </div>
+              ) : (
+                <></>
+              )}
 
-          <div>
-            <button type={"submit"} disabled={formState.isSubmitting}>
-              {formState.isSubmitting ? "..." : "Salvar"}
-            </button>
-          </div>
-        </form>
-      </div>
-
-      {ersWithoutPagination.isLoading ? (
-        "..."
-      ) : ersWithoutPagination.error ? (
-        <p>Falha ao Obter Dados</p>
-      ) : (
-        ersWithoutPagination.data && (
-          <form
-            title={"Form Excluir ER"}
-            placeholder={"Form Excluir ER"}
-            onSubmit={formDeletion.handleSubmit(handleDelete)}
-          >
-            <div className="ERTableContent">
-              <ERTable
-                erData={ers}
-                checkBoxValues={checkBoxValues}
-                setCheckBoxValues={setCheckBoxValues}
-              />
+              <ErrorMessage errors={formState.errors} name="zone" />
             </div>
+
             <div>
-              <Pagination
-                totalCountOfRegisters={ersWithoutPagination.data.length}
-                currentPage={erCurrentPage}
-                registersPerPage={numberOfItensPerPage}
-                onPageClick={setERCurrentPage}
-              ></Pagination>
+              <button type={"submit"} disabled={formState.isSubmitting}>
+                {formState.isSubmitting ? "..." : "Salvar"}
+              </button>
             </div>
-            <button type="submit">Excluir</button>
           </form>
-        )
-      )}
-    </Container>
-  );
+        </div>
+
+        {ersWithoutPagination.isLoading ? (
+          "..."
+        ) : ersWithoutPagination.error ? (
+          <p>Falha ao Obter Dados</p>
+        ) : (
+          ersWithoutPagination.data && (
+            <form
+              title={"Form Excluir ER"}
+              placeholder={"Form Excluir ER"}
+              onSubmit={formDeletion.handleSubmit(handleDelete)}
+            >
+              <div className="ERTableContent">
+                <ERTable
+                  erData={ers}
+                  checkBoxValues={checkBoxValues}
+                  setCheckBoxValues={setCheckBoxValues}
+                  SetERValues={setER}
+                />
+              </div>
+              <div>
+                <Pagination
+                  totalCountOfRegisters={ersWithoutPagination.data.length}
+                  currentPage={erCurrentPage}
+                  registersPerPage={numberOfItensPerPage}
+                  onPageClick={setERCurrentPage}
+                ></Pagination>
+              </div>
+              <button type="submit">Excluir</button>
+            </form>
+          )
+        )}
+      </Container>
+    );
+  }
 }

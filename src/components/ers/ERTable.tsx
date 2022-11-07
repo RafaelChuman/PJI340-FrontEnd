@@ -7,9 +7,10 @@ interface ERTableProps {
   erData: ERs[] | undefined;
   checkBoxValues: String[] | undefined;
   setCheckBoxValues: (value: SetStateAction<String[] | undefined>) => void;
+  SetERValues: (value: SetStateAction<ERs | undefined>) => void;
 }
 
-export function ERTable({ erData, checkBoxValues, setCheckBoxValues}: ERTableProps) {
+export function ERTable({ erData, checkBoxValues, setCheckBoxValues, SetERValues}: ERTableProps) {
   
   return (
     
@@ -27,10 +28,10 @@ export function ERTable({ erData, checkBoxValues, setCheckBoxValues}: ERTablePro
         {erData ? (
           
           erData.map((ctg) => {
-            return <ERTableLine key={ctg.id} er={ctg} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues}/>;
+            return <ERTableLine key={ctg.id} er={ctg} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues} SetERValues={SetERValues}/>;
           }       )
         ) : (
-          <ERTableLine er={undefined} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues}/>
+          <ERTableLine er={undefined} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues} SetERValues={SetERValues}/>
         )}
       </tbody>
     </table>

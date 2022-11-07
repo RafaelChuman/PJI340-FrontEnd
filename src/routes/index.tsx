@@ -8,6 +8,7 @@ import ZonesComponent from "@/pages/zones";
 import ActivitiesComponent from "@/pages/activities";
 import LubrificationSystemsComponent from "@/pages/lubrificationSystem";
 import ERsComponent from "@/pages/ers";
+import EditERsComponent from "@/pages/ers/editERs";
 
 function AppRoutes (){
   
@@ -18,8 +19,8 @@ function AppRoutes (){
         <Route element={<CollaboratorsComponent/>} path="/collaborators"></Route>
         <Route element={<ZonesComponent/>} path="/zones"></Route>
         <Route element={<ActivitiesComponent/>} path="/activities"></Route>
-        <Route element={<LubrificationSystemsComponent/>} path="/lubrificationsystems"></Route>
         <Route element={<ERsComponent/>} path="/ers"></Route>
+        {/* <Route element={ (props) => <EditERsComponent createdAt={props.}/>} path="/editer"></Route> */}
     </Routes>
   );
 };
