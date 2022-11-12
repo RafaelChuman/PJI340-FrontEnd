@@ -10,8 +10,8 @@ export const Container = styled.div`
   border-radius: 10px;
   align-items: center;
   justify-content: baseline;
-  height: 250px;
-  width: 250px;
+  height: ${theme.width["250px"]};
+  width: ${theme.width["250px"]};
 
   p,
   a {

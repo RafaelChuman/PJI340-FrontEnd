@@ -12,7 +12,7 @@ import { ERTable } from "@/components/ers/ERTable";
 import { useZones, Zones } from "@/services/hooks/useZones";
 import { ComboBox } from "@/components/ComboBox";
 import EditERsComponent from "./editERs";
-import { RiCloseFill, RiAddFill} from "react-icons/ri";
+import { RiCloseFill, RiAddFill } from "react-icons/ri";
 
 export default function ERsComponent() {
   const today = new Date();
@@ -110,6 +110,7 @@ export default function ERsComponent() {
   } else {
     return (
       <Container>
+        <h1>ER's</h1>
         <div>
           <form
             onSubmit={handleSubmit(handleCreateER)}
@@ -117,8 +118,8 @@ export default function ERsComponent() {
             title={"Form Criar Zona"}
             placeholder={"Form Criar Zona"}
           >
-            <p>{ErrorER}</p>
             <div>
+              <label>Insira o Número da ER: </label>
               <input
                 width="100%"
                 alt="Número"
@@ -132,12 +133,15 @@ export default function ERsComponent() {
 
             <div>
               {zonesWithoutFormat.data ? (
-                <ComboBox
-                  comboboxData={zonesWithoutFormat.data}
-                  handleClick={() => console.log("Combobox Clicked")}
-                  title={"Zones"}
-                  {...zone}
-                ></ComboBox>
+                <>
+                  <label>Selecione a Zona: </label>
+                  <ComboBox
+                    comboboxData={zonesWithoutFormat.data}
+                    handleClick={() => console.log("Combobox Clicked")}
+                    title={"Zones"}
+                    {...zone}
+                  ></ComboBox>
+                </>
               ) : (
                 <></>
               )}
@@ -147,45 +151,49 @@ export default function ERsComponent() {
 
             <div>
               <button type={"submit"} disabled={formState.isSubmitting}>
-                {formState.isSubmitting ? "..." : <><RiAddFill/> Salvar</>}
+                {formState.isSubmitting ? (
+                  "..."
+                ) : (
+                  <>
+                    <RiAddFill /> Salvar
+                  </>
+                )}
               </button>
             </div>
           </form>
         </div>
 
-        {ersWithoutPagination.isLoading ? (
-          "..."
-        ) : ersWithoutPagination.error ? (
-          <p>Falha ao Obter Dados</p>
-        ) : (
-          ersWithoutPagination.data && (
-            <form
-              title={"Form Excluir ER"}
-              placeholder={"Form Excluir ER"}
-              onSubmit={formDeletion.handleSubmit(handleDelete)}
-            >
-              <div className="ERTableContent">
-                <ERTable
-                  erData={ers}
-                  checkBoxValues={checkBoxValues}
-                  setCheckBoxValues={setCheckBoxValues}
-                  SetERValues={setER}
-                />
-              </div>
-              <div>
+        {ersWithoutPagination.isLoading
+          ? "..."
+          : ersWithoutPagination.error
+          ? "Falha ao Obter Dados"
+          : ersWithoutPagination.data && (
+              <form
+                title={"Form Excluir ER"}
+                placeholder={"Form Excluir ER"}
+                onSubmit={formDeletion.handleSubmit(handleDelete)}
+              >
+                <div className="ERTableContent">
+                  <ERTable
+                    erData={ers}
+                    checkBoxValues={checkBoxValues}
+                    setCheckBoxValues={setCheckBoxValues}
+                    SetERValues={setER}
+                  />
+                </div>
                 <Pagination
                   totalCountOfRegisters={ersWithoutPagination.data.length}
                   currentPage={erCurrentPage}
                   registersPerPage={numberOfItensPerPage}
                   onPageClick={setERCurrentPage}
                 ></Pagination>
-              </div>
-              <button type="submit" className="DeleteButton">
-                <RiCloseFill/> Excluir
-              </button>
-            </form>
-          )
-        )}
+
+                <button type="submit" className="DeleteButton">
+                  <RiCloseFill /> Excluir
+                </button>
+              </form>
+            )}
+        {ErrorER}
       </Container>
     );
   }

@@ -29,13 +29,13 @@ export function CollaboratorTableLine({ collaborators, checkBoxValues, setCheckB
         ></Checkbox>
       </td>
       <td>
-        <p>{collaborators.name}</p>
+        {collaborators.name}
       </td>
       <td>
-        <p>{collaborators.whatsApp}</p>
+        {collaborators.whatsApp}
       </td>
       <td>
-          <p>{collaborators.createdAt}</p>
+         {collaborators.createdAt}
       </td>
       <td>
         <button>

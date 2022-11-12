@@ -5,14 +5,16 @@ import {
 } from "@/services/hooks/useAuthentication";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ErrorMessage } from '@hookform/error-message';
+import { ErrorMessage } from "@hookform/error-message";
+import { Container } from "./index.styled";
 
 const Home = () => {
   const [errorLogin, setErrorLogin] = useState("");
 
   const { SignIn } = useContext(AuthContext);
 
-  const { register, handleSubmit, formState } = useForm<UserSignInCredentials>();
+  const { register, handleSubmit, formState } =
+    useForm<UserSignInCredentials>();
 
   const navigate = useNavigate();
 
@@ -41,7 +43,6 @@ const Home = () => {
   });
 
   const handleSignIn: SubmitHandler<UserSignInCredentials> = async (values) => {
-    console.log("handleSignIn");
     const response = await SignIn(values);
 
     if (response.tokenError != undefined) {
@@ -56,10 +57,17 @@ const Home = () => {
   };
 
   return (
-    <div>
+    <>
+      <h1>Login</h1>
+
+      
+
+
       <form onSubmit={handleSubmit(handleSignIn)}>
-        <p>{errorLogin}</p>
-        <div>
+        
+        
+        <Container>
+        <label>Insira seu Usuário: </label>
           <input
             alt="Usuário"
             type="text"
@@ -67,7 +75,11 @@ const Home = () => {
             placeholder="Usuário"
             {...userName}
           />
+
           <ErrorMessage errors={formState.errors} name="userName" />
+        </Container>
+        <Container>
+        <label>Insira sua Senha: </label>
           <input
             alt="Senha"
             type="password"
@@ -76,15 +88,15 @@ const Home = () => {
             {...password}
           />
           <ErrorMessage errors={formState.errors} name="password" />
-        </div>
-        <button
-          type={"submit"}
-          disabled={formState.isSubmitting}
-        >
-          {formState.isSubmitting ? "..." : "Entrar"}
-        </button>
+        </Container>
+        <Container>
+          <button type={"submit"} disabled={formState.isSubmitting}>
+            {formState.isSubmitting ? "..." : "Entrar"}
+          </button>
+        </Container>
       </form>
-    </div>
+      {errorLogin}
+    </>
   );
 };
 

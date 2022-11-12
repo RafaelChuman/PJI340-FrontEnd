@@ -69,7 +69,7 @@ export function Pagination({
   return (
     <Container>
       <div>
-        {pages.map((page) => {
+      {pages.map((page) => {
           if (currentPage == page) {
             return (
               <PaginationItem
@@ -90,6 +90,7 @@ export function Pagination({
           }
         })}
       </div>
+        
       <div>
         {
           <p>

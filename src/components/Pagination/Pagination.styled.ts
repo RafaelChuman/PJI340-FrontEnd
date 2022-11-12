@@ -5,13 +5,16 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 8px;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  text-align:center;
+  width:100%;
   word-spacing: ${theme.letterSpacings.widest};
 
   div {
     display: flex;
     direction: row;
+    width:100%;
     word-spacing: ${theme.letterSpacings.widest};
   }
 

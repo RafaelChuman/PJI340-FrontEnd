@@ -29,9 +29,9 @@ export function ZoneTableLine({ zone, checkBoxValues, setCheckBoxValues }: Table
         ></Checkbox>
       </td>
       <td>
-        <div>
-          <p>{zone.name}</p>
-        </div>
+        
+          {zone.name}
+        
       </td>
       <td>{zone.createdAt}</td>
       <td>

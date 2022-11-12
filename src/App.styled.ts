@@ -150,6 +150,9 @@ export const theme = {
     "20rem": "20rem",
     "24rem": "24rem",
   },
+  width:{
+    "250px": "15rem",
+  }
 };
 
 export default createGlobalStyle`
@@ -166,7 +169,7 @@ export default createGlobalStyle`
     -webkit-font-smoothing: antialiased;
   }
 
-  body, input, button {
+  body, input, button, label{
     font-family: 'Poppins', sans-serif;
     font-size: ${theme.fontSizes["1rem"]};
   }
@@ -175,6 +178,13 @@ export default createGlobalStyle`
     font-weight:  ${theme.fontWeights.bold};
   }
 
+  h1{
+    font-weight:  ${theme.fontWeights.extrabold};
+    margin: 50px;
+    color: ${theme.colors.pink[800]};
+    border-bottom: 2px solid ${theme.colors.pink[800]};
+    
+  }
 
   button:hover {
     filter:opacity(0.4);
@@ -211,6 +221,21 @@ export default createGlobalStyle`
 
   p{
     color:${theme.colors.gray[800]};
+    font-weight: ${theme.fontWeights.normal};
+    font-size:${theme.fontSizes["0.875rem"]};
+  }
+  
+  div{
+    color: ${theme.colors.pink[800]};
+    font-weight: ${theme.fontWeights.medium};
+    font-size:${theme.fontSizes["0.875rem"]};
+  }
+
+  label{
+    padding-right: ${theme.space["1rem"]};
+    color: ${theme.colors.cyan[900]};
+    height: ${theme.lineHeights["1.25rem"]};
+    font-weight: ${theme.fontWeights.bold};
   }
 
   /* div{
@@ -270,6 +295,8 @@ export default createGlobalStyle`
     tr {
 
       height: ${theme.lineHeights["2.25rem"]} ;
+
+      color: ${theme.colors.cyan[900]};
 
       td {
         text-align: center;
@@ -333,6 +360,17 @@ export default createGlobalStyle`
   .Main{
     display:flex;
     flex-direction:row;
+  }
+
+  .Content{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 6px;
+    padding: 6px;
+    align-items:center;
+    justify-content:center;
+    margin-right: ${theme.width["250px"]};
   }
 
 `;

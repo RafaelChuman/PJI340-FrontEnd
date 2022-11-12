@@ -10,16 +10,23 @@ export const Container = styled.div`
   margin-left: auto;
 
   div {
-    display: flex;
+    /* display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
     margin-top: 6px;
-    margin-left: auto;
+    margin-left: auto; */
+
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 5px;
+    align-items: center;
+    justify-content: center;
   }
 
   .ERTableContent{
-    padding-top:48px;
+    padding-top:20px;
   }
   .ERContent{
     align-items: center;

@@ -27,10 +27,7 @@ export function ActivityTableLine({ activity, checkBoxValues, setCheckBoxValues 
           setCheckBoxValues={setCheckBoxValues}
         ></Checkbox>
       </td>
-      <td>
-        <div>
-          <p>{activity.name}</p>
-        </div>
+      <td>{activity.name}
       </td>
       <td>{activity.createdAt}</td>
       <td>

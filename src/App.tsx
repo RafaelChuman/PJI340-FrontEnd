@@ -17,7 +17,9 @@ function App() {
       <div className="Main">
         <SideBar />
 
-        <AppRoutes />
+        <div className="Content">
+          <AppRoutes />
+        </div>
       </div>
     </Container>
   );
