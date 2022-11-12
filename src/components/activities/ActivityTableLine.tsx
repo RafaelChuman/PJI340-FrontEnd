@@ -1,13 +1,15 @@
 import { Activities } from "@/services/hooks/useActivity";
-import { ChangeEvent } from "react";
+import { ChangeEvent, SetStateAction } from "react";
 import { RiPencilLine } from "react-icons/ri";
+import { Checkbox } from "../CheckBox";
 
 interface TableLineProps {
   activity: Activities | undefined;
-  handleOnChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  checkBoxValues: String[] | undefined;
+  setCheckBoxValues: (value: SetStateAction<String[] | undefined>) => void;
 }
 
-export function ActivityTableLine({ activity, handleOnChange }: TableLineProps) {
+export function ActivityTableLine({ activity, checkBoxValues, setCheckBoxValues }: TableLineProps) {
   if (!activity) {
     return <></>;
   }
@@ -15,15 +17,15 @@ export function ActivityTableLine({ activity, handleOnChange }: TableLineProps) 
   return (
     <tr>
       <td>
-        <input
+        <Checkbox
           type={"checkbox"}
           title={"Deletar"}
           placeholder={"Deletar"}
-          id={activity.id}
-          value={activity.id}
           name="ActivityTable"
-          onChange={handleOnChange}
-        ></input>
+          checkBoxValues={checkBoxValues}
+          dataOfCheckbox={activity}
+          setCheckBoxValues={setCheckBoxValues}
+        ></Checkbox>
       </td>
       <td>
         <div>

@@ -12,6 +12,7 @@ import { ERTable } from "@/components/ers/ERTable";
 import { useZones, Zones } from "@/services/hooks/useZones";
 import { ComboBox } from "@/components/ComboBox";
 import EditERsComponent from "./editERs";
+import { RiCloseFill, RiAddFill} from "react-icons/ri";
 
 export default function ERsComponent() {
   const today = new Date();
@@ -146,7 +147,7 @@ export default function ERsComponent() {
 
             <div>
               <button type={"submit"} disabled={formState.isSubmitting}>
-                {formState.isSubmitting ? "..." : "Salvar"}
+                {formState.isSubmitting ? "..." : <><RiAddFill/> Salvar</>}
               </button>
             </div>
           </form>
@@ -179,7 +180,9 @@ export default function ERsComponent() {
                   onPageClick={setERCurrentPage}
                 ></Pagination>
               </div>
-              <button type="submit">Excluir</button>
+              <button type="submit" className="DeleteButton">
+                <RiCloseFill/> Excluir
+              </button>
             </form>
           )
         )}

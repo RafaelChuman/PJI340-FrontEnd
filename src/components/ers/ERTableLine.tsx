@@ -42,7 +42,7 @@ export function ERTableLine({
       <td>{er.createdAt}</td>
       <td>
         
-          <button onClick={()=>SetERValues(er)}>
+          <button type="button" onClick={()=>SetERValues(er)}>
             <RiPencilLine />
             &nbsp; Editar
           </button>

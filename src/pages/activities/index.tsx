@@ -136,7 +136,7 @@ export default function ActivitiesComponent() {
             onSubmit={formDeletion.handleSubmit(handleDelete)}
           >
             <div className="ActivityTableContent">
-              <ActivityTable activityData={activities} handleOnChange={handleOnChange} />
+              <ActivityTable activityData={activities} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues} />
             </div>
             <div>
               <Pagination

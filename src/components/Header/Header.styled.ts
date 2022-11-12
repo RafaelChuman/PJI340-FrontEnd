@@ -8,9 +8,23 @@ export const Container = styled.div`
   margin-left: "auto";
   margin-top: 4px;
   padding: 6px;
-  background-color: ${theme.colors.gray[100]};
+  background-color: ${theme.colors.transparent};
+  border-bottom: 2px solid ${theme.colors.cyan[900]};
   
+
+  .LogoDiv{
+    display:flex;
+    align-items:center;
+    width: 300px;
+
+  }
+
   .LogoContent {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
     font-size: ${theme.fontSizes["3rem"]};
     color: ${theme.colors.cyan[800]};
     font-weight: ${theme.fontWeights.extrabold};

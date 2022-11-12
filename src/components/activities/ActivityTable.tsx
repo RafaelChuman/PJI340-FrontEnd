@@ -1,14 +1,15 @@
 import { Activities } from "@/services/hooks/useActivity";
-import { ChangeEvent } from "react";
+import { ChangeEvent, SetStateAction } from "react";
 
 import { ActivityTableLine } from "./ActivityTableLine";
 
 interface UserTableProps {
   activityData: Activities[] | undefined;
-  handleOnChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  checkBoxValues: String[] | undefined;
+  setCheckBoxValues: (value: SetStateAction<String[] | undefined>) => void;
 }
 
-export function ActivityTable({ activityData, handleOnChange }: UserTableProps) {
+export function ActivityTable({ activityData, checkBoxValues, setCheckBoxValues }: UserTableProps) {
   return (
     <table>
       <thead>
@@ -22,10 +23,10 @@ export function ActivityTable({ activityData, handleOnChange }: UserTableProps) 
       <tbody>
         {activityData ? (
           activityData.map((ctg) => {
-            return <ActivityTableLine key={ctg.id} activity={ctg} handleOnChange={handleOnChange}/>;
+            return <ActivityTableLine key={ctg.id} activity={ctg} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues}/>;
           })
         ) : (
-          <ActivityTableLine activity={undefined} handleOnChange={handleOnChange}/>
+          <ActivityTableLine activity={undefined} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues}/>
         )}
       </tbody>
     </table>

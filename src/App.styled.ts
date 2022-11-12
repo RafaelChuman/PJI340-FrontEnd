@@ -4,7 +4,7 @@ export const theme = {
   colors: {
     transparent: "transparent",
     black: "#000",
-    white: "${theme.colors.pink[600]}",
+    white: "#FFFFFF",
     gray: {
       900: "#171923",
       800: "#1A202C",
@@ -54,6 +54,7 @@ export const theme = {
       50: "#FFF5F7",
     },
     cyan: {
+      1000: "#00323C",
       900: "#065666",
       800: "#086F83",
       700: "#0987A0",
@@ -160,7 +161,7 @@ export default createGlobalStyle`
   }
   
   body {
-    background: ${theme.colors.gray[50]};
+    background: ${theme.colors.gray[100]};
     color:${theme.colors.gray[800]};
     -webkit-font-smoothing: antialiased;
   }
@@ -176,13 +177,17 @@ export default createGlobalStyle`
 
 
   button:hover {
-    color: ${theme.colors.cyan[900]};
+    filter:opacity(0.4);
   }
 
   button {
+    display:flex;
     cursor: pointer;
+
     text-align:center;
+    align-items:center;
     justify-content:center;
+    align-content: center;
 
     font-weight: ${theme.fontWeights.bold};
     color: ${theme.colors.cyan[900]};
@@ -197,6 +202,13 @@ export default createGlobalStyle`
     padding: 4px;
   }
 
+  
+
+  .DeleteButton{
+    color: ${theme.colors.pink[800]};
+    border: 2px solid ${theme.colors.pink[800]};
+  }
+
   p{
     color:${theme.colors.gray[800]};
   }
@@ -204,8 +216,19 @@ export default createGlobalStyle`
   /* div{
     overflow-x: auto;
   } */
+  a{
+    text-decoration: none;
+    transition-duration: 0.2s;
+    display:flex;
+    width: 100%;
+  }
+  a:hover{
+    background-color: ${theme.colors.gray[200]};
+    color: ${theme.colors.cyan[1000]};
+    border-radius: 4px;    
+  }
 
-  input{
+  input, select{
     text-align:center;
     justify-content:center;
     border-radius: 0.25rem;
@@ -274,21 +297,15 @@ export default createGlobalStyle`
 
   }
 
-
-
-
-
-
-
   input[type="checkbox"]  {
     content: "";
     appearance: none;
 
-    width: 1.4em;
-    height: 1.4em;
+    width: ${theme.lineHeights["1.25rem"]};
+    height: ${theme.lineHeights["1.25rem"]};
 
     border-radius: 4px;
-    border: 2px solid ${theme.colors.pink[400]};
+    border: 2px solid ${theme.colors.pink[800]};
     background: ${theme.colors.white};
 
     transition: all 0.2s, transform 0.3s ease-in-out;
@@ -296,13 +313,13 @@ export default createGlobalStyle`
 
   input[type="checkbox"]:checked, input[type="checkbox"]:hover  {
     
-    width: 1.4em;
-    height: 1.4em;
+    width: ${theme.lineHeights["1.25rem"]};
+    height: ${theme.lineHeights["1.25rem"]};
 
     border: 2px solid ${theme.colors.pink[800]};
     /* background: ${theme.colors.pink[200]}; */
 
-    box-shadow: inset 1.4em 1.4em ${theme.colors.pink[200]};
+    box-shadow: inset ${theme.lineHeights["1.25rem"]} ${theme.lineHeights["1.25rem"]} ${theme.colors.pink[200]};
   }
 
   input[type="checkbox"]:checked{
@@ -312,5 +329,10 @@ export default createGlobalStyle`
     transform: rotateX(180deg);
   }
 
+
+  .Main{
+    display:flex;
+    flex-direction:row;
+  }
 
 `;

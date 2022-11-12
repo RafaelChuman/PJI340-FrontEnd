@@ -21,6 +21,6 @@ export const Container = styled.div`
   }
 
   .PaginationButtonSelected {
-    background-color: ${theme.colors.pink[200]};
+    color: ${theme.colors.pink[600]};
   }
 `;

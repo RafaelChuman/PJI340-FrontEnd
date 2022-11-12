@@ -136,7 +136,7 @@ export default function ZonesComponent() {
             onSubmit={formDeletion.handleSubmit(handleDelete)}
           >
             <div className="ZoneTableContent">
-              <ZoneTable zoneData={zones} handleOnChange={handleOnChange} />
+              <ZoneTable zoneData={zones} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues}/>
             </div>
             <div>
               <Pagination

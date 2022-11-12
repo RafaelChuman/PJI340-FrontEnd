@@ -1,8 +1,5 @@
-import { Header } from "@/components/Header";
-import { SideBar } from "@/components/SideBar";
 import { Pagination } from "@/components/Pagination";
-import { Container } from "@/components/Header/Header.styled";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import {
   Collaborators,
   useCollaborators,
@@ -15,6 +12,7 @@ import { useMutation } from "react-query";
 import { api } from "@/services/api";
 import { queryClient } from "@/services/queryClient";
 import InputMask from "react-input-mask";
+import { Container } from "./collaborators.styled";
 
 export default function CollaboratorsComponent() {
   const today = new Date();
@@ -76,8 +74,10 @@ export default function CollaboratorsComponent() {
 
   const cep = register("cep", {
     required: "O CEP é obrigatório",
-    pattern: {value: /[0-9]{2}\.[0-9]{3}\-[0-9]{3}/g, message:"CEP inválido."},
-    
+    pattern: {
+      value: /[0-9]{2}\.[0-9]{3}\-[0-9]{3}/g,
+      message: "CEP inválido.",
+    },
   });
 
   const numberAddress = register("numberAddress", {
@@ -94,25 +94,28 @@ export default function CollaboratorsComponent() {
 
   const cellphone = register("cellphone", {
     required: "O Celular é obrigatório",
-    pattern: {value: /\([0-9]{2}\) [9] [0-9]{4}\-[0-9]{4}/g, message:"Celular inválido."},
+    pattern: {
+      value: /\([0-9]{2}\) [9] [0-9]{4}\-[0-9]{4}/g,
+      message: "Celular inválido.",
+    },
   });
 
   const whatsApp = register("whatsApp", {
     required: { value: false, message: "O Contato por Whatsapp é opcional" },
-    pattern: {value: /\([0-9]{2}\) [9] [0-9]{4}\-[0-9]{4}/g, message:"whatsApp inválido."},
+    pattern: {
+      value: /\([0-9]{2}\) [9] [0-9]{4}\-[0-9]{4}/g,
+      message: "whatsApp inválido.",
+    },
   });
 
   const handleCreateCollaborator: SubmitHandler<Collaborators> = async (
     values: Collaborators
   ) => {
-    
-    values.cep = values.cep.toString().replace(/[^0-9]/g, '');
-    values.cellphone = values.cellphone.toString().replace(/[^0-9]/g, '');
-    values.whatsApp = values.whatsApp.toString().replace(/[^0-9]/g, '');
+    values.cep = values.cep.toString().replace(/[^0-9]/g, "");
+    values.cellphone = values.cellphone.toString().replace(/[^0-9]/g, "");
+    values.whatsApp = values.whatsApp.toString().replace(/[^0-9]/g, "");
 
     const response = await createCollaborator.mutateAsync(values);
-
-    
 
     if (response.status == 200) {
       const mesage = response.status;
@@ -120,114 +123,114 @@ export default function CollaboratorsComponent() {
       if (mesage != undefined) {
         setErrorCollaborator(mesage.toString());
       }
-      
     }
   };
 
   async function handleDelete() {
-   
-    checkBoxValues?.map(
-      async (collaboratorToDelete) => {
-        const response = await api.delete(`collaborators/?id=${collaboratorToDelete}`);
+    checkBoxValues?.map(async (collaboratorToDelete) => {
+      const response = await api.delete(
+        `collaborators/?id=${collaboratorToDelete}`
+      );
 
-        return response;
-      },
-    );
+      return response;
+    });
 
     queryClient.invalidateQueries("collaborators");
 
-    if(collaborators.length == checkBoxValues?.length)
-    {
-      if(collaboratorCurrentPage > 1){
-        setCollaboratorCurrentPage(collaboratorCurrentPage-1)
-      } 
+    if (collaborators.length == checkBoxValues?.length) {
+      if (collaboratorCurrentPage > 1) {
+        setCollaboratorCurrentPage(collaboratorCurrentPage - 1);
+      }
     }
     setCheckBoxValues([]);
-    
   }
 
-  
-
   return (
-    <div>
+    <Container>
       <Container>
-        <div>
-          <form onSubmit={handleSubmit(handleCreateCollaborator)}>
-            <p>{ErrorCollaborator}</p>
-            <div>
-              <input
-                alt="Collaborador"
-                type="text"
-                title="Collaborador"
-                placeholder="Collaborador"
-                {...name}
-              />
-              <ErrorMessage errors={formState.errors} name="name" />
-              <InputMask
-                alt="CEP"
-                type="text"
-                title="CEP"
-                placeholder="__.___ - ___"
-                mask={"99.999-999"}
-                {...cep}
-              />
-              <ErrorMessage errors={formState.errors} name="cep" />
+        <form onSubmit={handleSubmit(handleCreateCollaborator)}>
+          <p>{ErrorCollaborator}</p>
+          <div className="FormContent">
+            <input
+              alt="Collaborador"
+              type="text"
+              title="Collaborador"
+              placeholder="Collaborador"
+              {...name}
+            />
+            <ErrorMessage errors={formState.errors} name="name" />
+            <InputMask
+              alt="CEP"
+              type="text"
+              title="CEP"
+              placeholder="__.___ - ___"
+              mask={"99.999-999"}
+              {...cep}
+            />
+            <ErrorMessage errors={formState.errors} name="cep" />
 
-              <input
-                alt="Número"
-                type="text"
-                title="Número"
-                placeholder="Número"
-                {...numberAddress}
-              />
-              <ErrorMessage errors={formState.errors} name="numberAddress" />
+            <input
+              alt="Número"
+              type="text"
+              title="Número"
+              placeholder="Número"
+              {...numberAddress}
+            />
+            <ErrorMessage errors={formState.errors} name="numberAddress" />
 
-              <InputMask
-                alt="Celular"
-                type="text"
-                title="Celular"
-                placeholder="(__) 9 ____ - ____"
-                mask={"(99) 9 9999-9999"}
-                {...cellphone}
-              />
-              <ErrorMessage errors={formState.errors} name="cellphone" />
+            <InputMask
+              alt="Celular"
+              type="text"
+              title="Celular"
+              placeholder="(__) 9 ____ - ____"
+              mask={"(99) 9 9999-9999"}
+              {...cellphone}
+            />
+            <ErrorMessage errors={formState.errors} name="cellphone" />
 
-              <InputMask
-                alt="WhatsApp"
-                type="text"
-                title="whatsApp"
-                placeholder="(__) 9 ____ - ____"
-                mask={"(99) 9 9999-9999"}
-                {...whatsApp}
-              />
-              <ErrorMessage errors={formState.errors} name="whatsApp" />
-            </div>
+            <InputMask
+              alt="WhatsApp"
+              type="text"
+              title="whatsApp"
+              placeholder="(__) 9 ____ - ____"
+              mask={"(99) 9 9999-9999"}
+              {...whatsApp}
+            />
+            <ErrorMessage errors={formState.errors} name="whatsApp" />
+
             <button type={"submit"} disabled={formState.isSubmitting}>
-              {formState.isSubmitting ? "..." : "Enviar"}
-            </button>
-          </form>
-        </div>
-
-        {collaboratorsWithoutPagination.isLoading ? (
-          "..."
-        ) : collaboratorsWithoutPagination.error ? (
-          <div>
-            <p>Falha ao Obter Dados</p>
+            {formState.isSubmitting ? "..." : "Enviar"}
+          </button>
           </div>
-        ) : (
 
-          <div className="TreatmentTableContainer">
-             <form
+        </form>
+      </Container>
+
+      {collaboratorsWithoutPagination.isLoading ? (
+        "..."
+      ) : collaboratorsWithoutPagination.error ? (
+        <div>
+          <p>Falha ao Obter Dados</p>
+        </div>
+      ) : (
+        <div className="TreatmentTableContainer">
+          <form
             title={"Form Excluir Colaborador"}
             placeholder={"Form Excluir Colaborador"}
             onSubmit={formDeletion.handleSubmit(handleDelete)}
           >
             {collaboratorsWithoutPagination.data && (
               <>
-                <CollaboratorTable collaboratorsData={collaborators} handleOnChange={handleOnChange}/>
+                <CollaboratorTable
+                  collaboratorsData={collaborators}
+                  checkBoxValues={checkBoxValues}
+                  setCheckBoxValues={setCheckBoxValues}
+                />
 
                 <Pagination
-                  totalCountOfRegisters={collaboratorsWithoutPagination.data.length}
+                  totalCountOfRegisters={
+                    collaboratorsWithoutPagination.data.length
+                  }
                   currentPage={collaboratorCurrentPage}
                   registersPerPage={numberOfItensPerPage}
                   onPageClick={setCollaboratorCurrentPage}
@@ -236,9 +239,8 @@ export default function CollaboratorsComponent() {
             )}
             <button type="submit">Excluir</button>
           </form>
-          </div>
-        )}
-      </Container>
-    </div>
+        </div>
+      )}
+    </Container>
   );
 }

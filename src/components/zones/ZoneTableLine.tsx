@@ -1,14 +1,16 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, SetStateAction } from "react";
 import { IconBase } from "react-icons/lib";
 import { RiPencilLine } from "react-icons/ri";
 import { Zones } from "../../services/hooks/useZones";
+import { Checkbox } from "../CheckBox";
 
 interface TableLineProps {
   zone: Zones | undefined;
-  handleOnChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  checkBoxValues: String[] | undefined;
+  setCheckBoxValues: (value: SetStateAction<String[] | undefined>) => void;
 }
 
-export function ZoneTableLine({ zone, handleOnChange }: TableLineProps) {
+export function ZoneTableLine({ zone, checkBoxValues, setCheckBoxValues }: TableLineProps) {
   if (!zone) {
     return <></>;
   }
@@ -16,15 +18,15 @@ export function ZoneTableLine({ zone, handleOnChange }: TableLineProps) {
   return (
     <tr>
       <td>
-        <input
+        <Checkbox
           type={"checkbox"}
           title={"Deletar"}
           placeholder={"Deletar"}
-          id={zone.id}
-          value={zone.id}
+          dataOfCheckbox={zone}
           name="ZoneTable"
-          onChange={handleOnChange}
-        ></input>
+          checkBoxValues={checkBoxValues}
+          setCheckBoxValues={setCheckBoxValues}
+        ></Checkbox>
       </td>
       <td>
         <div>

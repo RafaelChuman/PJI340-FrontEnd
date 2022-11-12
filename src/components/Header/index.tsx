@@ -7,9 +7,7 @@ import { Profile } from "./Profile";
 export function Header() {
   return (
     <Container>
-      <button type={"button"} title="Menu">
-        <RiMenuLine />
-      </button>
+
 
       <Logo />
 

@@ -14,10 +14,9 @@ function App() {
   return (
     <Container>
       <Header></Header>
-      <div>
-        {/* <SideBar /> */}
-      </div>
-      <div>
+      <div className="Main">
+        <SideBar />
+
         <AppRoutes />
       </div>
     </Container>

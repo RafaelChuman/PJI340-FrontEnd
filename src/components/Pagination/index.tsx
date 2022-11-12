@@ -15,7 +15,6 @@ function pagesToShow(
   registersPerPage: number,
   currentPage: number
 ): number[] {
-
   let lastPage = (totalCountOfRegisters / registersPerPage) | 0;
   if (totalCountOfRegisters % registersPerPage > 0) {
     lastPage++;
@@ -69,8 +68,7 @@ export function Pagination({
 
   return (
     <Container>
-
-      <div >
+      <div>
         {pages.map((page) => {
           if (currentPage == page) {
             return (
@@ -93,8 +91,11 @@ export function Pagination({
         })}
       </div>
       <div>
-        <strong> {firtItem} </strong> - <strong> {lastItem} </strong> de 
-        {totalCountOfRegisters}
+        {
+          <p>
+            <strong> {`${firtItem}-${lastItem} `} </strong> de {totalCountOfRegisters}
+          </p>
+        }
       </div>
     </Container>
   );

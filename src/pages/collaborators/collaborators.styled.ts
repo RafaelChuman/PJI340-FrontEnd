@@ -1,28 +1,32 @@
 import styled from "styled-components";
 
-const Container = styled.div`
-  width: "100%";
-  margin-top: 6px maxWidth=1480px;
-  margin-left: auto;
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 6px;
   padding: 6px;
+  align-items:center;
+  justify-content:center;
 
-  .GridContainer {
+  .FormContent {
+    display:flex;
+    align-items:center;
+    flex-direction:column;
     width: 100%;
     margin-top: 6px;
     direction: column;
-    gap: 4px;
+    gap: 10px;
     margin-left: auto;
     padding: 6px;
   }
 
-  .GridContent {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-column-gap: 4px;
-    align-items: center;
-  }
+
 
   .TreatmentTableContainer {
+    display:flex;
+    align-items:center;
+    justify-content:center;
     padding: 8px;
     background-color: var(--gray.80);
     border-radius: 8px;

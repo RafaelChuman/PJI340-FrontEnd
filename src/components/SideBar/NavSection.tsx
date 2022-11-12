@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import { RiContactsLine, RiDashboardLine } from "react-icons/ri";
 
 interface NavSectionProps {
   title: string;
@@ -8,7 +7,7 @@ interface NavSectionProps {
 
 export function NavSection({ title, children }: NavSectionProps) {
   return (
-    <div>
+    <div className="NavLink">
       <p className="NavSectionText">
         {title}
       </p>

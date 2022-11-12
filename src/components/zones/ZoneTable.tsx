@@ -1,14 +1,15 @@
 import { Zones } from "@/services/hooks/useZones";
-import { ChangeEvent } from "react";
+import { ChangeEvent, SetStateAction } from "react";
 
 import { ZoneTableLine } from "./ZoneTableLine";
 
 interface UserTableProps {
   zoneData: Zones[] | undefined;
-  handleOnChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  checkBoxValues: String[] | undefined;
+  setCheckBoxValues: (value: SetStateAction<String[] | undefined>) => void;
 }
 
-export function ZoneTable({ zoneData, handleOnChange }: UserTableProps) {
+export function ZoneTable({ zoneData, checkBoxValues,  setCheckBoxValues}: UserTableProps) {
   return (
     <table>
       <thead>
@@ -22,10 +23,10 @@ export function ZoneTable({ zoneData, handleOnChange }: UserTableProps) {
       <tbody>
         {zoneData ? (
           zoneData.map((ctg) => {
-            return <ZoneTableLine key={ctg.id} zone={ctg} handleOnChange={handleOnChange}/>;
+            return <ZoneTableLine key={ctg.id} zone={ctg} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues}/>;
           })
         ) : (
-          <ZoneTableLine zone={undefined} handleOnChange={handleOnChange}/>
+          <ZoneTableLine zone={undefined} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues}/>
         )}
       </tbody>
     </table>

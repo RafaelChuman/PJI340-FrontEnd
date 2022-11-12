@@ -1,39 +1,48 @@
 import { Collaborators } from "@/services/hooks/useCollaborators";
-import { ChangeEvent } from "react";
+import { ChangeEvent, SetStateAction } from "react";
 import { CollaboratorTableLine } from "./CollaboratorTableLine";
-
 
 interface CollaboratorTableProps {
   collaboratorsData: Collaborators[] | undefined;
-  handleOnChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  checkBoxValues: String[] | undefined;
+  setCheckBoxValues: (value: SetStateAction<String[] | undefined>) => void;
 }
 
-export function CollaboratorTable({ collaboratorsData, handleOnChange }: CollaboratorTableProps) {
+export function CollaboratorTable({
+  collaboratorsData,
+  checkBoxValues,
+  setCheckBoxValues,
+}: CollaboratorTableProps) {
   return (
-    <table >
+    <table>
       <thead>
         <tr>
-        <th></th>
+          <th></th>
           <th>Nome</th>
           <th>WhatsApp</th>
           <th>Data Criação</th>
-          <th></th>   
+          <th></th>
         </tr>
       </thead>
       <tbody>
-      
-        {collaboratorsData !== undefined ? (          
+        {collaboratorsData !== undefined ? (
           collaboratorsData.map((collaborators) => {
             return (
               <CollaboratorTableLine
                 key={collaborators.id}
                 collaborators={collaborators}
-                handleOnChange={handleOnChange}
+                checkBoxValues={checkBoxValues}
+                setCheckBoxValues={setCheckBoxValues}
               />
             );
           })
         ) : (
-          <CollaboratorTableLine key="0" collaborators={undefined}  handleOnChange={handleOnChange}/>
+          <CollaboratorTableLine
+            key="0"
+            collaborators={undefined}
+            checkBoxValues={checkBoxValues}
+            setCheckBoxValues={setCheckBoxValues}
+          />
         )}
       </tbody>
     </table>
