@@ -152,6 +152,8 @@ export const theme = {
   },
   width:{
     "250px": "15rem",
+    "275px": "17.187rem",
+    "300px": "18.75rem",
   }
 };
 
@@ -182,7 +184,6 @@ export default createGlobalStyle`
     font-weight:  ${theme.fontWeights.extrabold};
     margin: 50px;
     color: ${theme.colors.pink[800]};
-    border-bottom: 2px solid ${theme.colors.pink[800]};
     
   }
 

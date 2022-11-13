@@ -76,25 +76,26 @@ export default function ZonesComponent() {
   };
 
   async function handleDelete() {
-   
-    checkBoxValues?.map(
-      async (zoneToDelete) => {
-        const response = await api.delete(`zones/?id=${zoneToDelete}`);
+    console.log(`zones=${checkBoxValues}`);
 
-        return response;
+    const response = await api.delete(`zones`, {
+      data: {
+        ids: checkBoxValues,
       },
-    );
+    });
 
-    if(zones.length == checkBoxValues?.length)
-    {
-      if(zoneCurrentPage > 1) setZoneCurrentPage(zoneCurrentPage-1)
-    }
+    console.log(response);
+    await queryClient.invalidateQueries("zones");
     
+
+    if (zones.length == checkBoxValues?.length) {
+      if (zoneCurrentPage > 1) setZoneCurrentPage(zoneCurrentPage - 1);
+    }
+
+    console.log("Zones Delete - 3");
+
     setCheckBoxValues([]);
-
-    queryClient.invalidateQueries("zones");
   }
-
 
   return (
     <Container>
@@ -121,7 +122,13 @@ export default function ZonesComponent() {
           </div>
           <div>
             <button type={"submit"} disabled={formState.isSubmitting}>
-              {formState.isSubmitting ? "..." : <><RiAddFill /> Salvar</>}
+              {formState.isSubmitting ? (
+                "..."
+              ) : (
+                <>
+                  <RiAddFill /> Salvar
+                </>
+              )}
             </button>
           </div>
         </form>
@@ -139,7 +146,11 @@ export default function ZonesComponent() {
             onSubmit={formDeletion.handleSubmit(handleDelete)}
           >
             <div className="ZoneTableContent">
-              <ZoneTable zoneData={zones} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues}/>
+              <ZoneTable
+                zoneData={zones}
+                checkBoxValues={checkBoxValues}
+                setCheckBoxValues={setCheckBoxValues}
+              />
             </div>
             <div>
               <Pagination
@@ -149,7 +160,9 @@ export default function ZonesComponent() {
                 onPageClick={setZoneCurrentPage}
               ></Pagination>
             </div>
-            <button type="submit" className="DeleteButton"><RiCloseFill /> Excluir</button>
+            <button type="submit" className="DeleteButton">
+              <RiCloseFill /> Excluir
+            </button>
           </form>
         )
       )}

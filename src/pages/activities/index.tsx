@@ -63,7 +63,9 @@ export default function ActivitiesComponent() {
     },
   });
 
-  const handleCreateActivity: SubmitHandler<Activities> = async (values: Activities) => {
+  const handleCreateActivity: SubmitHandler<Activities> = async (
+    values: Activities
+  ) => {
     const response = await createActivity.mutateAsync(values);
 
     if (response.status == 200) {
@@ -75,26 +77,22 @@ export default function ActivitiesComponent() {
   };
 
   async function handleDelete() {
-   
-    checkBoxValues?.map(
-      async (activityToDelete) => {
-        const response = await api.delete(`activities/?id=${activityToDelete}`);
 
-        return response;
+    const response = await api.delete(`activities`, {
+      data: {
+        ids: checkBoxValues,
       },
-    );
+    });
 
-    if(activities.length == checkBoxValues?.length)
-    {
-      if(activityCurrentPage > 1) setActivityCurrentPage(activityCurrentPage-1)
+    if (activities.length == checkBoxValues?.length) {
+      if (activityCurrentPage > 1)
+        setActivityCurrentPage(activityCurrentPage - 1);
     }
-    
+
     setCheckBoxValues([]);
 
-    queryClient.invalidateQueries("activities");
+    await queryClient.invalidateQueries("activities");
   }
-
-  
 
   return (
     <Container>
@@ -121,7 +119,13 @@ export default function ActivitiesComponent() {
           </div>
           <div>
             <button type={"submit"} disabled={formState.isSubmitting}>
-              {formState.isSubmitting ? "..." : <><RiAddFill /> Salvar</>}
+              {formState.isSubmitting ? (
+                "..."
+              ) : (
+                <>
+                  <RiAddFill /> Salvar
+                </>
+              )}
             </button>
           </div>
         </form>
@@ -139,7 +143,11 @@ export default function ActivitiesComponent() {
             onSubmit={formDeletion.handleSubmit(handleDelete)}
           >
             <div className="ActivityTableContent">
-              <ActivityTable activityData={activities} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues} />
+              <ActivityTable
+                activityData={activities}
+                checkBoxValues={checkBoxValues}
+                setCheckBoxValues={setCheckBoxValues}
+              />
             </div>
             <div>
               <Pagination
@@ -149,7 +157,10 @@ export default function ActivitiesComponent() {
                 onPageClick={setActivityCurrentPage}
               ></Pagination>
             </div>
-            <button type="submit" className="DeleteButton"><RiCloseFill />Excluir</button>
+            <button type="submit" className="DeleteButton">
+              <RiCloseFill />
+              Excluir
+            </button>
           </form>
         )
       )}

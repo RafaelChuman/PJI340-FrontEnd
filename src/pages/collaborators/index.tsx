@@ -128,22 +128,21 @@ export default function CollaboratorsComponent() {
   };
 
   async function handleDelete() {
-    checkBoxValues?.map(async (collaboratorToDelete) => {
-      const response = await api.delete(
-        `collaborators/?id=${collaboratorToDelete}`
-      );
-
-      return response;
+    const response = await api.delete(`collaborators`, {
+      data: {
+        ids: checkBoxValues,
+      },
     });
-
-    queryClient.invalidateQueries("collaborators");
 
     if (collaborators.length == checkBoxValues?.length) {
       if (collaboratorCurrentPage > 1) {
         setCollaboratorCurrentPage(collaboratorCurrentPage - 1);
       }
     }
+
     setCheckBoxValues([]);
+
+    await queryClient.invalidateQueries("collaborators");
   }
 
   return (
@@ -216,7 +215,13 @@ export default function CollaboratorsComponent() {
             </div>
             <div className="DivFormFields">
               <button type={"submit"} disabled={formState.isSubmitting}>
-                {formState.isSubmitting ? "..." : <><RiAddFill /> Salvar</>}
+                {formState.isSubmitting ? (
+                  "..."
+                ) : (
+                  <>
+                    <RiAddFill /> Salvar
+                  </>
+                )}
               </button>
             </div>
           </div>

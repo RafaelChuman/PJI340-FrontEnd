@@ -114,12 +114,10 @@ export default function LubrificationSystemsComponent(er: ERs) {
   };
 
   async function handleDelete() {
-    checkBoxValues?.map(async (lubrificationSystemToDelete) => {
-      const response = await api.delete(
-        `lubrificationSystems/?id=${lubrificationSystemToDelete}`
-      );
-
-      return response;
+    const response = await api.delete(`lubrificationSystems`, {
+      data: {
+        ids: checkBoxValues,
+      },
     });
 
     if (lubrificationSystems.length == checkBoxValues?.length) {
@@ -129,7 +127,7 @@ export default function LubrificationSystemsComponent(er: ERs) {
 
     setCheckBoxValues([]);
 
-    queryClient.invalidateQueries("lubrificationSystems");
+    await queryClient.invalidateQueries("lubrificationSystems");
   }
 
   return (
@@ -141,7 +139,6 @@ export default function LubrificationSystemsComponent(er: ERs) {
           title={"Form Criar Lubrificarion System"}
           placeholder={"Form Criar Lubrificarion System"}
         >
-          
           <div className="DivFormFields">
             <label>Qnt Lubrificante Add: </label>
             <input

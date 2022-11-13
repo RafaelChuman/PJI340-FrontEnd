@@ -90,10 +90,10 @@ export default function ERsComponent() {
   };
 
   async function handleDelete() {
-    checkBoxValues?.map(async (erToDelete) => {
-      const response = await api.delete(`ers/?id=${erToDelete}`);
-
-      return response;
+    const response = await api.delete(`ers`, {
+      data: {
+        ids: checkBoxValues,
+      },
     });
 
     if (ers.length == checkBoxValues?.length) {
@@ -102,7 +102,7 @@ export default function ERsComponent() {
 
     setCheckBoxValues([]);
 
-    queryClient.invalidateQueries("ers");
+    await queryClient.invalidateQueries("ers");
   }
 
   if (er) {

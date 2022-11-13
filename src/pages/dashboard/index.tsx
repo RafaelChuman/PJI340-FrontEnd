@@ -26,8 +26,6 @@ export default function Dashboard() {
         <h1>DashBoard</h1>
       </div>
       <Container>
-        <div className="GridContainer">
-          <div className="GridContent">
             <div className="ChartDataContainer">
               {lubrificationSystems && (
                 <Charts
@@ -45,8 +43,6 @@ export default function Dashboard() {
                 ></Charts>
               )}
             </div>
-          </div>
-        </div>
       </Container>
     </>
   );

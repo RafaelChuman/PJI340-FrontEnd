@@ -11,7 +11,7 @@ export const Container = styled.div`
   align-items: center;
   justify-content: baseline;
   height: ${theme.width["250px"]};
-  width: ${theme.width["250px"]};
+  width: ${theme.width["300px"]};
 
   p,
   a {
