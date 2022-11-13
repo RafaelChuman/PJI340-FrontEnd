@@ -9,23 +9,9 @@ export const Container = styled.div`
   margin-top: 6px;
   margin-left: auto;
 
-  div {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    margin-top: 6px;
-    margin-left: auto;
-  }
+ 
 
-  .ZoneTableContent{
+  .LubrificationSystemTableContent{
     padding-top:48px;
-  }
-  .zonaContent{
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    margin-top: 6px;
-    margin-left: auto;
   }
 `;

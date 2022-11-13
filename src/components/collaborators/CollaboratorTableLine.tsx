@@ -38,7 +38,7 @@ export function CollaboratorTableLine({ collaborators, checkBoxValues, setCheckB
          {collaborators.createdAt}
       </td>
       <td>
-        <button>
+        <button type="button">
           <RiPencilLine fontSize="16" />
            Editar
         </button>

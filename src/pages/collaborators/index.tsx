@@ -13,6 +13,7 @@ import { api } from "@/services/api";
 import { queryClient } from "@/services/queryClient";
 import InputMask from "react-input-mask";
 import { Container } from "./collaborators.styled";
+import { RiAddFill, RiCloseFill } from "react-icons/ri";
 
 export default function CollaboratorsComponent() {
   const today = new Date();
@@ -148,61 +149,77 @@ export default function CollaboratorsComponent() {
   return (
     <Container>
       <Container>
+        <h1>Colaboradores</h1>
         <form onSubmit={handleSubmit(handleCreateCollaborator)}>
           <p>{ErrorCollaborator}</p>
           <div className="FormContent">
-            <input
-              alt="Collaborador"
-              type="text"
-              title="Collaborador"
-              placeholder="Collaborador"
-              {...name}
-            />
-            <ErrorMessage errors={formState.errors} name="name" />
-            <InputMask
-              alt="CEP"
-              type="text"
-              title="CEP"
-              placeholder="__.___ - ___"
-              mask={"99.999-999"}
-              {...cep}
-            />
-            <ErrorMessage errors={formState.errors} name="cep" />
+            <div className="DivFormFields">
+              {" "}
+              <label>Insira o Nome:</label>
+              <input
+                alt="Collaborador"
+                type="text"
+                title="Collaborador"
+                placeholder="Collaborador"
+                {...name}
+              />
+              <ErrorMessage errors={formState.errors} name="name" />
+            </div>
+            <div className="DivFormFields">
+              <label>Insira o CEP:</label>
+              <InputMask
+                alt="CEP"
+                type="text"
+                title="CEP"
+                placeholder="__.___ - ___"
+                mask={"99.999-999"}
+                {...cep}
+              />
+              <ErrorMessage errors={formState.errors} name="cep" />
+            </div>
 
-            <input
-              alt="Número"
-              type="text"
-              title="Número"
-              placeholder="Número"
-              {...numberAddress}
-            />
-            <ErrorMessage errors={formState.errors} name="numberAddress" />
+            <div className="DivFormFields">
+              <label>Insira o Número:</label>
+              <input
+                alt="Número"
+                type="text"
+                title="Número"
+                placeholder="Número"
+                {...numberAddress}
+              />
+              <ErrorMessage errors={formState.errors} name="numberAddress" />
+            </div>
+            <div className="DivFormFields">
+              <label>Insira o Telefone:</label>
+              <InputMask
+                alt="Celular"
+                type="text"
+                title="Celular"
+                placeholder="(__) 9 ____ - ____"
+                mask={"(99) 9 9999-9999"}
+                {...cellphone}
+              />
+              <ErrorMessage errors={formState.errors} name="cellphone" />
+            </div>
 
-            <InputMask
-              alt="Celular"
-              type="text"
-              title="Celular"
-              placeholder="(__) 9 ____ - ____"
-              mask={"(99) 9 9999-9999"}
-              {...cellphone}
-            />
-            <ErrorMessage errors={formState.errors} name="cellphone" />
-
-            <InputMask
-              alt="WhatsApp"
-              type="text"
-              title="whatsApp"
-              placeholder="(__) 9 ____ - ____"
-              mask={"(99) 9 9999-9999"}
-              {...whatsApp}
-            />
-            <ErrorMessage errors={formState.errors} name="whatsApp" />
-
-            <button type={"submit"} disabled={formState.isSubmitting}>
-            {formState.isSubmitting ? "..." : "Enviar"}
-          </button>
+            <div className="DivFormFields">
+              <label>Insira o WhatsApp:</label>
+              <InputMask
+                alt="WhatsApp"
+                type="text"
+                title="whatsApp"
+                placeholder="(__) 9 ____ - ____"
+                mask={"(99) 9 9999-9999"}
+                {...whatsApp}
+              />
+              <ErrorMessage errors={formState.errors} name="whatsApp" />
+            </div>
+            <div className="DivFormFields">
+              <button type={"submit"} disabled={formState.isSubmitting}>
+                {formState.isSubmitting ? "..." : <><RiAddFill /> Salvar</>}
+              </button>
+            </div>
           </div>
-
         </form>
       </Container>
 
@@ -237,7 +254,9 @@ export default function CollaboratorsComponent() {
                 ></Pagination>
               </>
             )}
-            <button type="submit">Excluir</button>
+            <button type="submit" className="DeleteButton">
+              <RiCloseFill /> Excluir
+            </button>
           </form>
         </div>
       )}

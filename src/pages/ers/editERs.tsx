@@ -13,21 +13,22 @@ export default function EditERsComponent(er: ERs) {
   return (
     <Container>
       <div>
-        <div>
-          <label>{er.number}</label>
+        <h1>Edit ER</h1>
+        <div className="DivFormFields">
+          <label>ER:</label>
+          <label className="EREditLabelContent"> {er.number}</label>
         </div>
-        <div>
-          <label>{er.zone.name}</label>
+        <div className="DivFormFields">
+          <label>Zona:</label>
+          <label className="EREditLabelContent"> {er.zone.name}</label>
         </div>
       </div>
-      <div>
-        <LubrificationSystemsComponent
-          createdAt={er.createdAt}
-          id={er.id}
-          number={er.number}
-          zone={er.zone}
-        />
-      </div>
+      <LubrificationSystemsComponent
+        createdAt={er.createdAt}
+        id={er.id}
+        number={er.number}
+        zone={er.zone}
+      />
     </Container>
   );
 }

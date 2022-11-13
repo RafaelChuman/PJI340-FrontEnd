@@ -10,7 +10,11 @@ interface TableLineProps {
   setCheckBoxValues: (value: SetStateAction<String[] | undefined>) => void;
 }
 
-export function LubrificationSystemTableLine({ lubrificationSystem, checkBoxValues, setCheckBoxValues }: TableLineProps) {
+export function LubrificationSystemTableLine({
+  lubrificationSystem,
+  checkBoxValues,
+  setCheckBoxValues,
+}: TableLineProps) {
   if (!lubrificationSystem) {
     return <></>;
   }
@@ -18,27 +22,19 @@ export function LubrificationSystemTableLine({ lubrificationSystem, checkBoxValu
   return (
     <tr>
       <td>
-        <Checkbox checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues} dataOfCheckbox={lubrificationSystem}
-          // type={"checkbox"}
-           title={"Deletar"}
-           placeholder={"Deletar"}
-          // id={lubrificationSystem.id}
-          // value={lubrificationSystem.id}
-          // name="LubrificationSystemTable"
-          // onChange={handleOnChange}
-
+        <Checkbox
+          checkBoxValues={checkBoxValues}
+          setCheckBoxValues={setCheckBoxValues}
+          dataOfCheckbox={lubrificationSystem}
+          title={"Deletar"}
+          placeholder={"Deletar"}
         ></Checkbox>
       </td>
-      <td>
-        <div>
-          {lubrificationSystem.activity?.name}
-        </div>
-      </td>
+      <td>{lubrificationSystem.activity?.name}</td>
       <td>{lubrificationSystem.add}</td>
       <td>{lubrificationSystem.obs}</td>
       <td>{lubrificationSystem.collaborator?.name}</td>
       <td>{lubrificationSystem.createdAt}</td>
-
     </tr>
   );
 }

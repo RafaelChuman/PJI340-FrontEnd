@@ -118,7 +118,7 @@ export default function ERsComponent() {
             title={"Form Criar Zona"}
             placeholder={"Form Criar Zona"}
           >
-            <div>
+            <div className="DivFormFields">
               <label>Insira o Número da ER: </label>
               <input
                 width="100%"
@@ -131,7 +131,7 @@ export default function ERsComponent() {
               <ErrorMessage errors={formState.errors} name="number" />
             </div>
 
-            <div>
+            <div className="DivFormFields">
               {zonesWithoutFormat.data ? (
                 <>
                   <label>Selecione a Zona: </label>
@@ -149,7 +149,7 @@ export default function ERsComponent() {
               <ErrorMessage errors={formState.errors} name="zone" />
             </div>
 
-            <div>
+            <div className="DivFormFields">
               <button type={"submit"} disabled={formState.isSubmitting}>
                 {formState.isSubmitting ? (
                   "..."

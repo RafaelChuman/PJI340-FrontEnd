@@ -10,6 +10,7 @@ import { useZones, Zones } from "@/services/hooks/useZones";
 import { ZoneTable } from "@/components/zones/ZoneTable";
 import { Container } from "./zones.styled";
 import { json } from "react-router-dom";
+import { RiAddFill, RiCloseFill } from "react-icons/ri";
 
 export default function ZonesComponent() {
   const today = new Date();
@@ -97,6 +98,7 @@ export default function ZonesComponent() {
 
   return (
     <Container>
+      <h1>Zonas</h1>
       <div>
         <form
           onSubmit={handleSubmit(handleCreateZone)}
@@ -106,6 +108,7 @@ export default function ZonesComponent() {
         >
           <p>{ErrorZone}</p>
           <div>
+            <label>Insira o Nome da Zona:</label>
             <input
               width="100%"
               alt="Zona"
@@ -118,7 +121,7 @@ export default function ZonesComponent() {
           </div>
           <div>
             <button type={"submit"} disabled={formState.isSubmitting}>
-              {formState.isSubmitting ? "..." : "Salvar"}
+              {formState.isSubmitting ? "..." : <><RiAddFill /> Salvar</>}
             </button>
           </div>
         </form>
@@ -146,7 +149,7 @@ export default function ZonesComponent() {
                 onPageClick={setZoneCurrentPage}
               ></Pagination>
             </div>
-            <button type="submit">Excluir</button>
+            <button type="submit" className="DeleteButton"><RiCloseFill /> Excluir</button>
           </form>
         )
       )}

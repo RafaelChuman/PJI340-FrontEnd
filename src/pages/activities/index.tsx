@@ -9,6 +9,7 @@ import { queryClient } from "@/services/queryClient";
 import { Container } from "./activities.styled";
 import { Activities, useActivities } from "@/services/hooks/useActivity";
 import { ActivityTable } from "@/components/activities/ActivityTable";
+import { RiAddFill, RiCloseFill } from "react-icons/ri";
 
 export default function ActivitiesComponent() {
   const today = new Date();
@@ -97,6 +98,7 @@ export default function ActivitiesComponent() {
 
   return (
     <Container>
+      <h1>Atividades</h1>
       <div>
         <form
           onSubmit={handleSubmit(handleCreateActivity)}
@@ -106,6 +108,7 @@ export default function ActivitiesComponent() {
         >
           <p>{ErrorActivity}</p>
           <div>
+            <label>Insira a descrição do Serviço:</label>
             <input
               width="100%"
               alt="Serviço"
@@ -118,7 +121,7 @@ export default function ActivitiesComponent() {
           </div>
           <div>
             <button type={"submit"} disabled={formState.isSubmitting}>
-              {formState.isSubmitting ? "..." : "Salvar"}
+              {formState.isSubmitting ? "..." : <><RiAddFill /> Salvar</>}
             </button>
           </div>
         </form>
@@ -146,7 +149,7 @@ export default function ActivitiesComponent() {
                 onPageClick={setActivityCurrentPage}
               ></Pagination>
             </div>
-            <button type="submit">Excluir</button>
+            <button type="submit" className="DeleteButton"><RiCloseFill />Excluir</button>
           </form>
         )
       )}

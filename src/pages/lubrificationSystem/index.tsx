@@ -20,6 +20,7 @@ import {
 import { ComboBox } from "@/components/ComboBox";
 import { checkBoxClickEvent } from "@/components/CheckBox";
 import { ERs } from "@/services/hooks/useERs";
+import { RiAddFill, RiCloseFill } from "react-icons/ri";
 
 export default function LubrificationSystemsComponent(er: ERs) {
   const numberOfItensPerPage = 5;
@@ -32,7 +33,7 @@ export default function LubrificationSystemsComponent(er: ERs) {
   const [lubrificationSystemCurrentPage, setLubrificationSystemCurrentPage] =
     useState(1);
 
-  const lubrificationSystemsWithoutPagination = useLubrificationSystems();
+  const lubrificationSystemsWithoutPagination = useLubrificationSystems(er.id);
 
   const collaborators = useCollaborators();
   const activities = useActivities();
@@ -131,8 +132,6 @@ export default function LubrificationSystemsComponent(er: ERs) {
     queryClient.invalidateQueries("lubrificationSystems");
   }
 
-  
-
   return (
     <Container>
       <div>
@@ -142,8 +141,9 @@ export default function LubrificationSystemsComponent(er: ERs) {
           title={"Form Criar Lubrificarion System"}
           placeholder={"Form Criar Lubrificarion System"}
         >
-          <p>{ErrorLubrificationSystem}</p>
-          <div>
+          
+          <div className="DivFormFields">
+            <label>Qnt Lubrificante Add: </label>
             <input
               width="100%"
               alt="QuantidadeLubrificante Adicionado"
@@ -154,7 +154,8 @@ export default function LubrificationSystemsComponent(er: ERs) {
             />
             <ErrorMessage errors={formState.errors} name="add" />
           </div>
-          <div>
+          <div className="DivFormFields">
+            <label>Observações: </label>
             <input
               width="100%"
               alt="Observações"
@@ -165,7 +166,8 @@ export default function LubrificationSystemsComponent(er: ERs) {
             />
             <ErrorMessage errors={formState.errors} name="obs" />
           </div>
-          <div>
+          <div className="DivFormFields">
+            <label>Colaborador: </label>
             {collaborators.data && (
               <ComboBox
                 title="Colaborador"
@@ -177,7 +179,8 @@ export default function LubrificationSystemsComponent(er: ERs) {
 
             <ErrorMessage errors={formState.errors} name="collaborator" />
           </div>
-          <div>
+          <div className="DivFormFields">
+            <label>Atividade: </label>
             {activities.data && (
               <ComboBox
                 title="Atividade"
@@ -192,10 +195,17 @@ export default function LubrificationSystemsComponent(er: ERs) {
 
           <div>
             <button type={"submit"} disabled={formState.isSubmitting}>
-              {formState.isSubmitting ? "..." : "Salvar"}
+              {formState.isSubmitting ? (
+                "..."
+              ) : (
+                <>
+                  <RiAddFill /> Salvar
+                </>
+              )}
             </button>
           </div>
         </form>
+        <label>{ErrorLubrificationSystem}</label>
       </div>
 
       {lubrificationSystemsWithoutPagination.isLoading ? (
@@ -212,8 +222,8 @@ export default function LubrificationSystemsComponent(er: ERs) {
             <div className="LubrificationSystemTableContent">
               <LubrificationSystemTable
                 lubrificationSystemData={lubrificationSystems}
-                checkBoxValues= {checkBoxValues}
-                setCheckBoxValues= {setCheckBoxValues}
+                checkBoxValues={checkBoxValues}
+                setCheckBoxValues={setCheckBoxValues}
               />
             </div>
             <div>
@@ -226,7 +236,9 @@ export default function LubrificationSystemsComponent(er: ERs) {
                 onPageClick={setLubrificationSystemCurrentPage}
               ></Pagination>
             </div>
-            <button type="submit">Excluir</button>
+            <button type="submit" className="DeleteButton">
+              <RiCloseFill /> Excluir
+            </button>
           </form>
         )
       )}

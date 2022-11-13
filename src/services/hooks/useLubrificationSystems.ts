@@ -14,17 +14,24 @@ export interface LubrificationSystems {
   er: ERs;
 }
 
-export async function getLubrificationSystems(): Promise<LubrificationSystems[]> {
-  const { data } = await api.get("lubrificationSystems");
+export async function getLubrificationSystems(
+  id: string
+): Promise<LubrificationSystems[]> {
+  const { data } = await api.get("lubrificationSystems", {
+    params: { id: id },
+  });
 
   const formatedData = data.map((lubrificationSystem: LubrificationSystems) => {
     return {
       id: lubrificationSystem.id,
-      createdAt: new Date(lubrificationSystem.createdAt).toLocaleDateString("pt-BR", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-      }),
+      createdAt: new Date(lubrificationSystem.createdAt).toLocaleDateString(
+        "pt-BR",
+        {
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+        }
+      ),
       add: lubrificationSystem.add.toString(),
       obs: lubrificationSystem.obs,
       activity: lubrificationSystem.activity,
@@ -34,10 +41,8 @@ export async function getLubrificationSystems(): Promise<LubrificationSystems[]>
   return formatedData;
 }
 
-export function useLubrificationSystems() {
-  return useQuery("lubrificationSystems", getLubrificationSystems, {
+export function useLubrificationSystems(id: string) {
+  return useQuery("lubrificationSystems", () => getLubrificationSystems(id), {
     staleTime: 1000 * 30, //30 Seconds
   });
 }
-
-

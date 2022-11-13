@@ -373,4 +373,20 @@ export default createGlobalStyle`
     margin-right: ${theme.width["250px"]};
   }
 
+
+  .DivFormFields {
+    /* display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 6px;
+    margin-left: auto; */
+
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 5px;
+    align-items: center;
+    justify-content: space-between;
+  }
 `;

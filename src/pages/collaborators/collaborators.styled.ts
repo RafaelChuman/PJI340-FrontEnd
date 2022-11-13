@@ -1,3 +1,4 @@
+import { theme } from "@/App.styled";
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -12,13 +13,12 @@ export const Container = styled.div`
   .FormContent {
     display:flex;
     align-items:center;
+    text-align:center;
     flex-direction:column;
     width: 100%;
     margin-top: 6px;
-    direction: column;
-    gap: 10px;
     margin-left: auto;
-    padding: 6px;
+    padding: 10px;
   }
 
 
@@ -28,14 +28,12 @@ export const Container = styled.div`
     align-items:center;
     justify-content:center;
     padding: 8px;
-    background-color: var(--gray.80);
     border-radius: 8px;
     padding-bottom: 4px;
   }
 
   .ChartDataContainer {
     padding: 8px;
-    background-color: var(--gray.800);
     border-radius: 8px;
     padding-bottom: 4px;
   }

@@ -1,20 +1,21 @@
 import { theme } from "@/App.styled";
 import styled from "styled-components";
 
-export const Container = styled.div`
+export const DivPagination = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 8px;
-  justify-content: center;
-  align-items: center;
-  text-align:center;
-  width:100%;
+  margin-top: 50px;
+  width: 100%;
   word-spacing: ${theme.letterSpacings.widest};
 
   div {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
     display: flex;
     direction: row;
-    width:100%;
+    width: 100%;
     word-spacing: ${theme.letterSpacings.widest};
   }
 

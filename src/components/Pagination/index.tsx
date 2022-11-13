@@ -1,4 +1,4 @@
-import { Container } from "./Pagination.styled";
+import { DivPagination } from "./Pagination.styled";
 import { PaginationItem } from "./PaginationItem";
 
 interface PaginationProps {
@@ -67,7 +67,7 @@ export function Pagination({
       : registersPerPage * currentPage;
 
   return (
-    <Container>
+    <DivPagination>
       <div>
       {pages.map((page) => {
           if (currentPage == page) {
@@ -98,6 +98,6 @@ export function Pagination({
           </p>
         }
       </div>
-    </Container>
+    </DivPagination>
   );
 }
