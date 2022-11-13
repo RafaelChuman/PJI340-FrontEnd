@@ -8,7 +8,7 @@ interface dataToComboBox {
 
 interface dataToChart {
   count: number;
-  date_trunc: Date;
+  date: Date;
 }
 
 export function FormatDataToCharts(allData: dataToChart[]): dataOfChart {
@@ -17,7 +17,7 @@ export function FormatDataToCharts(allData: dataToChart[]): dataOfChart {
     let series: number[] = [];
 
     allData.forEach((data) => {
-      categories.push(String(data.date_trunc));
+      categories.push(String(data.date));
       series.push(data.count);
     });
 

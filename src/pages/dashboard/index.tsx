@@ -1,49 +1,53 @@
-import { Header } from "@/components/Header";
-import { SideBar } from "@/components/SideBar";
 import { Charts, dataOfChart } from "@/components/Charts";
-import { useUsersByMonth } from "@/services/hooks/useUsers";
-import { FormatDataToCharts, returnPaginatedData } from "@/services/utils";
-import { useState } from "react";
-import { Container } from "@/components/Header/Header.styled";
+import { useLubrificationSystemsAddByMonth, useLubrificationSystemsByMonth } from "@/services/hooks/useLubrificationSystems";
+import { FormatDataToCharts } from "@/services/utils";
+import { Container } from "./dashboard.styled";
 
 export default function Dashboard() {
   const today = new Date();
-  const numberOfItensPerPage = 10;
 
+  const lubrificationSystemsData = useLubrificationSystemsByMonth(today);
+  let lubrificationSystems: dataOfChart = { categories: [""], series: [0] };
 
-    const usersData = useUsersByMonth();
-  let usersChartData: dataOfChart = { categories: [""], series: [0] };
+  const lubrificationSystemsAddData = useLubrificationSystemsAddByMonth(today);
+  let lubrificationSystemsAdd: dataOfChart = { categories: [""], series: [0] };
 
-
-
-
-
-
-  if (usersData.data) {
-    usersChartData = FormatDataToCharts(usersData.data);
+  if (lubrificationSystemsData.data) {
+    lubrificationSystems = FormatDataToCharts(lubrificationSystemsData.data);
   }
 
+  if (lubrificationSystemsAddData.data) {
+    lubrificationSystemsAdd = FormatDataToCharts(lubrificationSystemsAddData.data);
+  }
 
   return (
-    <div>
-      
+    <>
+      <div>
+        <h1>DashBoard</h1>
+      </div>
       <Container>
-       
-          <div className="GridContainer"  >
-            <div className="GridContent"        >
-
-              <div className="ChartDataContainer">
-                {usersChartData && (
-                  <Charts
-                    dataOfChart={usersChartData}
-                    labelOfChart="Novos Clientes Neste Mês"
-                  ></Charts>
-                )}
-              </div>
+        <div className="GridContainer">
+          <div className="GridContent">
+            <div className="ChartDataContainer">
+              {lubrificationSystems && (
+                <Charts
+                  dataOfChart={lubrificationSystems}
+                  labelOfChart="Nº Manutenções Neste Mês"
+                ></Charts>
+              )}
             </div>
 
+            <div className="ChartDataContainer">
+              {lubrificationSystemsAdd && (
+                <Charts
+                  dataOfChart={lubrificationSystemsAdd}
+                  labelOfChart="Qnt Litros Lubrificante Neste Mês"
+                ></Charts>
+              )}
+            </div>
           </div>
+        </div>
       </Container>
-    </div>
+    </>
   );
 }

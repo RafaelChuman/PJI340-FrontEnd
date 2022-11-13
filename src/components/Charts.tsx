@@ -67,9 +67,9 @@ export function Charts({ labelOfChart, dataOfChart }: ChartsProps) {
 
   return (
     <>
-      <p>
-        {labelOfChart}
-      </p>
+      <label>{labelOfChart}</label>
+        
+      
       <Chart type="area" height={160} options={options} series={series} />
     </>
   );
