@@ -9,13 +9,14 @@ export const Container = styled.div`
   margin-top: 6px;
   margin-left: auto;
 
-  div {
+  .Fields {
+    max-width: 450px;
     display: flex;
+    flex-direction:row;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     width: 100%;
     margin-top: 6px;
-    margin-left: auto;
     padding: 5px;
   }
 

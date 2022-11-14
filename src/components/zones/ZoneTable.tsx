@@ -7,9 +7,10 @@ interface UserTableProps {
   zoneData: Zones[] | undefined;
   checkBoxValues: String[] | undefined;
   setCheckBoxValues: (value: SetStateAction<String[] | undefined>) => void;
+  SetZone: (value: SetStateAction<Zones | undefined>) => void;
 }
 
-export function ZoneTable({ zoneData, checkBoxValues,  setCheckBoxValues}: UserTableProps) {
+export function ZoneTable({ zoneData, checkBoxValues,  setCheckBoxValues, SetZone}: UserTableProps) {
   return (
     <table>
       <thead>
@@ -23,10 +24,10 @@ export function ZoneTable({ zoneData, checkBoxValues,  setCheckBoxValues}: UserT
       <tbody>
         {zoneData ? (
           zoneData.map((ctg) => {
-            return <ZoneTableLine key={ctg.id} zone={ctg} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues}/>;
+            return <ZoneTableLine key={ctg.id} zone={ctg} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues} SetZone={SetZone}/>;
           })
         ) : (
-          <ZoneTableLine zone={undefined} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues}/>
+          <ZoneTableLine zone={undefined} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues} SetZone={SetZone}/>
         )}
       </tbody>
     </table>

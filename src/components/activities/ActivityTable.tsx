@@ -7,9 +7,10 @@ interface UserTableProps {
   activityData: Activities[] | undefined;
   checkBoxValues: String[] | undefined;
   setCheckBoxValues: (value: SetStateAction<String[] | undefined>) => void;
+  setActivity: (value: SetStateAction<Activities | undefined>) => void;
 }
 
-export function ActivityTable({ activityData, checkBoxValues, setCheckBoxValues }: UserTableProps) {
+export function ActivityTable({ activityData, checkBoxValues, setCheckBoxValues, setActivity }: UserTableProps) {
   return (
     <table>
       <thead>
@@ -23,10 +24,10 @@ export function ActivityTable({ activityData, checkBoxValues, setCheckBoxValues 
       <tbody>
         {activityData ? (
           activityData.map((ctg) => {
-            return <ActivityTableLine key={ctg.id} activity={ctg} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues}/>;
+            return <ActivityTableLine key={ctg.id} activity={ctg} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues} setActivity={setActivity}/>;
           })
         ) : (
-          <ActivityTableLine activity={undefined} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues}/>
+          <ActivityTableLine activity={undefined} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues} setActivity={setActivity}/>
         )}
       </tbody>
     </table>

@@ -9,15 +9,15 @@ import { queryClient } from "@/services/queryClient";
 import { useZones, Zones } from "@/services/hooks/useZones";
 import { ZoneTable } from "@/components/zones/ZoneTable";
 import { Container } from "./zones.styled";
-import { json } from "react-router-dom";
 import { RiAddFill, RiCloseFill } from "react-icons/ri";
+import EditZoneComponent from "./editZone";
 
 export default function ZonesComponent() {
-  const today = new Date();
   const numberOfItensPerPage = 5;
 
   const { register, handleSubmit, formState } = useForm<Zones>();
   const [checkBoxValues, setCheckBoxValues] = useState<String[]>();
+  const [zone, setZone] = useState<Zones>();
 
   const formDeletion = useForm();
 
@@ -86,7 +86,6 @@ export default function ZonesComponent() {
 
     console.log(response);
     await queryClient.invalidateQueries("zones");
-    
 
     if (zones.length == checkBoxValues?.length) {
       if (zoneCurrentPage > 1) setZoneCurrentPage(zoneCurrentPage - 1);
@@ -97,75 +96,80 @@ export default function ZonesComponent() {
     setCheckBoxValues([]);
   }
 
-  return (
-    <Container>
-      <h1>Zonas</h1>
-      <div>
-        <form
-          onSubmit={handleSubmit(handleCreateZone)}
-          className="zonaContent"
-          title={"Form Criar Zona"}
-          placeholder={"Form Criar Zona"}
-        >
-          <p>{ErrorZone}</p>
-          <div>
-            <label>Insira o Nome da Zona:</label>
-            <input
-              width="100%"
-              alt="Zona"
-              type="text"
-              title="Zona"
-              placeholder="Zona"
-              {...name}
-            />
-            <ErrorMessage errors={formState.errors} name="name" />
-          </div>
-          <div>
-            <button type={"submit"} disabled={formState.isSubmitting}>
-              {formState.isSubmitting ? (
-                "..."
-              ) : (
-                <>
-                  <RiAddFill /> Salvar
-                </>
-              )}
-            </button>
-          </div>
-        </form>
-      </div>
-
-      {zonesWithoutPagination.isLoading ? (
-        "..."
-      ) : zonesWithoutPagination.error ? (
-        <p>Falha ao Obter Dados</p>
-      ) : (
-        zonesWithoutPagination.data && (
+  if (zone) {
+    return <EditZoneComponent SetZone={setZone} setCheckBoxValues={setCheckBoxValues} zone={zone} />;
+  } else {
+    return (
+      <Container>
+        <h1>Zonas</h1>
+        <div>
           <form
-            title={"Form Excluir Zona"}
-            placeholder={"Form Excluir Zona"}
-            onSubmit={formDeletion.handleSubmit(handleDelete)}
+            onSubmit={handleSubmit(handleCreateZone)}
+            className="zonaContent"
+            title={"Form Criar Zona"}
+            placeholder={"Form Criar Zona"}
           >
-            <div className="ZoneTableContent">
-              <ZoneTable
-                zoneData={zones}
-                checkBoxValues={checkBoxValues}
-                setCheckBoxValues={setCheckBoxValues}
+            <p>{ErrorZone}</p>
+            <div className="Fields">
+              <label>Insira o Nome da Zona:</label>
+              <input
+                width="100%"
+                alt="Zona"
+                type="text"
+                title="Zona"
+                placeholder="Zona"
+                {...name}
               />
+              <ErrorMessage errors={formState.errors} name="name" />
             </div>
             <div>
-              <Pagination
-                totalCountOfRegisters={zonesWithoutPagination.data.length}
-                currentPage={zoneCurrentPage}
-                registersPerPage={numberOfItensPerPage}
-                onPageClick={setZoneCurrentPage}
-              ></Pagination>
+              <button type={"submit"} disabled={formState.isSubmitting}>
+                {formState.isSubmitting ? (
+                  "..."
+                ) : (
+                  <>
+                    <RiAddFill /> Salvar
+                  </>
+                )}
+              </button>
             </div>
-            <button type="submit" className="DeleteButton">
-              <RiCloseFill /> Excluir
-            </button>
           </form>
-        )
-      )}
-    </Container>
-  );
+        </div>
+
+        {zonesWithoutPagination.isLoading ? (
+          "..."
+        ) : zonesWithoutPagination.error ? (
+          <p>Falha ao Obter Dados</p>
+        ) : (
+          zonesWithoutPagination.data && (
+            <form
+              title={"Form Excluir Zona"}
+              placeholder={"Form Excluir Zona"}
+              onSubmit={formDeletion.handleSubmit(handleDelete)}
+            >
+              <div className="ZoneTableContent">
+                <ZoneTable
+                  zoneData={zones}
+                  checkBoxValues={checkBoxValues}
+                  setCheckBoxValues={setCheckBoxValues}
+                  SetZone={setZone}
+                />
+              </div>
+              <div>
+                <Pagination
+                  totalCountOfRegisters={zonesWithoutPagination.data.length}
+                  currentPage={zoneCurrentPage}
+                  registersPerPage={numberOfItensPerPage}
+                  onPageClick={setZoneCurrentPage}
+                ></Pagination>
+              </div>
+              <button type="submit" className="DeleteButton">
+                <RiCloseFill /> Excluir
+              </button>
+            </form>
+          )
+        )}
+      </Container>
+    );
+  }
 }

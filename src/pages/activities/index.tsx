@@ -10,13 +10,16 @@ import { Container } from "./activities.styled";
 import { Activities, useActivities } from "@/services/hooks/useActivity";
 import { ActivityTable } from "@/components/activities/ActivityTable";
 import { RiAddFill, RiCloseFill } from "react-icons/ri";
+import EditActivityComponent from "./editActivity";
 
 export default function ActivitiesComponent() {
   const today = new Date();
   const numberOfItensPerPage = 5;
 
   const { register, handleSubmit, formState } = useForm<Activities>();
+
   const [checkBoxValues, setCheckBoxValues] = useState<String[]>();
+  const [activity, setActivity] = useState<Activities>();
 
   const formDeletion = useForm();
 
@@ -29,9 +32,9 @@ export default function ActivitiesComponent() {
   let activities;
 
   const createActivity = useMutation(
-    async (activity: Activities) => {
+    async (activityInsert: Activities) => {
       const response = await api.post("activities", {
-        name: activity.name,
+        name: activityInsert.name,
       });
 
       return response;
@@ -77,7 +80,6 @@ export default function ActivitiesComponent() {
   };
 
   async function handleDelete() {
-
     const response = await api.delete(`activities`, {
       data: {
         ids: checkBoxValues,
@@ -94,76 +96,91 @@ export default function ActivitiesComponent() {
     await queryClient.invalidateQueries("activities");
   }
 
-  return (
-    <Container>
-      <h1>Atividades</h1>
-      <div>
-        <form
-          onSubmit={handleSubmit(handleCreateActivity)}
-          className="zonaContent"
-          title={"Form Criar Serviço"}
-          placeholder={"Form Criar Serviço"}
-        >
-          <p>{ErrorActivity}</p>
-          <div>
-            <label>Insira a descrição do Serviço:</label>
-            <input
-              width="100%"
-              alt="Serviço"
-              type="text"
-              title="Serviço"
-              placeholder="Serviço"
-              {...name}
-            />
-            <ErrorMessage errors={formState.errors} name="name" />
-          </div>
-          <div>
-            <button type={"submit"} disabled={formState.isSubmitting}>
-              {formState.isSubmitting ? (
-                "..."
-              ) : (
-                <>
-                  <RiAddFill /> Salvar
-                </>
-              )}
-            </button>
-          </div>
-        </form>
-      </div>
+  if (activity) {
+    console.log(activity);
 
-      {activitiesWithoutPagination.isLoading ? (
-        "..."
-      ) : activitiesWithoutPagination.error ? (
-        <p>Falha ao Obter Dados</p>
-      ) : (
-        activitiesWithoutPagination.data && (
+    return (
+      <EditActivityComponent
+        activity={activity}
+        setCheckBoxValues={setCheckBoxValues}
+        setActivity={setActivity}
+      />
+    );
+  } else {
+    return (
+      <Container>
+        <h1>Atividades</h1>
+        <div>
           <form
-            title={"Form Excluir Serviço"}
-            placeholder={"Form Excluir Serviço"}
-            onSubmit={formDeletion.handleSubmit(handleDelete)}
+            onSubmit={handleSubmit(handleCreateActivity)}
+            className="activityContent"
+            title={"Form Criar Serviço"}
+            placeholder={"Form Criar Serviço"}
           >
-            <div className="ActivityTableContent">
-              <ActivityTable
-                activityData={activities}
-                checkBoxValues={checkBoxValues}
-                setCheckBoxValues={setCheckBoxValues}
+            <p>{ErrorActivity}</p>
+            <div>
+              <label>Insira a descrição do Serviço:</label>
+              <input
+                width="100%"
+                alt="Serviço"
+                type="text"
+                title="Serviço"
+                placeholder="Serviço"
+                {...name}
               />
+              <ErrorMessage errors={formState.errors} name="name" />
             </div>
             <div>
-              <Pagination
-                totalCountOfRegisters={activitiesWithoutPagination.data.length}
-                currentPage={activityCurrentPage}
-                registersPerPage={numberOfItensPerPage}
-                onPageClick={setActivityCurrentPage}
-              ></Pagination>
+              <button type={"submit"} disabled={formState.isSubmitting}>
+                {formState.isSubmitting ? (
+                  "..."
+                ) : (
+                  <>
+                    <RiAddFill /> Salvar
+                  </>
+                )}
+              </button>
             </div>
-            <button type="submit" className="DeleteButton">
-              <RiCloseFill />
-              Excluir
-            </button>
           </form>
-        )
-      )}
-    </Container>
-  );
+        </div>
+
+        {activitiesWithoutPagination.isLoading ? (
+          "..."
+        ) : activitiesWithoutPagination.error ? (
+          <p>Falha ao Obter Dados</p>
+        ) : (
+          activitiesWithoutPagination.data && (
+            <form
+              title={"Form Excluir Serviço"}
+              placeholder={"Form Excluir Serviço"}
+              onSubmit={formDeletion.handleSubmit(handleDelete)}
+            >
+              <div className="ActivityTableContent">
+                <ActivityTable
+                  activityData={activities}
+                  checkBoxValues={checkBoxValues}
+                  setCheckBoxValues={setCheckBoxValues}
+                  setActivity={setActivity}
+                />
+              </div>
+              <div>
+                <Pagination
+                  totalCountOfRegisters={
+                    activitiesWithoutPagination.data.length
+                  }
+                  currentPage={activityCurrentPage}
+                  registersPerPage={numberOfItensPerPage}
+                  onPageClick={setActivityCurrentPage}
+                ></Pagination>
+              </div>
+              <button type="submit" className="DeleteButton">
+                <RiCloseFill />
+                Excluir
+              </button>
+            </form>
+          )
+        )}
+      </Container>
+    );
+  }
 }

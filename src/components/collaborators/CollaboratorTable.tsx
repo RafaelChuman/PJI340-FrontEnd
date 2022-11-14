@@ -6,12 +6,14 @@ interface CollaboratorTableProps {
   collaboratorsData: Collaborators[] | undefined;
   checkBoxValues: String[] | undefined;
   setCheckBoxValues: (value: SetStateAction<String[] | undefined>) => void;
+  setCollaborator: (value: SetStateAction<Collaborators | undefined>) => void;
 }
 
 export function CollaboratorTable({
   collaboratorsData,
   checkBoxValues,
   setCheckBoxValues,
+  setCollaborator
 }: CollaboratorTableProps) {
   return (
     <table>
@@ -33,6 +35,7 @@ export function CollaboratorTable({
                 collaborators={collaborators}
                 checkBoxValues={checkBoxValues}
                 setCheckBoxValues={setCheckBoxValues}
+                setCollaborator={setCollaborator}
               />
             );
           })
@@ -42,6 +45,7 @@ export function CollaboratorTable({
             collaborators={undefined}
             checkBoxValues={checkBoxValues}
             setCheckBoxValues={setCheckBoxValues}
+            setCollaborator={setCollaborator}
           />
         )}
       </tbody>

@@ -7,9 +7,10 @@ interface TableLineProps {
   activity: Activities | undefined;
   checkBoxValues: String[] | undefined;
   setCheckBoxValues: (value: SetStateAction<String[] | undefined>) => void;
+  setActivity: (value: SetStateAction<Activities | undefined>) => void;
 }
 
-export function ActivityTableLine({ activity, checkBoxValues, setCheckBoxValues }: TableLineProps) {
+export function ActivityTableLine({ activity, checkBoxValues, setCheckBoxValues, setActivity }: TableLineProps) {
   if (!activity) {
     return <></>;
   }
@@ -31,7 +32,7 @@ export function ActivityTableLine({ activity, checkBoxValues, setCheckBoxValues 
       </td>
       <td>{activity.createdAt}</td>
       <td>
-        <button>
+        <button type="button" onClick={()=> setActivity(activity)}>
           <RiPencilLine />
           &nbsp; Editar
         </button>

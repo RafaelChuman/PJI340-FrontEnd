@@ -8,9 +8,10 @@ interface TableLineProps {
   collaborators: Collaborators | undefined;
   checkBoxValues: String[] | undefined;
   setCheckBoxValues: (value: SetStateAction<String[] | undefined>) => void;
+  setCollaborator: (value: SetStateAction<Collaborators | undefined>) => void;
 }
 
-export function CollaboratorTableLine({ collaborators, checkBoxValues, setCheckBoxValues }: TableLineProps) {
+export function CollaboratorTableLine({ collaborators, checkBoxValues, setCheckBoxValues, setCollaborator }: TableLineProps) {
   if (!collaborators) {
     return <></>;
   }
@@ -38,7 +39,7 @@ export function CollaboratorTableLine({ collaborators, checkBoxValues, setCheckB
          {collaborators.createdAt}
       </td>
       <td>
-        <button type="button">
+        <button type="button" onClick={()=>{setCollaborator(collaborators)}}>
           <RiPencilLine fontSize="16" />
            Editar
         </button>

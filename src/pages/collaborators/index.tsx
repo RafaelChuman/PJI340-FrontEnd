@@ -14,6 +14,7 @@ import { queryClient } from "@/services/queryClient";
 import InputMask from "react-input-mask";
 import { Container } from "./collaborators.styled";
 import { RiAddFill, RiCloseFill } from "react-icons/ri";
+import EditCollaboratorComponent from "./editCollaborator";
 
 export default function CollaboratorsComponent() {
   const today = new Date();
@@ -31,6 +32,7 @@ export default function CollaboratorsComponent() {
 
   const formDeletion = useForm();
   const [checkBoxValues, setCheckBoxValues] = useState<String[]>();
+  const [collaborator, setCollaborator] = useState<Collaborators>();
 
   let collaborators;
 
@@ -145,6 +147,15 @@ export default function CollaboratorsComponent() {
     await queryClient.invalidateQueries("collaborators");
   }
 
+  if (collaborator) {
+    return (
+      <EditCollaboratorComponent
+        setCheckBoxValues={setCheckBoxValues}
+        setCollaborator={setCollaborator}
+        collaborator={collaborator}
+      ></EditCollaboratorComponent>
+    );
+  }
   return (
     <Container>
       <Container>
@@ -247,6 +258,7 @@ export default function CollaboratorsComponent() {
                   collaboratorsData={collaborators}
                   checkBoxValues={checkBoxValues}
                   setCheckBoxValues={setCheckBoxValues}
+                  setCollaborator={setCollaborator}
                 />
 
                 <Pagination

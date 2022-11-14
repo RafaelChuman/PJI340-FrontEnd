@@ -8,9 +8,10 @@ interface TableLineProps {
   zone: Zones | undefined;
   checkBoxValues: String[] | undefined;
   setCheckBoxValues: (value: SetStateAction<String[] | undefined>) => void;
+  SetZone: (value: SetStateAction<Zones | undefined>) => void;
 }
 
-export function ZoneTableLine({ zone, checkBoxValues, setCheckBoxValues }: TableLineProps) {
+export function ZoneTableLine({ zone, checkBoxValues, setCheckBoxValues, SetZone }: TableLineProps) {
   if (!zone) {
     return <></>;
   }
@@ -35,8 +36,8 @@ export function ZoneTableLine({ zone, checkBoxValues, setCheckBoxValues }: Table
       </td>
       <td>{zone.createdAt}</td>
       <td>
-        <button>
-          <RiPencilLine />
+        <button onClick={()=>SetZone(zone)}>
+          <RiPencilLine ></RiPencilLine>
           &nbsp; Editar
         </button>
       </td>
