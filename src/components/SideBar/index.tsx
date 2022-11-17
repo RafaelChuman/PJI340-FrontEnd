@@ -1,5 +1,5 @@
 import { Container } from "./SideBar.styled";
-import { NavLink } from "./NavLink";
+import { NavLinkComponent } from "./NavLink";
 import { NavSection } from "./NavSection";
 import {
   RiHome2Line,
@@ -13,20 +13,20 @@ export function SideBar() {
   return (
     <Container>
       <NavSection title="Manutenção">
-        <NavLink href="/dashboard" icon={RiDashboardLine} navComponent="Dashboard" />
-        <NavLink
+        <NavLinkComponent href="/dashboard" icon={RiDashboardLine} navComponent="Dashboard" />
+        <NavLinkComponent
           href="/ers"
           icon={RiHome2Line}
           navComponent="ER's"
         />
 
-        <NavLink href="/zones" icon={RiInputMethodLine} navComponent="Zonas" />
-        <NavLink
+        <NavLinkComponent href="/zones" icon={RiInputMethodLine} navComponent="Zonas" />
+        <NavLinkComponent
           href="/activities"
           icon={RiGitMergeLine}
           navComponent="Atividades"
         />
-        <NavLink
+        <NavLinkComponent
           href="/collaborators"
           icon={RiHealthBookLine}
           navComponent="Colaboradores"

@@ -1,6 +1,7 @@
 import React from "react";
 import { ElementType } from "react";
 import { IconType } from "react-icons/lib";
+import { NavLink } from "react-router-dom";
 
 interface NavLinkProps {
   icon: IconType;
@@ -8,14 +9,12 @@ interface NavLinkProps {
   href: string;
 }
 
-export function NavLink({ icon, navComponent, href }: NavLinkProps) {
+export function NavLinkComponent({ icon, navComponent, href }: NavLinkProps) {
   return (
     <div className="NavLink">
-      <a href={href}>
-        <>
-          {React.createElement(icon) }&nbsp; {navComponent}
-        </>
-      </a>
+      <NavLink to={href}>
+        {React.createElement(icon)}&nbsp; {navComponent}
+      </NavLink>
     </div>
   );
 }
