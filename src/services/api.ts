@@ -5,8 +5,8 @@ export function setupAPIClient() {
  
 
   const api: AxiosInstance = axios.create({
-    //baseURL: "http://pji240.herokuapp.com/",
-    baseURL: "http://127.0.0.1:3333/",
+    baseURL: "https://pji340.herokuapp.com/",
+    //baseURL: "http://127.0.0.1:3333/",
     headers: {
       authorization: localStorage.getItem("pji340.token"),
     },
