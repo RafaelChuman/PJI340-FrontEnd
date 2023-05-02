@@ -43,6 +43,9 @@ const Home = () => {
   });
 
   const handleSignIn: SubmitHandler<UserSignInCredentials> = async (values) => {
+
+    console.log("Início");
+
     const response = await SignIn(values);
 
     if (response.tokenError != undefined) {
@@ -56,18 +59,20 @@ const Home = () => {
     }
   };
 
+  console.log(".")
+
   return (
     <>
       <h1>Login</h1>
 
-      
+
 
 
       <form onSubmit={handleSubmit(handleSignIn)}>
-        
-        
+
+
         <Container>
-        <label>Insira seu Usuário: </label>
+          <label>Insira seu Usuário: </label>
           <input
             alt="Usuário"
             type="text"
@@ -79,7 +84,7 @@ const Home = () => {
           <ErrorMessage errors={formState.errors} name="userName" />
         </Container>
         <Container>
-        <label>Insira sua Senha: </label>
+          <label>Insira sua Senha: </label>
           <input
             alt="Senha"
             type="password"

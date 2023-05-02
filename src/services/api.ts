@@ -2,12 +2,12 @@ import axios, { Axios, AxiosError, AxiosInstance } from "axios";
 import { SignOut, TokenError } from "./hooks/useAuthentication";
 
 export function setupAPIClient() {
- 
+
 
   const api: AxiosInstance = axios.create({
-    baseURL: "https://pji340.onrender.com/",
+    //baseURL: "https://pji340.onrender.com/",
     //baseURL: "https://pji340.herokuapp.com/",
-    //baseURL: "http://127.0.0.1:3333/",
+    baseURL: "http://127.0.0.1:3333/",
     headers: {
       authorization: localStorage.getItem("pji340.token"),
     },
@@ -19,7 +19,7 @@ export function setupAPIClient() {
 
     if (resp) {
       if (resp.headers) {
-        
+
         if (token) {
           resp.headers.authorization = token;
         }

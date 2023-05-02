@@ -57,6 +57,11 @@ export async function getToken({
   responseToken.token = undefined;
   responseToken.tokenError = undefined;
 
+  console.log(JSON.stringify({
+    userName: userName,
+    password: password,
+  }))
+
   const resp = await api
     .post<Token>("/", {
       userName: userName,
@@ -64,6 +69,7 @@ export async function getToken({
     })
     .catch((error) => {
       responseToken.tokenError = error;
+      console.log(error)
     });
 
   responseToken.token = resp;
@@ -85,11 +91,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
   let [nameProvider, setNameProvider] = useState<string>("");
 
   useEffect(() => {
-    const userName = localStorage.getItem( "pji340.userName")
+    const userName = localStorage.getItem("pji340.userName")
     authChanel = new BroadcastChannel("auth");
 
     if (userName) {
-      let searchParam =  userName;
+      let searchParam = userName;
       api
         .get<User>(`users/?userName=${searchParam}`)
         .then((resp) => {

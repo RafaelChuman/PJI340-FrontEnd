@@ -1,20 +1,30 @@
-
-import { theme } from "@/App.styled";
 import { ApexOptions } from "apexcharts";
-
-import Chart from "react-apexcharts";
+import React from "react";
+import ReactApexChart from "react-apexcharts";
+import styled from "styled-components";
 
 export interface ChartsProps {
   labelOfChart: string;
   dataOfChart: dataOfChart;
+  color: { [key: string]: string };
 }
 
 export interface dataOfChart {
   categories: string[];
-  series: number[];
+  series: series[];
 }
 
-export function Charts({ labelOfChart, dataOfChart }: ChartsProps) {
+export interface series{
+  name: string,
+  data: number[]
+  
+}
+
+
+const  Charts: React.FC<ChartsProps> =({ labelOfChart, dataOfChart, color }: ChartsProps) => {
+
+  //dataOfChart.data.forEach( item => { series.push(item) })
+  
   const options: ApexOptions = {
     chart: {
       toolbar: {
@@ -23,7 +33,7 @@ export function Charts({ labelOfChart, dataOfChart }: ChartsProps) {
       zoom: {
         enabled: false,
       },
-      foreColor: theme.colors.gray[300],
+      foreColor: color[300],
     },
     grid: {
       show: false,
@@ -40,10 +50,10 @@ export function Charts({ labelOfChart, dataOfChart }: ChartsProps) {
     xaxis: {
       type: "category",
       axisBorder: {
-        color: theme.colors.gray[600],
+        color: color[600],
       },
       axisTicks: {
-        color: theme.colors.gray[600],
+        color: color[600],
       },
       categories: dataOfChart.categories,
     },
@@ -58,19 +68,24 @@ export function Charts({ labelOfChart, dataOfChart }: ChartsProps) {
     },
   };
 
-  const series = [
-    {
-      name: "Series1",
-      data: dataOfChart.series
-    },
-  ];
+  const LabelStyled = styled.label`
+    color: ${color[600]};
+  `;
+
+  const series:series[] = dataOfChart.series
 
   return (
     <>
-      <label>{labelOfChart}</label>
-        
-      
-      <Chart type="area" height={160} options={options} series={series} />
+      <LabelStyled>{labelOfChart}</LabelStyled>
+
+      <ReactApexChart
+        type="area"
+        height={160}
+        options={options}
+        series={series}
+      />
     </>
   );
 }
+
+export default Charts;

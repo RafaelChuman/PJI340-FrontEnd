@@ -1,24 +1,32 @@
 import { theme } from "@/App.styled";
-import styled from "styled-components";
+import styled, { StyledComponent, ThemedStyledFunction } from "styled-components";
 
-export const Container = styled.div`
-  display: flex;
-  width: 100%;
-  flex-direction:column;
+interface Dictionary {
+  [Key: string]: string;
+}
 
+interface ChartsProps {
+  color: { [key: string]: string };
+}
 
- 
-  .ChartDataContainer {
+export function Container({ color }: ChartsProps) {
+  return styled.div`
     display: flex;
-    width:100%;
+    width: 100%;
     flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    margin: 20px;
-    padding: 20px;
-    border-radius: 10px;
-    border: 2px solid ${theme.colors.pink[800]};
-    
-  }
-`;
+
+    .ChartDataContainer {
+      display: flex;
+      width:100%;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      margin: 20px;
+      padding: 20px;
+      border-radius: 10px;
+      border: 2px solid ${color[800]};
+      
+    }
+  `;
+}

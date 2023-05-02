@@ -6,33 +6,36 @@ interface dataToComboBox {
   name: string;
 }
 
-interface dataToChart {
-  count: number;
-  date: Date;
-}
 
-export function FormatDataToCharts(allData: dataToChart[]): dataOfChart {
-  if (allData) {
-    let categories: string[] = [];
-    let series: number[] = [];
 
-    allData.forEach((data) => {
-      categories.push(String(data.date));
-      series.push(data.count);
-    });
 
-    if (categories.length && series.length) {
-      return {
-        categories: categories,
-        series: series,
-      };
-    }
-  }
-  return {
-    categories: [""],
-    series: [0],
-  };
-}
+
+
+
+
+
+// export function FormatDataToCharts(allData: dataToChart[]): dataOfChart {
+//   if (allData) {
+//     let categories: string[] = [];
+//     let series: number[] = [];
+
+//     allData.forEach((data) => {
+//       categories.push(String(data.date));
+//       series.push(data.count);
+//     });
+
+//     if (categories.length && series.length) {
+//       return {
+//         categories: categories,
+//         series: series,
+//       };
+//     }
+//   }
+//   return {
+//     categories: [""],
+//     series: [0],
+//   };
+// }
 
 
 
