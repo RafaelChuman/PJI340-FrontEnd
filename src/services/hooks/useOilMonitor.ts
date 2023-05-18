@@ -1,14 +1,8 @@
 import { useQuery } from "react-query";
 import { api } from "@/services/api";
-import { ERs } from "./useERs";
 import { dataOfChart } from "@/components/Charts";
+import { OilMonitor } from "../entities";
 
-export interface OilMonitor {
-  id: string;
-  oilLevel: number;
-  createdAt: Date;
-  er: ERs;
-}
 
 export interface OilMonitorGroupedByER {
   erId: string;

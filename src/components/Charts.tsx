@@ -14,19 +14,31 @@ export interface dataOfChart {
   series: series[];
 }
 
-export interface series{
-  name: string,
-  data: number[]
-  
+export interface series {
+  name: string;
+  group?: string;
+  data: { x: any; y: any }[];
 }
 
-
-const  Charts: React.FC<ChartsProps> =({ labelOfChart, dataOfChart, color }: ChartsProps) => {
-
+const Charts: React.FC<ChartsProps> = ({
+  labelOfChart,
+  dataOfChart,
+  color,
+}: ChartsProps) => {
   //dataOfChart.data.forEach( item => { series.push(item) })
-  
+
   const options: ApexOptions = {
     chart: {
+      id: "realtime",
+      height: 350,
+      type: "line",
+      animations: {
+        enabled: false,
+        easing: "linear",
+        dynamicAnimation: {
+          speed: 1000,
+        },
+      },
       toolbar: {
         show: false,
       },
@@ -48,7 +60,7 @@ const  Charts: React.FC<ChartsProps> =({ labelOfChart, dataOfChart, color }: Cha
       enabled: false,
     },
     xaxis: {
-      type: "category",
+      type: "datetime",
       axisBorder: {
         color: color[600],
       },
@@ -72,7 +84,7 @@ const  Charts: React.FC<ChartsProps> =({ labelOfChart, dataOfChart, color }: Cha
     color: ${color[600]};
   `;
 
-  const series:series[] = dataOfChart.series
+  const series = dataOfChart.series;
 
   return (
     <>
@@ -80,12 +92,13 @@ const  Charts: React.FC<ChartsProps> =({ labelOfChart, dataOfChart, color }: Cha
 
       <ReactApexChart
         type="area"
-        height={160}
+        height={350}
+        width={450}
         options={options}
         series={series}
       />
     </>
   );
-}
+};
 
 export default Charts;

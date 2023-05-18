@@ -1,38 +1,39 @@
 import Charts, { dataOfChart } from "@/components/Charts";
 import { Container } from "./dashboard.styled";
 import { theme } from "@/App.styled";
-import { useEffect, useState } from "react";
-import {
-  FormatDataToCharts,
-  groupByER,
-  useOilMonitor,
-} from "@/services/hooks/useOilMonitor";
+import { useState } from "react";
 import React from "react";
+import useModal from "@/services/hooks/useModal";
+import Modal from "@/components/Modal";
+import { RiFilter2Fill } from "react-icons/ri";
+import { FormatDataToCharts, useLubrificationSystems } from "@/services/hooks/useLubrificationSystems";
 
 export default function Dashboard() {
   const today = new Date();
 
+  today.setDate(1);
+
+  const { isOpen, toggle } = useModal();
+
   const [color, useColor] = useState(theme.colors.purple);
 
-  const oilMonitorData = useOilMonitor(today);
+  const lsData = useLubrificationSystems(today);
 
-  let oilMonitor: dataOfChart={
+  let lsDataToChart: dataOfChart = {
     categories: [],
-    series: []
-  };;
+    series: [],
+  };
 
-  // const lubrificationSystemsAddData = useLubrificationSystemsAddByMonth(today);
-  // let lubrificationSystemsAdd: dataOfChart = { categories: [""], series: [0] };
-
-  if (oilMonitorData.data) {
-    let oilMonitorDataGroupedByER = groupByER(oilMonitorData.data);
-
-
-    oilMonitor = FormatDataToCharts(oilMonitorDataGroupedByER);
+  if (lsData.data) {
+    lsDataToChart = FormatDataToCharts(lsData.data, "ART");
   }
 
-  // if (lubrificationSystemsAddData.data) {
-  //   lubrificationSystemsAdd = FormatDataToCharts(lubrificationSystemsAddData.data);
+  // const oilMonitorData = useOilMonitor(today);
+
+  // if (oilMonitorData.data) {
+  //   let oilMonitorDataGroupedByER = groupByER(oilMonitorData.data);
+
+  //   oilMonitor = FormatDataToCharts(oilMonitorDataGroupedByER);
   // }
 
   const ContainerStyled = Container({ color });
@@ -43,20 +44,24 @@ export default function Dashboard() {
         <h1>DashBoard</h1>
       </div>
 
+      <Modal isOpen={isOpen} toggle={toggle}></Modal>
 
-        <ContainerStyled>
-         <div className="ChartDataContainer">
-           {oilMonitor && (
-             <Charts
-               dataOfChart={oilMonitor}
-               labelOfChart="Nº Manutenções Neste Mês"
-               color={color}
-             ></Charts>
-           )}
-         </div>
-          
-         </ContainerStyled> 
+      <ContainerStyled>
+        <div className="ChartDataContainer">
+          <div className="filterButton">
+            <button onClick={toggle}>
+              {React.createElement(RiFilter2Fill)}{" "}
+            </button>
+          </div>
+          {lsDataToChart && (
+            <Charts
+              dataOfChart={lsDataToChart}
+              labelOfChart="Nº Manutenções Neste Mês"
+              color={color}
+            ></Charts>
+          )}
+        </div>
+      </ContainerStyled>
     </>
   );
 }
-

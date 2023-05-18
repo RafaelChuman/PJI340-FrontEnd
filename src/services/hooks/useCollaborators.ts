@@ -1,16 +1,8 @@
 import { useQuery } from "react-query";
 import { api } from "../api";
 import { convertToDateBR, convertToWhatsAppMask } from "../utils";
+import { Collaborators } from "../entities";
 
-export interface Collaborators {
-  id: string;
-  name: string;
-  cep: string;
-  numberAddress: string;
-  cellphone: string;
-  whatsApp: string;
-  createdAt?: string;
-}
 
 
 

@@ -1,11 +1,7 @@
 import { useQuery } from "react-query";
 import { api } from "@/services/api";
+import { Activities } from "../entities";
 
-export interface Activities {
-  id: string;
-  name: string;
-  createdAt: string;
-}
 
 export async function getActivities(): Promise<Activities[]> {
   const { data } = await api.get("activities");

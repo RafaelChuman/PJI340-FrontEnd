@@ -1,11 +1,7 @@
 import { useQuery } from "react-query";
 import { api } from "@/services/api";
+import { Zones } from "../entities";
 
-export interface Zones {
-  id: string;
-  name: string;
-  createdAt: string;
-}
 
 export async function getZones(): Promise<Zones[]> {
   const { data } = await api.get("zones");
