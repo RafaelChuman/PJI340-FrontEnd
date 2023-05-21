@@ -65,32 +65,32 @@ export function useOilMonitor(date: Date) {
   });
 }
 
-export function FormatDataToCharts(oilmonitor: OilMonitorGroupedByER[]) {
-  let data: dataOfChart = {
-    categories: [],
-    series: [],
-  };
+// export function FormatDataToCharts(oilmonitor: OilMonitorGroupedByER[]) {
+//   let data: dataOfChart = {
+//     categories: [],
+//     series: [],
+//   };
 
-  oilmonitor.forEach((erItem) => {
-    let dataItem: number[] = [];
+//   oilmonitor.forEach((erItem) => {
+//     let dataItem: number[] = [];
 
-    erItem.oilMonitors.forEach((oilItem) => {
-      dataItem.push(oilItem.oilLevel);
+//     erItem.oilMonitors.forEach((oilItem) => {
+//       dataItem.push(oilItem.oilLevel);
 
-      data.categories.push(
-        new Date(oilItem.createdAt).toLocaleDateString("pt-BR", {
-          day: "2-digit",
-          month: "long",
-          year: "numeric",
-        })
-      );
-    });
+//       data.categories.push(
+//         new Date(oilItem.createdAt).toLocaleDateString("pt-BR", {
+//           day: "2-digit",
+//           month: "long",
+//           year: "numeric",
+//         })
+//       );
+//     });
 
-    data.series.push({
-      name: erItem.erId,
-      data: dataItem,
-    });
-  });
+//     data.series.push({
+//       name: erItem.erId,
+//       data: dataItem,
+//     });
+//   });
 
-  return data;
-}
+//   return data;
+// }

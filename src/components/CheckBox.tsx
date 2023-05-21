@@ -1,7 +1,5 @@
-import { ERs } from "@/services/hooks/useERs";
-import { forwardRef } from "react";
 
-export async function checkBoxClickEvent(
+async function checkBoxClickEvent(
   event: React.ChangeEvent<HTMLInputElement>,
   checkBoxValues: String[] | undefined,
   setCheckBoxValues: React.Dispatch<React.SetStateAction<String[] | undefined>>

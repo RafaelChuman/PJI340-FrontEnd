@@ -44,8 +44,6 @@ const Home = () => {
 
   const handleSignIn: SubmitHandler<UserSignInCredentials> = async (values) => {
 
-    console.log("Início");
-
     const response = await SignIn(values);
 
     if (response.tokenError != undefined) {
@@ -58,8 +56,6 @@ const Home = () => {
       navigate("/dashboard");
     }
   };
-
-  console.log(".")
 
   return (
     <>

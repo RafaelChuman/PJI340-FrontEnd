@@ -6,13 +6,14 @@ import { ErrorMessage } from "@hookform/error-message";
 import { useMutation } from "react-query";
 import { api } from "@/services/api";
 import { queryClient } from "@/services/queryClient";
-import { useERs, ERs } from "@/services/hooks/useERs";
+import { useERs } from "@/services/hooks/useERs";
 import { Container } from "./ers.styled";
 import { ERTable } from "@/components/ers/ERTable";
-import { useZones, Zones } from "@/services/hooks/useZones";
+import { useZones } from "@/services/hooks/useZones";
 import { ComboBox } from "@/components/ComboBox";
 import EditERsComponent from "./editERs";
 import { RiCloseFill, RiAddFill } from "react-icons/ri";
+import { ERs } from "@/services/entities";
 
 export default function ERsComponent() {
   const today = new Date();
@@ -78,7 +79,6 @@ export default function ERsComponent() {
   });
 
   const handleCreateER: SubmitHandler<ERs> = async (values: ERs) => {
-    console.log(values);
     const response = await createER.mutateAsync(values);
 
     if (response.status == 200) {

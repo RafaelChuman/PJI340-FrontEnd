@@ -57,11 +57,6 @@ export async function getToken({
   responseToken.token = undefined;
   responseToken.tokenError = undefined;
 
-  console.log(JSON.stringify({
-    userName: userName,
-    password: password,
-  }))
-
   const resp = await api
     .post<Token>("/", {
       userName: userName,
@@ -69,7 +64,6 @@ export async function getToken({
     })
     .catch((error) => {
       responseToken.tokenError = error;
-      console.log(error)
     });
 
   responseToken.token = resp;

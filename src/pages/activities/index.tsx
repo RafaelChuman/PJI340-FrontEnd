@@ -7,10 +7,11 @@ import { useMutation } from "react-query";
 import { api } from "@/services/api";
 import { queryClient } from "@/services/queryClient";
 import { Container } from "./activities.styled";
-import { Activities, useActivities } from "@/services/hooks/useActivity";
+import { useActivities } from "@/services/hooks/useActivity";
 import { ActivityTable } from "@/components/activities/ActivityTable";
 import { RiAddFill, RiCloseFill } from "react-icons/ri";
 import EditActivityComponent from "./editActivity";
+import { Activities } from "@/services/entities";
 
 export default function ActivitiesComponent() {
   const today = new Date();
@@ -97,7 +98,6 @@ export default function ActivitiesComponent() {
   }
 
   if (activity) {
-    console.log(activity);
 
     return (
       <EditActivityComponent

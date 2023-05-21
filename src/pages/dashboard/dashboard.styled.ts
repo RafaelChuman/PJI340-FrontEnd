@@ -35,10 +35,40 @@ export function Container({ color }: ChartsProps) {
 
       .filterButton {
         position: absolute;
-        top: 7%;
-        right: 5%;
+        top: 15px;
+        right: 15px;
         display: inline-block;
       }
+    }
+  `;
+}
+
+export function ModalContainer() {
+  return styled.div`
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    .divFields {
+      display: flex;
+      width: 100%;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      margin: 20px;
+    }
+
+    .comboBoxMulti{
+      display: flex;
+      width: 100%;
+      margin: 0px;
+      padding: 0px;
+      position: relative;
+      box-sizing: border-box;
     }
   `;
 }

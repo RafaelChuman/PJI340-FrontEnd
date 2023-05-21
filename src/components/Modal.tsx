@@ -52,7 +52,7 @@ export default function Modal(props: ModalType) {
           <ModalBox>
             <div className="closeButtonDiv">
               <CloseButton onClick={props.toggle}>
-                {React.createElement(RiCloseFill)}{" "}
+                {React.createElement(RiCloseFill)}
               </CloseButton>
             </div>
             {props.children}

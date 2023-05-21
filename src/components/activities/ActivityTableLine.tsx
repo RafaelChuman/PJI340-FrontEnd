@@ -1,7 +1,8 @@
-import { Activities } from "@/services/hooks/useActivity";
-import { ChangeEvent, SetStateAction } from "react";
+import { SetStateAction } from "react";
 import { RiPencilLine } from "react-icons/ri";
 import { Checkbox } from "../CheckBox";
+import { Activities } from "@/services/entities";
+import { convertToDateBR } from "@/services/utils";
 
 interface TableLineProps {
   activity: Activities | undefined;
@@ -30,7 +31,7 @@ export function ActivityTableLine({ activity, checkBoxValues, setCheckBoxValues,
       </td>
       <td>{activity.name}
       </td>
-      <td>{activity.createdAt}</td>
+      <td>{convertToDateBR(activity.createdAt)}</td>
       <td>
         <button type="button" onClick={()=> setActivity(activity)}>
           <RiPencilLine />

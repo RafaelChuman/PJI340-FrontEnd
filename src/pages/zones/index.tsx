@@ -6,11 +6,12 @@ import { ErrorMessage } from "@hookform/error-message";
 import { useMutation } from "react-query";
 import { api } from "@/services/api";
 import { queryClient } from "@/services/queryClient";
-import { useZones, Zones } from "@/services/hooks/useZones";
+import { useZones } from "@/services/hooks/useZones";
 import { ZoneTable } from "@/components/zones/ZoneTable";
 import { Container } from "./zones.styled";
 import { RiAddFill, RiCloseFill } from "react-icons/ri";
 import EditZoneComponent from "./editZone";
+import { Zones } from "@/services/entities";
 
 export default function ZonesComponent() {
   const numberOfItensPerPage = 5;
@@ -76,22 +77,17 @@ export default function ZonesComponent() {
   };
 
   async function handleDelete() {
-    console.log(`zones=${checkBoxValues}`);
-
     const response = await api.delete(`zones`, {
       data: {
         ids: checkBoxValues,
       },
     });
 
-    console.log(response);
     await queryClient.invalidateQueries("zones");
 
     if (zones.length == checkBoxValues?.length) {
       if (zoneCurrentPage > 1) setZoneCurrentPage(zoneCurrentPage - 1);
     }
-
-    console.log("Zones Delete - 3");
 
     setCheckBoxValues([]);
   }

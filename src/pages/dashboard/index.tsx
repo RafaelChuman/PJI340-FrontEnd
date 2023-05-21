@@ -6,18 +6,33 @@ import React from "react";
 import useModal from "@/services/hooks/useModal";
 import Modal from "@/components/Modal";
 import { RiFilter2Fill } from "react-icons/ri";
-import { FormatDataToCharts, useLubrificationSystems } from "@/services/hooks/useLubrificationSystems";
+import {
+  FormatDataToCharts,
+  useLubrificationSystems,
+} from "@/services/hooks/useLubrificationSystems";
+import { Zones } from "@/services/entities";
+import {
+  DashboardModalOilUsed,
+  GraphiclOilUsed,
+} from "./dashboardModalOilUsed";
 
 export default function Dashboard() {
-  const today = new Date();
+  const dateBegin = new Date();
+  const dateEnd = new Date();
 
-  today.setDate(1);
+  dateBegin.setDate(1);
 
   const { isOpen, toggle } = useModal();
 
   const [color, useColor] = useState(theme.colors.purple);
 
-  const lsData = useLubrificationSystems(today);
+  const [graphiclOilUsed, setGraphicOilUsed] = useState<GraphiclOilUsed >({
+    dateBegin: dateBegin,
+    dateEnd: dateEnd,
+    zones: [],
+  });
+
+  const lsData = useLubrificationSystems(graphiclOilUsed.dateBegin, graphiclOilUsed.dateEnd);
 
   let lsDataToChart: dataOfChart = {
     categories: [],
@@ -25,7 +40,7 @@ export default function Dashboard() {
   };
 
   if (lsData.data) {
-    lsDataToChart = FormatDataToCharts(lsData.data, "ART");
+    lsDataToChart = FormatDataToCharts(lsData.data, graphiclOilUsed.zones);
   }
 
   // const oilMonitorData = useOilMonitor(today);
@@ -44,7 +59,13 @@ export default function Dashboard() {
         <h1>DashBoard</h1>
       </div>
 
-      <Modal isOpen={isOpen} toggle={toggle}></Modal>
+      <Modal isOpen={isOpen} toggle={toggle}>
+        <DashboardModalOilUsed
+          graphiclOilUsed={graphiclOilUsed}
+          setGraphicOilUsed={setGraphicOilUsed}
+          toggle={toggle}
+        ></DashboardModalOilUsed>
+      </Modal>
 
       <ContainerStyled>
         <div className="ChartDataContainer">

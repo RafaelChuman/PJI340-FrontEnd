@@ -6,14 +6,6 @@ interface dataToComboBox {
   name: string;
 }
 
-
-
-
-
-
-
-
-
 // export function FormatDataToCharts(allData: dataToChart[]): dataOfChart {
 //   if (allData) {
 //     let categories: string[] = [];
@@ -37,19 +29,17 @@ interface dataToComboBox {
 //   };
 // }
 
-
-
-export function convertToDateBR(date: string | undefined) {
+export function convertToDateBR(date: Date | string | undefined) {
   let value = "";
 
   if (date) {
-    if (date.length > 0) {
+    try {
       value = new Date(date).toLocaleDateString("pt-BR", {
         day: "2-digit",
         month: "long",
         year: "numeric",
       });
-    }
+    } catch {}
   }
 
   return value;

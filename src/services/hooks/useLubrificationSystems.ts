@@ -121,46 +121,76 @@ export function useLubrificationSystems(dateBegin: Date, dateEnd?: Date) {
 //   });
 // }
 
-export function FormatDataToCharts(lubSisSev: LubrificationSystems[], zonaFilter?: string) {
+export function FormatDataToCharts(
+  lubSisSev: LubrificationSystems[],
+  zonaFilter?: Zones[]
+) {
   let data: dataOfChart = {
     categories: [],
     series: [],
   };
 
-  const LubSisFiltered = lubSisSev.filter( (item) => item.er.zone.name == zonaFilter)
+  let LubSisFiltered: LubrificationSystems[] = [];
+
+  if (zonaFilter?.length && zonaFilter?.length > 0)
+    lubSisSev.map((item) => {
+      const itemFounded = zonaFilter.find(
+        (filterItem) => filterItem.name == item.er.zone.name
+      );
+      if (itemFounded) LubSisFiltered.push(item);
+    });
 
   const lubSisSevSorted = LubSisFiltered.sort(
     (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
   );
 
   let initialValue: LubrificationSystems = {
-    activity: {id: "", name:"", createdAt: new Date()},
+    activity: { id: "", name: "", createdAt: new Date() },
     add: 0,
-    collaborator: {cellphone:"", cep:"", createdAt:new Date(), id:"", name:"", numberAddress:"", whatsApp:""},
+    collaborator: {
+      cellphone: "",
+      cep: "",
+      createdAt: new Date(),
+      id: "",
+      name: "",
+      numberAddress: "",
+      whatsApp: "",
+    },
     createdAt: new Date(),
-    er: {createdAt:new Date(), id:"", number:0, zone:{createdAt:new Date(), id:"", name:""}},
+    er: {
+      createdAt: new Date(),
+      id: "",
+      number: 0,
+      zone: { createdAt: new Date(), id: "", name: "" },
+    },
     id: "",
     obs: "",
   };
 
   lubSisSevSorted.reduce((previous, current) => {
-    if (new Date(previous.createdAt).getDate() != new Date(current.createdAt).getDate()) {
+    if (
+      new Date(previous.createdAt).getDate() !=
+      new Date(current.createdAt).getDate()
+    ) {
       data.categories.push(current.createdAt.toString());
     }
 
-    let serieIndex = data.series.findIndex((item) => item.name == current.er.id)
-    if(serieIndex == -1)
-    {
-      data.series.push({name: current.er.id, group: current.er.zone.name, data:[]})
-      serieIndex = data.series.length -1;
-    }  
+    let serieIndex = data.series.findIndex(
+      (item) => item.name == current.er.id
+    );
+    if (serieIndex == -1) {
+      data.series.push({
+        name: current.er.id,
+        group: current.er.zone.name,
+        data: [],
+      });
+      serieIndex = data.series.length - 1;
+    }
 
-    data.series[serieIndex].data.push( {x: current.createdAt, y: current.add});
+    data.series[serieIndex].data.push({ x: current.createdAt, y: current.add });
 
     return current;
   }, initialValue);
-
-  console.log(data)
 
   return data;
 }

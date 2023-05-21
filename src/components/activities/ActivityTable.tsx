@@ -1,7 +1,7 @@
-import { Activities } from "@/services/hooks/useActivity";
-import { ChangeEvent, SetStateAction } from "react";
+import { SetStateAction } from "react";
 
 import { ActivityTableLine } from "./ActivityTableLine";
+import { Activities } from "@/services/entities";
 
 interface UserTableProps {
   activityData: Activities[] | undefined;
