@@ -1,7 +1,6 @@
 import { ApexOptions } from "apexcharts";
 import React from "react";
 import ReactApexChart from "react-apexcharts";
-import styled from "styled-components";
 
 export interface ChartLinedProps {
   labelOfChart: string;
@@ -28,13 +27,6 @@ export interface dataOfChartLined {
     }[];
   }[];
 }
-
-
-// function labelStyled  (color: { [key: string]: string })  {
-//   return styled.label`
-//     color: ${color[600]};
-//   `;
-// };
 
 const ChartLined: React.FC<ChartLinedProps> = ({
   labelOfChart,
@@ -101,8 +93,6 @@ const ChartLined: React.FC<ChartLinedProps> = ({
       },
     },
   };
-
-  //const LabelStyled = labelStyled(color);
 
   const series = dataOfChart.series;
 

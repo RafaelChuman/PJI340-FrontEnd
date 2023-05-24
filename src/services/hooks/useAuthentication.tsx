@@ -3,7 +3,7 @@ import { createContext, ReactNode, useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { api } from "../api";
-import { User } from "./useUsers";
+import { User } from "../entities";
 
 
 export interface TokenError {

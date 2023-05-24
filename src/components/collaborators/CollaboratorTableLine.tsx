@@ -1,8 +1,8 @@
 import { RiPencilLine } from "react-icons/ri";
-import { convertToBRL } from "@/services/utils";
-import { Collaborators } from "@/services/hooks/useCollaborators";
-import { ChangeEvent, SetStateAction } from "react";
+import { convertToDateBR, convertToWhatsAppMask } from "@/services/utils";
+import {  SetStateAction } from "react";
 import { Checkbox } from "../CheckBox";
+import { Collaborators } from "@/services/entities";
 
 interface TableLineProps {
   collaborators: Collaborators | undefined;
@@ -33,10 +33,10 @@ export function CollaboratorTableLine({ collaborators, checkBoxValues, setCheckB
         {collaborators.name}
       </td>
       <td>
-        {collaborators.whatsApp}
+        {convertToWhatsAppMask(collaborators.cellphone)}
       </td>
-      <td>
-         {collaborators.createdAt}
+      <td> 
+         {convertToDateBR( collaborators.createdAt)}
       </td>
       <td>
         <button type="button" onClick={()=>{setCollaborator(collaborators)}}>

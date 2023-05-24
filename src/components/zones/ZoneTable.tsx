@@ -1,7 +1,7 @@
-import { Zones } from "@/services/hooks/useZones";
-import { ChangeEvent, SetStateAction } from "react";
+import { SetStateAction } from "react";
 
 import { ZoneTableLine } from "./ZoneTableLine";
+import { Zones } from "@/services/entities";
 
 interface UserTableProps {
   zoneData: Zones[] | undefined;
@@ -10,7 +10,12 @@ interface UserTableProps {
   SetZone: (value: SetStateAction<Zones | undefined>) => void;
 }
 
-export function ZoneTable({ zoneData, checkBoxValues,  setCheckBoxValues, SetZone}: UserTableProps) {
+export function ZoneTable({
+  zoneData,
+  checkBoxValues,
+  setCheckBoxValues,
+  SetZone,
+}: UserTableProps) {
   return (
     <table>
       <thead>
@@ -24,10 +29,23 @@ export function ZoneTable({ zoneData, checkBoxValues,  setCheckBoxValues, SetZon
       <tbody>
         {zoneData ? (
           zoneData.map((ctg) => {
-            return <ZoneTableLine key={ctg.id} zone={ctg} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues} SetZone={SetZone}/>;
+            return (
+              <ZoneTableLine
+                key={ctg.id}
+                zone={ctg}
+                checkBoxValues={checkBoxValues}
+                setCheckBoxValues={setCheckBoxValues}
+                SetZone={SetZone}
+              />
+            );
           })
         ) : (
-          <ZoneTableLine zone={undefined} checkBoxValues={checkBoxValues} setCheckBoxValues={setCheckBoxValues} SetZone={SetZone}/>
+          <ZoneTableLine
+            zone={undefined}
+            checkBoxValues={checkBoxValues}
+            setCheckBoxValues={setCheckBoxValues}
+            SetZone={SetZone}
+          />
         )}
       </tbody>
     </table>

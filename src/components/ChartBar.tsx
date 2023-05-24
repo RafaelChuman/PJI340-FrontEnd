@@ -1,7 +1,6 @@
 import { ApexOptions } from "apexcharts";
 import React from "react";
 import ReactApexChart from "react-apexcharts";
-import styled from "styled-components";
 
 export interface ChartBarProps {
   labelOfChart: string;
@@ -17,16 +16,9 @@ export interface dataOfChartBar {
   }[];
 }
 
-// function labelStyled (color: { [key: string]: string })  {
-//   return styled.label`
-//     };
-//   `;
-// };
-
 const ChartBar: React.FC<ChartBarProps> = ({
   labelOfChart,
   dataOfChart,
-  dataType,
   color,
 }: ChartBarProps) => {
   const series = dataOfChart.series;
@@ -70,8 +62,6 @@ const ChartBar: React.FC<ChartBarProps> = ({
   const lengthOfSeries = dataOfChart.series[0]?.data?.length;
 
   if (!lengthOfCategories || !lengthOfSeries) return <></>;
-
-  // const LabelStyled = labelStyled(color);
 
   return (
     <>

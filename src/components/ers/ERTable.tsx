@@ -1,7 +1,7 @@
-import { ERs } from "@/services/hooks/useERs";
-import { ChangeEvent, SetStateAction } from "react";
+import { SetStateAction } from "react";
 
 import { ERTableLine } from "./ERTableLine";
+import { ERs } from "@/services/entities";
 
 interface ERTableProps {
   erData: ERs[] | undefined;

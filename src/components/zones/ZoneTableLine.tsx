@@ -1,8 +1,8 @@
-import { ChangeEvent, SetStateAction } from "react";
-import { IconBase } from "react-icons/lib";
+import { SetStateAction } from "react";
 import { RiPencilLine } from "react-icons/ri";
-import { Zones } from "../../services/hooks/useZones";
 import { Checkbox } from "../CheckBox";
+import { Zones } from "@/services/entities";
+import { convertToDateBR } from "@/services/utils";
 
 interface TableLineProps {
   zone: Zones | undefined;
@@ -11,7 +11,12 @@ interface TableLineProps {
   SetZone: (value: SetStateAction<Zones | undefined>) => void;
 }
 
-export function ZoneTableLine({ zone, checkBoxValues, setCheckBoxValues, SetZone }: TableLineProps) {
+export function ZoneTableLine({
+  zone,
+  checkBoxValues,
+  setCheckBoxValues,
+  SetZone,
+}: TableLineProps) {
   if (!zone) {
     return <></>;
   }
@@ -29,15 +34,11 @@ export function ZoneTableLine({ zone, checkBoxValues, setCheckBoxValues, SetZone
           setCheckBoxValues={setCheckBoxValues}
         ></Checkbox>
       </td>
+      <td>{zone.name}</td>
+      <td>{convertToDateBR(zone.createdAt)}</td>
       <td>
-        
-          {zone.name}
-        
-      </td>
-      <td>{zone.createdAt}</td>
-      <td>
-        <button onClick={()=>SetZone(zone)}>
-          <RiPencilLine ></RiPencilLine>
+        <button onClick={() => SetZone(zone)}>
+          <RiPencilLine></RiPencilLine>
           &nbsp; Editar
         </button>
       </td>

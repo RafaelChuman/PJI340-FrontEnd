@@ -1,8 +1,7 @@
-import { ChangeEvent, SetStateAction } from "react";
-import { IconBase } from "react-icons/lib";
-import { RiPencilLine } from "react-icons/ri";
-import { LubrificationSystems } from "../../services/hooks/useLubrificationSystems";
+import {  SetStateAction } from "react";
 import { Checkbox } from "../CheckBox";
+import { LubrificationSystems } from "@/services/entities";
+import { convertToDateBR } from "@/services/utils";
 
 interface TableLineProps {
   lubrificationSystem: LubrificationSystems | undefined;
@@ -34,7 +33,7 @@ export function LubrificationSystemTableLine({
       <td>{lubrificationSystem.add}</td>
       <td>{lubrificationSystem.obs}</td>
       <td>{lubrificationSystem.collaborator?.name}</td>
-      <td>{lubrificationSystem.createdAt}</td>
+      <td>{convertToDateBR(lubrificationSystem.createdAt)}</td>
     </tr>
   );
 }

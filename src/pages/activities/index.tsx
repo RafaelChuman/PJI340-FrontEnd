@@ -72,7 +72,7 @@ export default function ActivitiesComponent() {
   ) => {
     const response = await createActivity.mutateAsync(values);
 
-    if (response.status == 200) {
+    if (response.status != 200) {
       const mesage = response.status;
       if (mesage != undefined) {
         setErrorActivity(mesage.toString());
@@ -98,7 +98,6 @@ export default function ActivitiesComponent() {
   }
 
   if (activity) {
-
     return (
       <EditActivityComponent
         activity={activity}
@@ -117,7 +116,6 @@ export default function ActivitiesComponent() {
             title={"Form Criar Serviço"}
             placeholder={"Form Criar Serviço"}
           >
-            <p>{ErrorActivity}</p>
             <div>
               <label>Insira a descrição do Serviço:</label>
               <input
@@ -128,6 +126,8 @@ export default function ActivitiesComponent() {
                 placeholder="Serviço"
                 {...name}
               />
+            </div>
+            <div>
               <ErrorMessage errors={formState.errors} name="name" />
             </div>
             <div>
@@ -177,6 +177,9 @@ export default function ActivitiesComponent() {
                 <RiCloseFill />
                 Excluir
               </button>
+              <div>
+                <p>{ErrorActivity}</p>
+              </div>
             </form>
           )
         )}

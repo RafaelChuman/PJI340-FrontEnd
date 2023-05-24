@@ -1,6 +1,6 @@
-import { Collaborators } from "@/services/hooks/useCollaborators";
-import { ChangeEvent, SetStateAction } from "react";
+import {  SetStateAction } from "react";
 import { CollaboratorTableLine } from "./CollaboratorTableLine";
+import { Collaborators } from "@/services/entities";
 
 interface CollaboratorTableProps {
   collaboratorsData: Collaborators[] | undefined;
@@ -21,7 +21,7 @@ export function CollaboratorTable({
         <tr>
           <th></th>
           <th>Nome</th>
-          <th>WhatsApp</th>
+          <th>Contato</th>
           <th>Data Criação</th>
           <th></th>
         </tr>

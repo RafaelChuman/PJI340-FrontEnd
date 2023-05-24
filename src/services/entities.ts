@@ -1,5 +1,18 @@
 import { api } from "./api";
 
+export interface User {
+  id: string;
+  name: string;
+  userName: string;
+  password: string;
+  cep: string;
+  numberAddress: string;
+  cellphone: string;
+  whatsApp: string;
+  created_at: string;
+  isAdmin: boolean;
+}
+
 export interface OilMonitor {
   id: string;
   oilLevel: number;
@@ -49,15 +62,15 @@ export interface Activities {
 
 export interface  getEntityParams{
   name: "oilMonitor"| "lubrificationSystems"| "ers"|"zones"| "collaborators" |"activities";
-  dateBegin: Date;
-  dateEnd?: Date;
+  whereData:{ [key: string]: string }
 };
 
-export async function getEntitie<Type>( {name, dateBegin, dateEnd}: getEntityParams): Promise<Type[]> {
+export async function getEntitie<Type>( {name, whereData}: getEntityParams): Promise<Type[]> {
+  
+  const {where} = whereData;
   const { data } = await api.get<Type[]>(name, {
     params: {
-      dateBegin: dateBegin.toDateString(),
-      dateEnd: dateEnd?.toDateString(),
+      ...whereData
     },
   });
 

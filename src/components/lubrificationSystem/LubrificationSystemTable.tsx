@@ -1,7 +1,7 @@
-import { LubrificationSystems } from "@/services/hooks/useLubrificationSystems";
-import { ChangeEvent, SetStateAction } from "react";
+import { SetStateAction } from "react";
 
 import { LubrificationSystemTableLine } from "./LubrificationSystemTableLine";
+import { LubrificationSystems } from "@/services/entities";
 
 interface UserTableProps {
   lubrificationSystemData: LubrificationSystems[] | undefined;

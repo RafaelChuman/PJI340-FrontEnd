@@ -7,35 +7,52 @@ export interface LubrificationSystemsGroupedByData {
   date: Date;
 }
 
+export async function getLubrificationSystemsByErId(
+  id: string
+): Promise<LubrificationSystems[]> {
+  const data = await getEntitie<LubrificationSystems>({
+    name: "lubrificationSystems",
+    whereData: { id: id },
+  });
+
+  return data;
+}
+
 export async function getLubrificationSystems(
   dateBegin: Date,
   dateEnd?: Date
 ): Promise<LubrificationSystems[]> {
+
+  let where:{ [key: string]: string } = { dateBegin: dateBegin.toString()};
+  if(dateEnd)
+    where = { dateBegin: dateBegin.toString(), dateEnd: dateEnd.toString()};
+
   const data = await getEntitie<LubrificationSystems>({
     name: "lubrificationSystems",
-    dateBegin,
-    dateEnd,
+    whereData: where,
   });
 
-  const formatedData = data.map((lubrificationSystem: LubrificationSystems) => {
-    return {
-      id: lubrificationSystem.id,
-      createdAt: lubrificationSystem.createdAt,
-      add: lubrificationSystem.add,
-      obs: lubrificationSystem.obs,
-      activity: lubrificationSystem.activity,
-      collaborator: lubrificationSystem.collaborator,
-      er: lubrificationSystem.er,
-    };
-  });
-
-  return formatedData;
+  return data;
 }
 
-export function useLubrificationSystems(dateBegin: Date, dateEnd?: Date, queryName: string = "lubrificationSystems") {
+export function useLubrificationSystems(
+  dateBegin: Date,
+  dateEnd?: Date,
+  queryName: string = "lubrificationSystems"
+) {
   return useQuery(
     queryName,
     () => getLubrificationSystems(dateBegin, dateEnd),
+    {
+      staleTime: 1000 * 300, //30 Seconds
+    }
+  );
+}
+
+export function useLubrificationSystemsByErId(id: string) {
+  return useQuery(
+    "useLubrificationSystemsByErId",
+    () => getLubrificationSystemsByErId(id),
     {
       staleTime: 1000 * 300, //30 Seconds
     }
@@ -126,7 +143,7 @@ export function FormatLubrificationSystemsToChartPie(
   zonaFilter?: Zones[]
 ) {
   let categories: [string[]] = [[]];
-  let series: {data: number[]} = {data:[]}
+  let series: { data: number[] } = { data: [] };
 
   let LubSisFiltered: LubrificationSystems[] = [];
 
@@ -175,7 +192,6 @@ export function FormatLubrificationSystemsToChartPie(
 
   let sum = 0;
 
-
   //Group the Categories By ID of colaborator
   //Group the Series By Sum(Manutentions)
   series.data.pop();
@@ -187,10 +203,10 @@ export function FormatLubrificationSystemsToChartPie(
       sum = 0;
     }
 
-    sum=  sum + 1    
+    sum = sum + 1;
 
     return current;
   }, initialValue);
 
-  return {categories: categories, series: [series]};
+  return { categories: categories, series: [series] };
 }

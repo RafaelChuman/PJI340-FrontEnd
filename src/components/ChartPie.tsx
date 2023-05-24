@@ -30,9 +30,6 @@ const ChartPie: React.FC<ChartBarProps> = ({
   const series = dataOfChart.series[0].data;
   const categories = dataOfChart.categories[0];
 
-  console.log(categories);
-
-
   const options: ApexOptions = {
     series: series,
     chart: {

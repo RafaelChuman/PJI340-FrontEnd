@@ -1,9 +1,6 @@
 import { Pagination } from "@/components/Pagination";
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  Collaborators,
-  useCollaborators,
-} from "@/services/hooks/useCollaborators";
+import { useCollaborators } from "@/services/hooks/useCollaborators";
 import { CollaboratorTable } from "@/components/collaborators/CollaboratorTable";
 import { returnPaginatedData } from "@/services/utils";
 import { useState } from "react";
@@ -15,6 +12,7 @@ import InputMask from "react-input-mask";
 import { Container } from "./collaborators.styled";
 import { RiAddFill, RiCloseFill } from "react-icons/ri";
 import EditCollaboratorComponent from "./editCollaborator";
+import { Collaborators } from "@/services/entities";
 
 export default function CollaboratorsComponent() {
   const today = new Date();
@@ -173,8 +171,9 @@ export default function CollaboratorsComponent() {
                 placeholder="Collaborador"
                 {...name}
               />
-              <ErrorMessage errors={formState.errors} name="name" />
             </div>
+            <ErrorMessage errors={formState.errors} name="name" />
+            <div></div>
             <div className="DivFormFields">
               <label>Insira o CEP:</label>
               <InputMask
@@ -185,9 +184,10 @@ export default function CollaboratorsComponent() {
                 mask={"99.999-999"}
                 {...cep}
               />
+            </div>
+            <div>
               <ErrorMessage errors={formState.errors} name="cep" />
             </div>
-
             <div className="DivFormFields">
               <label>Insira o Número:</label>
               <input
@@ -197,6 +197,8 @@ export default function CollaboratorsComponent() {
                 placeholder="Número"
                 {...numberAddress}
               />
+            </div>
+            <div>
               <ErrorMessage errors={formState.errors} name="numberAddress" />
             </div>
             <div className="DivFormFields">
@@ -209,9 +211,10 @@ export default function CollaboratorsComponent() {
                 mask={"(99) 9 9999-9999"}
                 {...cellphone}
               />
+            </div>
+            <div>
               <ErrorMessage errors={formState.errors} name="cellphone" />
             </div>
-
             <div className="DivFormFields">
               <label>Insira o WhatsApp:</label>
               <InputMask
@@ -222,6 +225,8 @@ export default function CollaboratorsComponent() {
                 mask={"(99) 9 9999-9999"}
                 {...whatsApp}
               />
+            </div>
+            <div>
               <ErrorMessage errors={formState.errors} name="whatsApp" />
             </div>
             <div className="DivFormFields">

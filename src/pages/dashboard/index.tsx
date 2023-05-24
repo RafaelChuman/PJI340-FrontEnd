@@ -10,10 +10,7 @@ import {
   FormatLubrificationSystemsToChartPie,
   useLubrificationSystems,
 } from "@/services/hooks/useLubrificationSystems";
-import {
-  ChartLineFilterModal,
-  GraphiclOilUsed,
-} from "./chartLineFilterModal";
+import { ChartLineFilterModal, GraphiclOilUsed } from "./chartLineFilterModal";
 import {
   FormatDataToCharts as FormatDataToChartsOilmonitor,
   useOilMonitor,
@@ -21,11 +18,19 @@ import {
 import ChartBar, { dataOfChartBar } from "@/components/ChartBar";
 import ChartLined, { dataOfChartLined } from "@/components/ChartLined";
 import ChartPie from "@/components/ChartPie";
+import { useZones } from "@/services/hooks/useZones";
+import { Zones } from "@/services/entities";
 
-const gofInitialValue = {
+let gofInitialValue = {
   dateBegin: new Date(),
   dateEnd: new Date(),
-  zones: [],
+  zones: [] as Zones[],
+};
+
+let gofInitialValuePie= {
+  dateBegin: new Date(),
+  dateEnd: new Date(),
+  zones: [] as Zones[],
 };
 
 let chartLineData: dataOfChartLined = {
@@ -45,8 +50,17 @@ let chartPieData: dataOfChartBar = {
 
 export default function Dashboard() {
   const [color, useColor] = useState(theme.colors.purple);
+  const zones = useZones();
 
-  gofInitialValue["dateBegin"].setDate(1);
+  gofInitialValue.dateBegin.setDate(1);
+  gofInitialValuePie.dateBegin.setDate(1);
+
+  if (zones.data) {
+    if (zones.data.length > 1) {
+      gofInitialValue.zones = [zones.data[0], zones.data[1]];
+      gofInitialValuePie.zones = zones.data;
+    }
+  }
 
   const chartLineFilterModal = useModal();
   const chartBarFilterModal = useModal();
@@ -57,7 +71,7 @@ export default function Dashboard() {
   const [chartBarFilter, setChartBarFilter] =
     useState<GraphiclOilUsed>(gofInitialValue);
   const [chartPieFilter, setChartPieFilter] =
-    useState<GraphiclOilUsed>(gofInitialValue);
+    useState<GraphiclOilUsed>(gofInitialValuePie);
 
   const chartLineDataNotFormated = useLubrificationSystems(
     chartLineFilter.dateBegin,
@@ -65,25 +79,25 @@ export default function Dashboard() {
     "chartLineDataNotFormated"
   );
 
-  const chartBarDataNotFormated  = useOilMonitor(
+  const chartBarDataNotFormated = useOilMonitor(
     chartBarFilter.dateBegin,
     chartBarFilter.dateEnd
   );
 
-  const chartPieDataNotFormated  = useLubrificationSystems(
+  const chartPieDataNotFormated = useLubrificationSystems(
     chartBarFilter.dateBegin,
     chartBarFilter.dateEnd,
     "chartPieDataNotFormated"
   );
 
-  if (chartLineDataNotFormated .data) {
+  if (chartLineDataNotFormated.data) {
     chartLineData = FormatLubrificationSystemsToChartLine(
       chartLineDataNotFormated.data,
       chartLineFilter.zones
     );
   }
 
-  if (chartBarDataNotFormated .data) {
+  if (chartBarDataNotFormated.data) {
     chartBarData = FormatDataToChartsOilmonitor(
       chartBarDataNotFormated.data,
       chartBarFilter.zones,
@@ -91,19 +105,15 @@ export default function Dashboard() {
     );
   }
 
-  if (chartPieDataNotFormated .data) {
+  if (chartPieDataNotFormated.data) {
     chartPieData = FormatLubrificationSystemsToChartPie(
       chartPieDataNotFormated.data,
       chartPieFilter.zones
     );
   }
 
-  //const color = theme.colors.yellow;
-  // const ContainerStyled = Container({ color });
-
   return (
     <>
-
       <Modal
         isOpen={chartLineFilterModal.isOpen}
         toggle={chartLineFilterModal.toggle}

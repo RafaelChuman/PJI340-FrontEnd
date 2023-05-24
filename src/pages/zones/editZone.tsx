@@ -1,12 +1,13 @@
 import { api } from "@/services/api";
-import { Zones } from "@/services/hooks/useZones";
 import { queryClient } from "@/services/queryClient";
 import { ErrorMessage } from "@hookform/error-message";
 import { SetStateAction } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { RiAddFill, RiRefreshLine } from "react-icons/ri";
+import { RiRefreshLine } from "react-icons/ri";
 import { useMutation } from "react-query";
 import { Container } from "./zones.styled";
+import { Zones } from "@/services/entities";
+import { convertToDateBR } from "@/services/utils";
 
 interface EditZoneProps {
   zone: Zones;
@@ -21,11 +22,8 @@ export default function EditZoneComponent({
 }: EditZoneProps) {
   const { register, handleSubmit, formState } = useForm<Zones>();
 
-  
-
   const editZone = useMutation(
     async (zoneUpd: Zones) => {
-      
       const response = await api.put("zones", {
         id: zone.id,
         name: zoneUpd.name,
@@ -43,7 +41,6 @@ export default function EditZoneComponent({
   );
 
   const handleEditZone: SubmitHandler<Zones> = async (values: Zones) => {
-
     const response = await editZone.mutateAsync(values);
 
     if (response.status == 200) {
@@ -66,20 +63,20 @@ export default function EditZoneComponent({
   return (
     <Container>
       <h1>Zonas</h1>
-     
-        <div className="Fields">
-          <label>ID:</label>
-          <label>{zone.id}</label>
-        </div>
-        <div className="Fields">
-          <label>Nome da Zona:</label>
-          <label>{zone.name}</label>
-        </div>
-        <div className="Fields">
-          <label>Data Criação:</label>
-          <label>{zone.createdAt}</label>
-        </div>
-   
+
+      <div className="Fields">
+        <label>ID:</label>
+        <label>{zone.id}</label>
+      </div>
+      <div className="Fields">
+        <label>Nome da Zona:</label>
+        <label>{zone.name}</label>
+      </div>
+      <div className="Fields">
+        <label>Data Criação:</label>
+        <label>{convertToDateBR(zone.createdAt)}</label>
+      </div>
+
       <div>
         <form
           onSubmit={handleSubmit(handleEditZone)}
@@ -97,6 +94,8 @@ export default function EditZoneComponent({
               placeholder="Zona"
               {...name}
             />
+          </div>
+          <div>
             <ErrorMessage errors={formState.errors} name="name" />
           </div>
           <div>

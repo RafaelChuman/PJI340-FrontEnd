@@ -6,21 +6,14 @@ import { ErrorMessage } from "@hookform/error-message";
 import { useMutation } from "react-query";
 import { api } from "@/services/api";
 import { queryClient } from "@/services/queryClient";
-import {
-  useLubrificationSystems,
-  LubrificationSystems,
-} from "@/services/hooks/useLubrificationSystems";
 import { Container } from "./lubrificationSystem.styled";
 import { useActivities } from "@/services/hooks/useActivity";
 import { LubrificationSystemTable } from "@/components/lubrificationSystem/LubrificationSystemTable";
-import {
-  Collaborators,
-  useCollaborators,
-} from "@/services/hooks/useCollaborators";
 import { ComboBox } from "@/components/ComboBox";
-import { checkBoxClickEvent } from "@/components/CheckBox";
-import { ERs } from "@/services/hooks/useERs";
 import { RiAddFill, RiCloseFill } from "react-icons/ri";
+import { ERs, LubrificationSystems } from "@/services/entities";
+import { useLubrificationSystemsByErId } from "@/services/hooks/useLubrificationSystems";
+import { useCollaborators } from "@/services/hooks/useCollaborators";
 
 export default function LubrificationSystemsComponent(er: ERs) {
   const numberOfItensPerPage = 5;
@@ -33,7 +26,9 @@ export default function LubrificationSystemsComponent(er: ERs) {
   const [lubrificationSystemCurrentPage, setLubrificationSystemCurrentPage] =
     useState(1);
 
-  const lubrificationSystemsWithoutPagination = useLubrificationSystems(er.id);
+  const lubrificationSystemsWithoutPagination = useLubrificationSystemsByErId(
+    er.id
+  );
 
   const collaborators = useCollaborators();
   const activities = useActivities();
@@ -149,8 +144,11 @@ export default function LubrificationSystemsComponent(er: ERs) {
               placeholder="Quantidade Lubrificante Adicionado"
               {...add}
             />
+          </div>
+          <div>
             <ErrorMessage errors={formState.errors} name="add" />
           </div>
+
           <div className="DivFormFields">
             <label>Observações: </label>
             <input
@@ -161,8 +159,11 @@ export default function LubrificationSystemsComponent(er: ERs) {
               placeholder="Observações"
               {...obs}
             />
+          </div>
+          <div>
             <ErrorMessage errors={formState.errors} name="obs" />
           </div>
+
           <div className="DivFormFields">
             <label>Colaborador: </label>
             {collaborators.data && (
@@ -173,9 +174,11 @@ export default function LubrificationSystemsComponent(er: ERs) {
                 {...collaborator}
               ></ComboBox>
             )}
-
+          </div>
+          <div>
             <ErrorMessage errors={formState.errors} name="collaborator" />
           </div>
+
           <div className="DivFormFields">
             <label>Atividade: </label>
             {activities.data && (
@@ -186,7 +189,8 @@ export default function LubrificationSystemsComponent(er: ERs) {
                 {...activity}
               ></ComboBox>
             )}
-
+          </div>
+          <div>
             <ErrorMessage errors={formState.errors} name="activity" />
           </div>
 

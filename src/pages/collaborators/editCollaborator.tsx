@@ -1,5 +1,4 @@
 import { api } from "@/services/api";
-import { Collaborators } from "@/services/hooks/useCollaborators";
 import { queryClient } from "@/services/queryClient";
 import { ErrorMessage } from "@hookform/error-message";
 import { SetStateAction } from "react";
@@ -8,6 +7,7 @@ import { RiRefreshLine } from "react-icons/ri";
 import { useMutation } from "react-query";
 import { Container } from "./collaborators.styled";
 import InputMask from "react-input-mask";
+import { Collaborators } from "@/services/entities";
 
 interface EditCollaboratorProps {
   collaborator: Collaborators;
@@ -47,11 +47,12 @@ export default function EditCollaboratorComponent({
   const handleEditCollaborator: SubmitHandler<Collaborators> = async (
     values: Collaborators
   ) => {
+    values.cep = values.cep.toString().replace(/[^0-9]/g, "");
+    values.cellphone = values.cellphone.toString().replace(/[^0-9]/g, "");
+    values.whatsApp = values.whatsApp.toString().replace(/[^0-9]/g, "");
+    
     const response = await editCollaborator.mutateAsync(values);
 
-    if (response.status == 200) {
-      const mesage = response.status;
-    }
   };
 
   const name = register("name", {
@@ -116,19 +117,19 @@ export default function EditCollaboratorComponent({
           <label>{collaborator.name}</label>
         </div>
         <div className="DivFormFields">
-          <label>Data Criação:</label>
+          <label>Whatsapp:</label>
           <label>{collaborator.whatsApp}</label>
         </div>
         <div className="DivFormFields">
-          <label>Data Criação:</label>
+          <label>Telefone:</label>
           <label>{collaborator.cellphone}</label>
         </div>
         <div className="DivFormFields">
-          <label>Data Criação:</label>
+          <label>CEP:</label>
           <label>{collaborator.cep}</label>
         </div>
         <div className="DivFormFields">
-          <label>Data Criação:</label>
+          <label>Número:</label>
           <label>{collaborator.numberAddress}</label>
         </div>
       </div>
@@ -137,8 +138,8 @@ export default function EditCollaboratorComponent({
         <form
           onSubmit={handleSubmit(handleEditCollaborator)}
           className="collaboratorContent"
-          title={"Form Editar Serviço"}
-          placeholder={"Form Editar Serviço"}
+          title={"Form Editar Colaborador"}
+          placeholder={"Form Editar SeColaboradorrviço"}
         >
           <div className="DivFormFields">
             {" "}
@@ -164,6 +165,8 @@ export default function EditCollaboratorComponent({
               defaultValue={collaborator.cep}
               {...cep}
             />
+          </div>
+          <div>
             <ErrorMessage errors={formState.errors} name="cep" />
           </div>
 
@@ -177,6 +180,8 @@ export default function EditCollaboratorComponent({
               defaultValue={collaborator.numberAddress}
               {...numberAddress}
             />
+          </div>
+          <div>
             <ErrorMessage errors={formState.errors} name="numberAddress" />
           </div>
           <div className="DivFormFields">
@@ -190,9 +195,10 @@ export default function EditCollaboratorComponent({
               defaultValue={collaborator.cellphone}
               {...cellphone}
             />
+          </div>
+          <div>
             <ErrorMessage errors={formState.errors} name="cellphone" />
           </div>
-
           <div className="DivFormFields">
             <label>Insira o WhatsApp:</label>
             <InputMask
@@ -204,9 +210,10 @@ export default function EditCollaboratorComponent({
               defaultValue={collaborator.whatsApp}
               {...whatsApp}
             />
+          </div>
+          <div>
             <ErrorMessage errors={formState.errors} name="whatsApp" />
           </div>
-
           <div>
             <button type={"submit"} disabled={formState.isSubmitting}>
               {formState.isSubmitting ? (

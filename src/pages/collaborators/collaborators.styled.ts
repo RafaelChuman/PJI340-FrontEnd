@@ -1,4 +1,3 @@
-import { theme } from "@/App.styled";
 import styled from "styled-components";
 
 export const Container = styled.div`

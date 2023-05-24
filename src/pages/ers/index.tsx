@@ -16,12 +16,10 @@ import { RiCloseFill, RiAddFill } from "react-icons/ri";
 import { ERs } from "@/services/entities";
 
 export default function ERsComponent() {
-  const today = new Date();
   const numberOfItensPerPage = 5;
 
   const { register, handleSubmit, formState } = useForm<ERs>();
   const [checkBoxValues, setCheckBoxValues] = useState<String[]>();
-  const [comboxBoxValues, setComboBoxValues] = useState<String[]>();
   const [er, setER] = useState<ERs>();
 
   const formDeletion = useForm();
@@ -35,7 +33,6 @@ export default function ERsComponent() {
   const zonesWithoutFormat = useZones();
 
   let ers;
-  let zones;
 
   const createER = useMutation(
     async (er: ERs) => {
@@ -128,8 +125,8 @@ export default function ERsComponent() {
                 placeholder="Número da ER"
                 {...number}
               />
-              <ErrorMessage errors={formState.errors} name="number" />
             </div>
+            <div><ErrorMessage errors={formState.errors} name="number" /></div>
 
             <div className="DivFormFields">
               {zonesWithoutFormat.data ? (
@@ -145,9 +142,8 @@ export default function ERsComponent() {
               ) : (
                 <></>
               )}
-
-              <ErrorMessage errors={formState.errors} name="zone" />
             </div>
+            <div><ErrorMessage errors={formState.errors} name="zone" /></div>
 
             <div className="DivFormFields">
               <button type={"submit"} disabled={formState.isSubmitting}>

@@ -1,11 +1,4 @@
-import { api } from "@/services/api";
-import { ERs } from "@/services/hooks/useERs";
-import { LubrificationSystems } from "@/services/hooks/useLubrificationSystems";
-import { queryClient } from "@/services/queryClient";
-import { useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useMutation } from "react-query";
-import { useParams } from "react-router-dom";
+import { ERs } from "@/services/entities";
 import LubrificationSystemsComponent from "../lubrificationSystem";
 import { Container } from "./ers.styled";
 

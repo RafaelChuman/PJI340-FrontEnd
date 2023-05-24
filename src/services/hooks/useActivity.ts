@@ -2,7 +2,6 @@ import { useQuery } from "react-query";
 import { api } from "@/services/api";
 import { Activities } from "../entities";
 
-
 export async function getActivities(): Promise<Activities[]> {
   const { data } = await api.get("activities");
 
@@ -10,11 +9,7 @@ export async function getActivities(): Promise<Activities[]> {
     return {
       id: zone.id,
       name: zone.name,
-      createdAt: new Date(zone.createdAt).toLocaleDateString("pt-BR", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-      }),
+      createdAt: zone.createdAt,
     };
   });
   return formatedData;
@@ -25,5 +20,3 @@ export function useActivities() {
     staleTime: 1000 * 300, //5min
   });
 }
-
-

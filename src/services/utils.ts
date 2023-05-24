@@ -1,33 +1,8 @@
-import { dataOfChart } from "@/components/ChartLined";
-import { Options } from "@/components/ComboBox";
 
 interface dataToComboBox {
   id?: string;
   name: string;
 }
-
-// export function FormatDataToCharts(allData: dataToChart[]): dataOfChart {
-//   if (allData) {
-//     let categories: string[] = [];
-//     let series: number[] = [];
-
-//     allData.forEach((data) => {
-//       categories.push(String(data.date));
-//       series.push(data.count);
-//     });
-
-//     if (categories.length && series.length) {
-//       return {
-//         categories: categories,
-//         series: series,
-//       };
-//     }
-//   }
-//   return {
-//     categories: [""],
-//     series: [0],
-//   };
-// }
 
 export function convertToDateBR(date: Date | string | undefined) {
   let value = "";
@@ -39,7 +14,9 @@ export function convertToDateBR(date: Date | string | undefined) {
         month: "long",
         year: "numeric",
       });
-    } catch {}
+    } catch(erro) {
+      console.log(erro)
+    }
   }
 
   return value;

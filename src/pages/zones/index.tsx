@@ -93,7 +93,13 @@ export default function ZonesComponent() {
   }
 
   if (zone) {
-    return <EditZoneComponent SetZone={setZone} setCheckBoxValues={setCheckBoxValues} zone={zone} />;
+    return (
+      <EditZoneComponent
+        SetZone={setZone}
+        setCheckBoxValues={setCheckBoxValues}
+        zone={zone}
+      />
+    );
   } else {
     return (
       <Container>
@@ -116,9 +122,11 @@ export default function ZonesComponent() {
                 placeholder="Zona"
                 {...name}
               />
+            </div>
+            <div className="Fields">
               <ErrorMessage errors={formState.errors} name="name" />
             </div>
-            <div>
+            <div className="Fields">
               <button type={"submit"} disabled={formState.isSubmitting}>
                 {formState.isSubmitting ? (
                   "..."

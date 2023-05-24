@@ -1,10 +1,9 @@
-import EditERsComponent from "@/pages/ers/editERs";
-import { ChangeEvent, SetStateAction } from "react";
-import { IconBase } from "react-icons/lib";
+import { SetStateAction } from "react";
 import { RiPencilLine } from "react-icons/ri";
-import { Link, useNavigate } from "react-router-dom";
-import { ERs } from "../../services/hooks/useERs";
+import { useNavigate } from "react-router-dom";
 import { Checkbox } from "../CheckBox";
+import { convertToDateBR } from "@/services/utils";
+import { ERs } from "@/services/entities";
 
 interface TableLineProps {
   er: ERs | undefined;
@@ -39,7 +38,7 @@ export function ERTableLine({
       </td>
       <td>{er.number.toString()}</td>
       <td>{er.zone.name}</td>
-      <td>{er.createdAt}</td>
+      <td>{convertToDateBR(er.createdAt)}</td>
       <td>
         
           <button type="button" onClick={()=>SetERValues(er)}>
