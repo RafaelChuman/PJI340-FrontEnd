@@ -4,9 +4,7 @@ import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
   flex-direction: row;
-  height: 100px;
   margin-left: "auto";
-  margin-top: 4px;
   padding: 6px;
   background-color: ${theme.colors.transparent};
   border-bottom: 2px solid ${theme.colors.cyan[900]};
