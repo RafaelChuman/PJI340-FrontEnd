@@ -1,78 +1,11 @@
 import { useQuery } from "react-query";
-import { api } from "@/services/api";
 import { LubrificationSystems, Zones, getEntitie } from "../entities";
-import { convertToDateBR } from "../utils";
-import { dataOfChart } from "@/components/Charts";
+import { dataOfChartLined } from "@/components/ChartLined";
 
 export interface LubrificationSystemsGroupedByData {
   count: number;
   date: Date;
 }
-
-// export async function getLubrificationSystemsByMonth(date: Date): Promise<LubrificationSystemsGroupedByData[]> {
-//   const { data } = await api.get("lubrificationSystems", {
-//     params: { dateId: date },
-//   });
-
-//   const formatedData = data.map((lubrificationSystems: LubrificationSystemsGroupedByData) => {
-//     return {
-//       count: lubrificationSystems.count,
-//       date: new Date(lubrificationSystems.date).toLocaleDateString("pt-BR", {
-//         day: "2-digit",
-//         month: "2-digit",
-//         year: "2-digit",
-//       }),
-//     };
-//   });
-
-//   return formatedData;
-// }
-
-// export async function getLubrificationSystemsAddByMonth(date: Date): Promise<LubrificationSystemsGroupedByData[]> {
-//   const { data } = await api.get("lubrificationSystems", {
-//     params: { dateAdd: date },
-//   });
-
-//   const formatedData = data.map((lubrificationSystems: LubrificationSystemsGroupedByData) => {
-//     return {
-//       count: lubrificationSystems.count,
-//       date: new Date(lubrificationSystems.date).toLocaleDateString("pt-BR", {
-//         day: "2-digit",
-//         month: "2-digit",
-//         year: "2-digit",
-//       }),
-//     };
-//   });
-
-//   return formatedData;
-// }
-
-// export async function getLubrificationSystems(
-//   id: string
-// ): Promise<LubrificationSystems[]> {
-//   const { data } = await api.get("lubrificationSystems", {
-//     params: { id: id },
-//   });
-
-//   const formatedData = data.map((lubrificationSystem: LubrificationSystems) => {
-//     return {
-//       id: lubrificationSystem.id,
-//       createdAt: new Date(lubrificationSystem.createdAt).toLocaleDateString(
-//         "pt-BR",
-//         {
-//           day: "2-digit",
-//           month: "long",
-//           year: "numeric",
-//         }
-//       ),
-//       add: lubrificationSystem.add.toString(),
-//       obs: lubrificationSystem.obs,
-//       activity: lubrificationSystem.activity,
-//       collaborator: lubrificationSystem.collaborator,
-//     };
-//   });
-//   return formatedData;
-// }
 
 export async function getLubrificationSystems(
   dateBegin: Date,
@@ -99,9 +32,9 @@ export async function getLubrificationSystems(
   return formatedData;
 }
 
-export function useLubrificationSystems(dateBegin: Date, dateEnd?: Date) {
+export function useLubrificationSystems(dateBegin: Date, dateEnd?: Date, queryName: string = "lubrificationSystems") {
   return useQuery(
-    "lubrificationSystems",
+    queryName,
     () => getLubrificationSystems(dateBegin, dateEnd),
     {
       staleTime: 1000 * 300, //30 Seconds
@@ -109,29 +42,18 @@ export function useLubrificationSystems(dateBegin: Date, dateEnd?: Date) {
   );
 }
 
-// export function useLubrificationSystemsByMonth(date: Date) {
-//   return useQuery("lubrificationSystemsByMonth", () => getLubrificationSystemsByMonth(date), {
-//     staleTime: 1000 * 30, //30 Seconds
-//   });
-// }
-
-// export function useLubrificationSystemsAddByMonth(date: Date) {
-//   return useQuery("lubrificationSystemsAddByMonth", () => getLubrificationSystemsAddByMonth(date), {
-//     staleTime: 1000 * 30, //30 Seconds
-//   });
-// }
-
-export function FormatDataToCharts(
+export function FormatLubrificationSystemsToChartLine(
   lubSisSev: LubrificationSystems[],
   zonaFilter?: Zones[]
 ) {
-  let data: dataOfChart = {
-    categories: [],
+  let data: dataOfChartLined = {
+    categories: [[]],
     series: [],
   };
 
   let LubSisFiltered: LubrificationSystems[] = [];
 
+  //Execute a  filter of Zones[] into a LubrificationSystems[]
   if (zonaFilter?.length && zonaFilter?.length > 0)
     lubSisSev.map((item) => {
       const itemFounded = zonaFilter.find(
@@ -140,6 +62,7 @@ export function FormatDataToCharts(
       if (itemFounded) LubSisFiltered.push(item);
     });
 
+  //Order by Date
   const lubSisSevSorted = LubSisFiltered.sort(
     (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
   );
@@ -172,18 +95,21 @@ export function FormatDataToCharts(
       new Date(previous.createdAt).getDate() !=
       new Date(current.createdAt).getDate()
     ) {
-      data.categories.push(current.createdAt.toString());
+      data.categories.push([current.createdAt.toString()]);
     }
 
     let serieIndex = data.series.findIndex(
       (item) => item.name == current.er.id
     );
     if (serieIndex == -1) {
-      data.series.push({
-        name: current.er.id,
-        group: current.er.zone.name,
-        data: [],
-      });
+      const insertData = [
+        {
+          name: current.er.id,
+          group: current.er.zone.name,
+          data: [],
+        },
+      ];
+      data.series.push(...insertData);
       serieIndex = data.series.length - 1;
     }
 
@@ -193,4 +119,78 @@ export function FormatDataToCharts(
   }, initialValue);
 
   return data;
+}
+
+export function FormatLubrificationSystemsToChartPie(
+  lubSisSev: LubrificationSystems[],
+  zonaFilter?: Zones[]
+) {
+  let categories: [string[]] = [[]];
+  let series: {data: number[]} = {data:[]}
+
+  let LubSisFiltered: LubrificationSystems[] = [];
+
+  //Execute a  filter of Zones[] into a LubrificationSystems[]
+  if (zonaFilter?.length && zonaFilter?.length > 0)
+    lubSisSev.map((item) => {
+      const itemFounded = zonaFilter.find(
+        (filterItem) => filterItem.name == item.er.zone.name
+      );
+      if (itemFounded) LubSisFiltered.push(item);
+    });
+
+  //Order by Colaborator
+  const lubSisSevSorted = LubSisFiltered.sort((a, b) => {
+    if (a.collaborator.id < b.collaborator.id) {
+      return -1;
+    }
+    if (a.collaborator.id > b.collaborator.id) {
+      return 1;
+    }
+    return 0;
+  });
+
+  let initialValue: LubrificationSystems = {
+    activity: { id: "", name: "", createdAt: new Date() },
+    add: 0,
+    collaborator: {
+      cellphone: "",
+      cep: "",
+      createdAt: new Date(),
+      id: "",
+      name: "",
+      numberAddress: "",
+      whatsApp: "",
+    },
+    createdAt: new Date(),
+    er: {
+      createdAt: new Date(),
+      id: "",
+      number: 0,
+      zone: { createdAt: new Date(), id: "", name: "" },
+    },
+    id: "",
+    obs: "",
+  };
+
+  let sum = 0;
+
+
+  //Group the Categories By ID of colaborator
+  //Group the Series By Sum(Manutentions)
+  series.data.pop();
+  lubSisSevSorted.reduce((previous, current) => {
+    if (previous.collaborator.id != current.collaborator.id) {
+      categories[0].push(current.collaborator.name.toString());
+      series.data.push(sum);
+
+      sum = 0;
+    }
+
+    sum=  sum + 1    
+
+    return current;
+  }, initialValue);
+
+  return {categories: categories, series: [series]};
 }

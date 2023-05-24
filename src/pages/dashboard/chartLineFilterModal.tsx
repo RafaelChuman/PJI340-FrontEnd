@@ -18,7 +18,7 @@ export interface DashboardModalProps {
   setGraphicOilUsed: React.Dispatch<React.SetStateAction<GraphiclOilUsed>>;
 }
 
-export function DashboardModalOilUsed({
+export function ChartLineFilterModal({
   graphiclOilUsed,
   toggle,
   setGraphicOilUsed,
@@ -48,17 +48,21 @@ export function DashboardModalOilUsed({
   };
 
   const zonesWithoutFormat = useZones();
-  const ContainerStyled = ModalContainer();
 
   async function handleApplyFilter(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     toggle();
   }
 
+
+  if(!graphiclOilUsed.zones.length)
+    if(zonesWithoutFormat.data && zonesWithoutFormat.data.length > 0)
+      graphiclOilUsed.zones.push(zonesWithoutFormat.data[0])
+
   return (
     <>
       {zonesWithoutFormat.data ? (
-        <ContainerStyled>
+        <ModalContainer>
           <form
             onSubmit={(e) => handleApplyFilter(e)}
             title={"Form Filtro Gráfico"}
@@ -94,7 +98,7 @@ export function DashboardModalOilUsed({
               <button type={"submit"}> Aplicar</button>
             </div>
           </form>
-        </ContainerStyled>
+        </ModalContainer>
       ) : (
         <></>
       )}

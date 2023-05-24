@@ -37,7 +37,9 @@ function comboBoxInner<T extends OptionsCombobox>({
   comboBoxData,
   comboBoxDefaultValues,
   comboBoxSetValues,
-}: ComboBoxProps<T>) {
+  
+}: ComboBoxProps<T>,
+ref: React.LegacyRef<HTMLSelectElement> | undefined) {
   function updateDefaultValues(
     selectedOptions: MultiValue<{
       value: string;

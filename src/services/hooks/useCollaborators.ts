@@ -25,6 +25,6 @@ export async function getCollaborators(): Promise<Collaborators[]> {
 
 export function useCollaborators() {
   return useQuery("collaborators", getCollaborators, {
-    staleTime: 1000 * 30, //30 Seconds
+    staleTime: 1000 * 300, //5 min
   });
 }

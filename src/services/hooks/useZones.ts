@@ -22,7 +22,7 @@ export async function getZones(): Promise<Zones[]> {
 
 export function useZones() {
   return useQuery("zones", getZones, {
-    staleTime: 1000 * 30, //30 Seconds
+    staleTime: 1000 * 300, //5 min
   });
 }
 

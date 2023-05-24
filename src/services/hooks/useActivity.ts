@@ -22,7 +22,7 @@ export async function getActivities(): Promise<Activities[]> {
 
 export function useActivities() {
   return useQuery("activities", getActivities, {
-    staleTime: 1000 * 30, //30 Seconds
+    staleTime: 1000 * 300, //5min
   });
 }
 

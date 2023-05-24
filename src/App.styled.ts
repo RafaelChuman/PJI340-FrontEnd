@@ -368,10 +368,11 @@ export default createGlobalStyle`
     flex-direction: column;
     width: 100%;
     margin-top: 6px;
-    padding: 6px;
+    padding: 0px;
     align-items:center;
     justify-content:center;
-    margin-right: ${theme.width["250px"]};
+    margin-right: 0px;
+    overflow: auto;
   }
 
 

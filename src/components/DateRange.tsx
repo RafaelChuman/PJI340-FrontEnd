@@ -9,7 +9,6 @@ import { Component } from "react";
 
 export class DateRange extends Component {
   handleSelect(ranges: RangeKeyDict) {
-    console.log("");
 
     let startDate = new Date();
     let endDate = new Date();

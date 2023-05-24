@@ -3,35 +3,51 @@ import React from "react";
 import ReactApexChart from "react-apexcharts";
 import styled from "styled-components";
 
-export interface ChartsProps {
+export interface ChartLinedProps {
   labelOfChart: string;
-  dataOfChart: dataOfChart;
+  dataOfChart: dataOfChartLined;
+  dataType: "category" | "datetime" | "numeric" | undefined;
   color: { [key: string]: string };
 }
 
-export interface dataOfChart {
-  categories: string[];
-  series: series[];
+export interface dataOfChartLined {
+  categories: [string[]];
+  series: {
+    name: string;
+    group?: string;
+    data: {
+      x: any;
+      y: any;
+      fill?: ApexFill;
+      fillColor?: string;
+      strokeColor?: string;
+      meta?: any;
+      goals?: any;
+      barHeightOffset?: number;
+      columnWidthOffset?: number;
+    }[];
+  }[];
 }
 
-export interface series {
-  name: string;
-  group?: string;
-  data: { x: any; y: any }[];
-}
 
-const Charts: React.FC<ChartsProps> = ({
+// function labelStyled  (color: { [key: string]: string })  {
+//   return styled.label`
+//     color: ${color[600]};
+//   `;
+// };
+
+const ChartLined: React.FC<ChartLinedProps> = ({
   labelOfChart,
   dataOfChart,
+  dataType,
   color,
-}: ChartsProps) => {
-  //dataOfChart.data.forEach( item => { series.push(item) })
+}: ChartLinedProps) => {
 
   const options: ApexOptions = {
     chart: {
       id: "realtime",
       height: 350,
-      type: "line",
+      type:"line",
       animations: {
         enabled: false,
         easing: "linear",
@@ -47,6 +63,12 @@ const Charts: React.FC<ChartsProps> = ({
       },
       foreColor: color[300],
     },
+    plotOptions: {
+      bar: {
+        columnWidth: '45%',
+        distributed: true,
+      }
+    },
     grid: {
       show: false,
     },
@@ -60,7 +82,7 @@ const Charts: React.FC<ChartsProps> = ({
       enabled: false,
     },
     xaxis: {
-      type: "datetime",
+      type: dataType,
       axisBorder: {
         color: color[600],
       },
@@ -80,15 +102,17 @@ const Charts: React.FC<ChartsProps> = ({
     },
   };
 
-  const LabelStyled = styled.label`
-    color: ${color[600]};
-  `;
+  //const LabelStyled = labelStyled(color);
 
   const series = dataOfChart.series;
 
+  if(dataOfChart.categories.length == 1 || dataOfChart.series.length == 0)
+    return <></>
+
   return (
     <>
-      <LabelStyled>{labelOfChart}</LabelStyled>
+      
+      <label color={color[600]}>{labelOfChart}</label>
 
       <ReactApexChart
         type="area"
@@ -101,4 +125,4 @@ const Charts: React.FC<ChartsProps> = ({
   );
 };
 
-export default Charts;
+export default ChartLined;

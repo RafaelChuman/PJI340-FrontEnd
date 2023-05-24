@@ -1,4 +1,4 @@
-import { dataOfChart } from "@/components/Charts";
+import { dataOfChart } from "@/components/ChartLined";
 import { Options } from "@/components/ComboBox";
 
 interface dataToComboBox {

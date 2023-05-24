@@ -24,7 +24,7 @@ export async function getERs(): Promise<ERs[]> {
 
 export function useERs() {
   return useQuery("ers", getERs, {
-    staleTime: 1000 * 30, //30 Seconds
+    staleTime: 1000 * 300, //5 min Seconds
   });
 }
 

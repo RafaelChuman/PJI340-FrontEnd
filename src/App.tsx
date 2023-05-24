@@ -1,4 +1,3 @@
-import { useState } from "react";
 import AppRoutes from "@/routes";
 import styled from "styled-components";
 import { Header } from "./components/Header";
