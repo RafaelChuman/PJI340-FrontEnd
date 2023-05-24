@@ -3,8 +3,7 @@ import { DateInput } from "@/components/DateInput";
 import { useZones } from "@/services/hooks/useZones";
 import { ModalContainer } from "./dashboard.styled";
 import { Zones } from "@/services/entities";
-import React, { SetStateAction, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import React from "react";
 
 export interface GraphiclOilUsed {
   dateBegin: Date;
@@ -88,6 +87,7 @@ export function ChartLineFilterModal({
               <label>Selecione a Zona: </label>
 
               <ComboBoxMultiple
+                
                 comboBoxData={zonesWithoutFormat.data}
                 comboBoxDefaultValues={graphiclOilUsed.zones}
                 comboBoxSetValues={updateZones}
@@ -105,76 +105,3 @@ export function ChartLineFilterModal({
     </>
   );
 }
-
-
-// export function DashboardModalOilUsed({
-//   graphiclOilUsed,
-//   toggle,
-//   setGraphicOilUsed,
-// }: DashboardModalProps) {
-
-//   const zonesWithoutFormat = useZones();
-//   const ContainerStyled = ModalContainer();
-
-//   async function handleApplyFilter(e: React.FormEvent<HTMLFormElement>){
-
-//     e.preventDefault();
-
-//     console.log(newDateBegin)
-//   };
-
-//   return (
-//     <>
-//       {zonesWithoutFormat.data ? (
-//         <ContainerStyled>
-//           <form
-//             onSubmit={e => handleApplyFilter(e)}
-//             title={"Form Filtro Gráfico"}
-//             placeholder={"Form Filtro Gráfico"}
-//           >
-//             <div className="divFields">
-//               <label>Data Início</label>
-
-//               {graphiclOilUsed ? (
-//                 <DateInput
-//                   date={graphiclOilUsed.dateBegin}
-//                   setDateValues={setGraphicOilUsed}
-//                 ></DateInput>
-//               ) : (
-//                 <DateInput setDateValues={setNewDateBegin}></DateInput>
-//               )}
-//             </div>
-//             <div className="divFields">
-//               <label>Data Término</label>
-//               {graphiclOilUsed ? (
-//                 <DateInput
-//                   date={graphiclOilUsed.dateEnd}
-//                   setDateValues={setNewDateEnd}
-//                 ></DateInput>
-//               ) : (
-//                 <DateInput setDateValues={setNewDateEnd}></DateInput>
-//               )}
-//             </div>
-
-//             <div className="divFields">
-//               <label>Selecione a Zona: </label>
-
-//               {zonesWithoutFormat && (
-//                 <ComboBoxMultiple
-//                   comboBoxData={zonesWithoutFormat.data}
-//                   comboBoxDefaultValues={graphiclOilUsed?.zones}
-//                 ></ComboBoxMultiple>
-//               )}
-//             </div>
-//             <div className="divFields">
-//               {/* <button type={"submit"} disabled={formState.isSubmitting} onClick={toggle}> Aplicar</button> */}
-//               <button type={"submit"}  > Aplicar</button>
-//             </div>
-//           </form>
-//         </ContainerStyled>
-//       ) : (
-//         <></>
-//       )}
-//     </>
-//   );
-// }

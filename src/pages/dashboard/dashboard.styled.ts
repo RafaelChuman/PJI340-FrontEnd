@@ -50,7 +50,6 @@ export const ModalContainer = styled.div`
   text-align: center;
   .divFields {
     display: flex;
-    width: 100%;
     flex-direction: row;
     align-items: center;
     justify-content: center;

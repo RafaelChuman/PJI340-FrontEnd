@@ -12,6 +12,7 @@ interface ComboBoxProps<T extends OptionsCombobox> {
   comboBoxSetValues: (comboBoxData: T[]) => void;
 }
 
+
 function FormatDataToCombobox<T extends OptionsCombobox>(
   allData: T[] | undefined
 ) {
